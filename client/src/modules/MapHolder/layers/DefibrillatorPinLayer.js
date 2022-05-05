@@ -7,6 +7,7 @@ import { Cluster, Marker } from 'react-mapbox-gl';
 import { makeStyles } from '@material-ui/core/styles';
 
 import mapPin from 'shared/icons/map-pin-icon.jpg';
+import activeMapPin from 'shared/icons/active-map-pin-icon.jpg'
 
 import geoJsonData from '../geoJsonData';
 import { showPopup } from '../actions/popupDisplay';
@@ -54,6 +55,7 @@ const DefibrillatorPinLayer = ({
   defibrillators,
   showPopup,
   makeItemActive,
+  defibrillatorsActiveId,
   history
 }) => {
   const GEO_JSON_DATA = geoJsonData(defibrillators);
@@ -88,11 +90,7 @@ const DefibrillatorPinLayer = ({
           onClick={() => defibrillatorPinClick(feature)}
         >
           <div className={classes.markerWrapper}>
-            <img
-              alt="Map pin"
-              src={mapPin}
-              className={classes.pin}
-            />
+            <img alt="Map Pin" src={defibrillatorsActiveId === feature?.properties?.defID ? activeMapPin : mapPin} className={classes.pin} />
             <p className={classes.title}>
               {feature.properties.title}
             </p>
@@ -172,6 +170,7 @@ DefibrillatorPinLayer.propTypes = {
 export default connect(
   state => ({
     defibrillators: state.defs.mapData,
+    defibrillatorsActiveId: state.defs.active,
     mapState: state.mapState
   }),
   dispatch => ({
