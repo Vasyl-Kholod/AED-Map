@@ -9,6 +9,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
+import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { sidebarWidth } from '../Sidebar/styleConstants';
@@ -82,7 +83,11 @@ const MapHolder = ({
   const classes = useStyles({ visible });
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
-  const { lng, lat, zoom } = mapState;
+  const { lng, lat, zoom} = mapState; 
+
+  const type = useSelector(reducer => reducer.mapState.type)
+
+
   const tooltipMessage = visible
     ? 'Приховати меню'
     : 'Показати меню';
@@ -191,21 +196,26 @@ const MapHolder = ({
     await setMapCenter({ lng: endLng, lat: endLat });
     getRoute(userPosition.coords, {
       lng: endLng,
-      lat: endLat
+      lat: endLat,
     });
   };
 
   const [routeCoords, setRouteCords] = useState([]);
+
+
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
     duration: null
   });
+
+
   const [showRouteDetails, setShowRouteDetails] = useState(
     false
   );
 
   const getRoute = async (start, endPosition) => {
-    const query = await getDirections(start, endPosition);
+
+    const query = await getDirections(start, endPosition, {}, type);
     const data = query.data.routes[0];
 
     setRouteCords(data.geometry.coordinates);
@@ -247,6 +257,7 @@ const MapHolder = ({
         <RouteDetails
           onClose={closeRoute}
           details={routeDetails}
+          getRouteToPosition = {getRouteToPosition}
         />
       )}
 
@@ -319,6 +330,7 @@ MapHolder.propTypes = {
 
 export default connect(
   state => ({
+    transportTypeState:state.type,
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
