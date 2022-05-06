@@ -4,7 +4,7 @@ const initialState = {
   lng: 24.0311,
   lat: 49.842,
   zoom: 12.5,
-  type: 'cycling'
+  type: 'driving'
 };
 export default (
   state = initialState,

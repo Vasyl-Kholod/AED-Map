@@ -257,7 +257,7 @@ const MapHolder = ({
         <RouteDetails
           onClose={closeRoute}
           details={routeDetails}
-          getRouteToPosition = {getRouteToPosition}
+          getRouteToPosition={getRouteToPosition}
         />
       )}
 
