@@ -9,15 +9,12 @@
     "build": "cd client && yarn build",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "start": "node start.js",
-    "lint": "eslint server.js ./config ./consts ./middleware ./models ./routes ./shared ./emails ./websocket --ext .js",
+    "lint": "eslint server.js ./config ./models ./routes ./shared ./websocket --ext .js",
     "test-client": "cd client/ && yarn test",
     "test-server": "cross-env NODE_ENV=node jest routes --coverage",
-    "migrate-admin-down": "migrate-mongo down -f ./migrations/adminMigration/migrate-mongo-config.js",
-    "migrate-admin-up": "migrate-mongo up -f ./migrations/adminMigration/migrate-mongo-config.js",
-    "migrate-admin-status": "migrate-mongo status -f ./migrations/adminMigration/migrate-mongo-config.js",
-    "migrate-defibrillators-down": "migrate-mongo down -f ./migrations/defibrillatorsMigration/migrate-mongo-config.js",
-    "migrate-defibrillators-up": "migrate-mongo up -f ./migrations/defibrillatorsMigration/migrate-mongo-config.js",
-    "migrate-defibrillators-status": "migrate-mongo status -f ./migrations/defibrillatorsMigration/migrate-mongo-config.js"
+    "database-up": "migrate-mongo up -f ./migrate-mongo-config.js",
+    "database-down": "migrate-mongo down -f ./migrate-mongo-config.js",
+    "database-status": "migrate-mongo status -f ./migrate-mongo-config.js"
   },
   "jest": {
     "testEnvironment": "node",
@@ -26,12 +23,12 @@
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
-      "./middleware/*.js",
-      "./websocket/*.js",
-      "./migrations/*.js"
+      "./shared/websocket/*.js",
+      "./shared/middleware/*.js",
+      "./db/migrations/*.js"
     ],
     "collectCoverageFrom": [
-      "./routes/*.js"
+      "./api/*.js"
     ],
     "coverageThreshold": {
       "global": {

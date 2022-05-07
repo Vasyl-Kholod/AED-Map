@@ -61,7 +61,7 @@ yarn migrate-admin-up​
 yarn migrate-admin-down​
 ```
 
-3. Add new defibrillators (from db_collections/defibrillators.json file)
+3. Add new defibrillators (from db/mocks/defibrillators.json file)
 
 ```
 ​ yarn migrate-defibrillators-up​
@@ -104,7 +104,7 @@ ADMIN_PASSWORD
 
 ### Google maps api
 
-Generate your own Google API key in developer console 
+Generate your own Google API key in developer console
 https://developers.google.com/maps/documentation/geocoding/get-api-key
 
 ```
