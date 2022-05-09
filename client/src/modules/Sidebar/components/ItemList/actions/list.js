@@ -1,5 +1,5 @@
 import { cancelToken } from 'shared/utils';
-import _ from 'lodash';
+import { isObject, keys } from 'lodash';
 
 import {
   START_LOAD_DATA,
@@ -79,8 +79,8 @@ export const fetchDefs = params => {
       userCoordinates = null
     ) => {
       try {
-        if (_.isObject(params)) {
-          _.keys(params).forEach( (key) => {
+        if (isObject(params)) {
+          keys(params).forEach( (key) => {
             if (!params[key]) {
               delete params[key]
             }
