@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeType } from 'modules/MapHolder/actions/mapState';
-import { ClickAwayListener } from '@material-ui/core';
 
 const detailsStyle = {
   container: {
@@ -28,61 +27,64 @@ const detailsStyle = {
     marginTop: '5px',
     borderRadius: '5px',
     cursor: 'pointer'
+  },
+  transportInput: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '20px'
+  },
+  radio: {
+    marginTop: '10px'
   }
 };
 
-function RouteDetails({ onClose, details, getRouteToPosition}) {
-  const dispatch = useDispatch()
+function RouteDetails({
+  onClose,
+  details,
+  getRouteToPosition
+}) {
+  const dispatch = useDispatch();
   const { distance, duration } = details;
   const finalDistance = (distance / 1000).toFixed(2);
   const approximateTime = Math.floor(duration / 60);
 
-  // const [type, setType] = React.useState('cycling');
-
-  const type = useSelector(reducer => reducer.mapState.type)
-  const lat = useSelector(reducer => reducer.mapState.lat)
-  const lng = useSelector(reducer => reducer.mapState.lng)
-  console.log(type);
+  const type = useSelector(
+    reducer => reducer.mapState.type
+  );
+  const lat = useSelector(reducer => reducer.mapState.lat);
+  const lng = useSelector(reducer => reducer.mapState.lng);
 
   const handleChange = event => {
-    dispatch(changeType(event.target.value))
-    console.log(getRouteToPosition(lng, lat))
-    // setType(event.target.value);
+    dispatch(changeType(event.target.value));
+    getRouteToPosition(lng, lat, event.target.value);
   };
 
   return (
     <div style={detailsStyle.container}>
-
       <div>
         <form id="params">
-          <h4>
-            Choose a travel mode:
-          </h4>
+          <h4>Choose a travel mode:</h4>
           <div>
-          <div>
-                Cycling
-              </div>
-            <label>
+            <label style={detailsStyle.transportInput}>
               <input
-                name="profile"
+                style={detailsStyle.radio}
                 type="radio"
                 value="cycling"
                 checked={type === 'cycling'}
                 onChange={handleChange}
               />
+              <div>Cycling</div>
             </label>
 
-            <div>
-                Driving
-              </div>
-            <label>
+            <label style={detailsStyle.transportInput}>
               <input
-                name="profile"
+                style={detailsStyle.radio}
                 type="radio"
                 value="driving"
                 checked={type === 'driving'}
                 onChange={handleChange}
               />
+              <div>Driving</div>
             </label>
           </div>
         </form>

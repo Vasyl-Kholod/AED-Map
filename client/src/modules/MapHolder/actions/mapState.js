@@ -31,4 +31,4 @@ export const changeType = type => {
     type: SET_TYPE,
     payload: type
   };
-}
+};

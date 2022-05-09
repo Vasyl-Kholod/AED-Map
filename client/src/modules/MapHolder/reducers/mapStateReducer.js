@@ -1,10 +1,14 @@
-import { SET_MAP_CENTER, SET_MAP_ZOOM, SET_TYPE } from '../consts';
+import {
+  SET_MAP_CENTER,
+  SET_MAP_ZOOM,
+  SET_TYPE
+} from '../consts';
 
 const initialState = {
   lng: 24.0311,
   lat: 49.842,
   zoom: 12.5,
-  type: 'driving'
+  type: 'cycling'
 };
 export default (
   state = initialState,
@@ -24,8 +28,7 @@ export default (
       return { ...state, zoom: payload }; // here payload is number
     }
     case SET_TYPE: {
-      return { ...state, type: payload }; // here payload is car or cycling
-
+      return { ...state, type: payload }; // here payload is driving or cycling
     }
     default:
       return state;
