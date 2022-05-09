@@ -1,9 +1,7 @@
 const nodemailer = require('nodemailer');
-const {
-  BASE_URL,
-  EMAIL_USER,
-  EMAIL_PASSWORD
-} = require('../../config/keys');
+
+const { BASE_URL, EMAIL_FROM, EMAIL_USER, EMAIL_PASSWORD } =
+  process.env || {};
 
 class EmailService {
   constructor() {

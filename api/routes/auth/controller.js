@@ -11,7 +11,7 @@ const {
   EXPIRE_TIME_JWT_SIGN_UP,
   SECRET_JWT_KEY_RESET,
   EXPIRE_TIME_JWT_RESET
-} = require('../../../config/keys');
+} = process.env || {};
 // Model of the collection 'users'
 const { User } = require('../../../db/models');
 // User role
@@ -105,7 +105,7 @@ module.exports.userSuccessfullySignUp = async (
     const token = jwt.sign(
       { email },
       SECRET_JWT_KEY_SIGN_UP,
-      { expiresIn: EXPIRE_TIME_JWT_SIGN_UP }
+      { expiresIn: Number(EXPIRE_TIME_JWT_SIGN_UP) }
     );
 
     try {
@@ -148,7 +148,7 @@ module.exports.userSignIn = async (req, res) => {
       const token = jwt.sign(
         { _id, email, role },
         SECRET_JWT_KEY_AUTH,
-        { expiresIn: EXPIRE_TIME_JWT_AUTH }
+        { expiresIn: Number(EXPIRE_TIME_JWT_AUTH) }
       );
 
       // Response [OK] - jwt and user information
@@ -248,7 +248,7 @@ module.exports.passwordSuccessfullyReset = async (
   if (candidate) {
     // Create jwt based on email, expiration time - 1 hour
     token = jwt.sign({ email }, SECRET_JWT_KEY_RESET, {
-      EXPIRE_TIME_JWT_RESET
+      EXPIRE_TIME_JWT_RESET: Number(EXPIRE_TIME_JWT_RESET)
     });
 
     try {

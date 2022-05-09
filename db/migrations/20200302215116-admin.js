@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs');
-const {
-  ADMIN_EMAIL,
-  ADMIN_PASSWORD
-} = require('../../config/keys');
+
+const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env || {};
 
 // Admin role
 const { ADMIN } = require('../../shared/consts');

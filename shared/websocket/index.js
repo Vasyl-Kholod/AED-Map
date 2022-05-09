@@ -4,9 +4,6 @@ const socketio = require('socket.io');
 
 // Model of the collection 'users'
 const { User } = require('../../db/models');
-const {
-  SECRET_JWT_KEY_AUTH
-} = require('../../config/keys');
 
 module.exports = (server) => {
   const io = socketio(server);
@@ -15,7 +12,7 @@ module.exports = (server) => {
     socket.on('authorization', (authorization) => {
       jwt.verify(
         authorization,
-        SECRET_JWT_KEY_AUTH,
+        process.env.SECRET_JWT_KEY_AUTH,
         async (err, payload) => {
           if (err) {
             socket.disconnect();
