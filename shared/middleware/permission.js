@@ -1,11 +1,6 @@
 const deepEqual = require('deep-equal');
 const jwt = require('jsonwebtoken');
 
-// Secret key for jwt
-const {
-  SECRET_JWT_KEY_AUTH
-} = require('../../config/keys');
-
 // Model of the collection 'defibrillator'
 const { Defibrillator } = require('../../db/models');
 
@@ -22,7 +17,7 @@ const checkPermission = async (req, res, next) => {
   // Verify jwt and if it is valid - send role to the next middleware
   jwt.verify(
     authorization,
-    SECRET_JWT_KEY_AUTH,
+    process.env.SECRET_JWT_KEY_AUTH,
     async (err, payload) => {
       if (err) return next();
       req.role = payload.role;

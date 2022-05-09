@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const server = http.Server(app);
 
-const PORT = 3012;
+const PORT = process.env.PORT || 3012;
 
 const bootstrap = () => {
   // Websocket event for sign out

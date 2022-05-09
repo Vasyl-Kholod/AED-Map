@@ -2,8 +2,9 @@ const path = require('path');
 
 const config = {
   mongodb: {
-    databaseName: 'defibrillatorDB',
-    url: 'mongodb://localhost:27017/',
+    databaseName: process.env.MONGO_DB || 'defibrillatorDB',
+    url:
+      process.env.MONGO_URL || 'mongodb://localhost:27017/',
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true

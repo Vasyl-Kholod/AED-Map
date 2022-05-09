@@ -49,28 +49,16 @@ MONGO_DB_NAME - name of the database
 
 You can use command migrations only once - after Up should be Down, after Down - Up.
 
-1. Add new admin
+1. Add new admin and defibrillators (from db/mocks/defibrillators.json file)
 
 ```
-yarn migrate-admin-up​
+yarn database-up
 ```
 
-2. Remove all admins
+2. Remove all admins and defibrillators
 
 ```
-yarn migrate-admin-down​
-```
-
-3. Add new defibrillators (from db/mocks/defibrillators.json file)
-
-```
-​ yarn migrate-defibrillators-up​
-```
-
-4. Remove all defibrillators
-
-```
-yarn migrate-defibrillators-down
+yarn database-down​
 ```
 
 ## 4. Environment variables for JWT configuration
