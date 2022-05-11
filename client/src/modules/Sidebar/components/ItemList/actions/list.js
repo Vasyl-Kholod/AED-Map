@@ -1,4 +1,5 @@
 import { cancelToken } from 'shared/utils';
+import { isObject, keys } from 'lodash';
 
 import {
   START_LOAD_DATA,
@@ -78,6 +79,13 @@ export const fetchDefs = params => {
       userCoordinates = null
     ) => {
       try {
+        if (isObject(params)) {
+          keys(params).forEach( (key) => {
+            if (!params[key]) {
+              delete params[key]
+            }
+          })
+        }
         const { data } = await getDefItems(
           { ...params, ...userCoordinates },
           defsCancelToken.instance
