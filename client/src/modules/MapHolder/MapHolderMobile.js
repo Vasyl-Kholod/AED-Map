@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
+import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { fetchDefs } from '../Sidebar/components/ItemList/actions/list.js';
@@ -104,6 +105,9 @@ const MapHolderMobile = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
+  const type = useSelector(
+    reducer => reducer.mapState.type
+  );
 
   const handlePopupClose = event => {
     if (event.target.tagName === 'CANVAS') {
@@ -195,12 +199,20 @@ const MapHolderMobile = ({
     }
   };
 
-  const getRouteToPosition = async (endLng, endLat) => {
+  const getRouteToPosition = async (
+    endLng,
+    endLat,
+    types = type
+  ) => {
     await setMapCenter({ lng: endLng, lat: endLat });
-    getRoute(userPosition.coords, {
-      lng: endLng,
-      lat: endLat
-    });
+    getRoute(
+      userPosition.coords,
+      {
+        lng: endLng,
+        lat: endLat
+      },
+      types
+    );
   };
 
   const [routeCoords, setRouteCords] = useState([]);
@@ -208,14 +220,18 @@ const MapHolderMobile = ({
     distance: null,
     duration: null
   });
+
   const [showRouteDetails, setShowRouteDetails] = useState(
     false
   );
 
-  const getRoute = async (start, endPosition) => {
-    const query = await getDirections(start, endPosition);
+  const getRoute = async (start, endPosition, types) => {
+    const query = await getDirections(
+      types,
+      start,
+      endPosition
+    );
     const data = query.data.routes[0];
-
     setRouteCords(data.geometry.coordinates);
     setShowRouteDetails(true);
     setRouteDetails({

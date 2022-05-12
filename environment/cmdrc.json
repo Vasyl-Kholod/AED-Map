@@ -1,0 +1,24 @@
+{
+  "development": {
+    "PORT": 3012,
+    "NODE_ENV": "development",
+    "BASE_URL": "http://localhost:3000",
+    "MONGO_URL": "mongodb://localhost:27017/",
+    "MONGO_DB": "defibrillatorDB",
+    "SECRET_JWT_KEY_AUTH": "defibrillator_secret",
+    "EXPIRE_TIME_JWT_AUTH": 3600,
+    "SECRET_JWT_KEY_SIGN_UP": "defibrillator_secret",
+    "EXPIRE_TIME_JWT_SIGN_UP": 3600,
+    "SECRET_JWT_KEY_RESET": "defibrillator_secret",
+    "EXPIRE_TIME_JWT_RESET": 3600,
+    "EMAIL_USER": "defibrillator.lviv@gmail.com",
+    "EMAIL_FROM": "defibrillator.lviv@gmail.com",
+    "EMAIL_PASSWORD": "Defibrillator1!",
+    "ADMIN_EMAIL": "admin@admin.com",
+    "ADMIN_PASSWORD": "qwe123Q!"
+  },
+  "production": {
+    "NODE_ENV": "production",
+    "NODE_OPTIONS": "--http-parser=legacy"
+  }
+}

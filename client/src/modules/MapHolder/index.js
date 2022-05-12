@@ -9,6 +9,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
+import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { sidebarWidth } from '../Sidebar/styleConstants';
@@ -79,10 +80,15 @@ const MapHolder = ({
   setVisible,
   visible
 }) => {
+  const type = useSelector(
+    reducer => reducer.mapState.type
+  );
+
   const classes = useStyles({ visible });
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
+
   const tooltipMessage = visible
     ? 'Приховати меню'
     : 'Показати меню';
@@ -187,27 +193,40 @@ const MapHolder = ({
     }
   };
 
-  const getRouteToPosition = async (endLng, endLat) => {
+  const getRouteToPosition = async (
+    endLng,
+    endLat,
+    types = type
+  ) => {
     await setMapCenter({ lng: endLng, lat: endLat });
-    getRoute(userPosition.coords, {
-      lng: endLng,
-      lat: endLat
-    });
+    getRoute(
+      userPosition.coords,
+      {
+        lng: endLng,
+        lat: endLat
+      },
+      types
+    );
   };
 
   const [routeCoords, setRouteCords] = useState([]);
+
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
     duration: null
   });
+
   const [showRouteDetails, setShowRouteDetails] = useState(
     false
   );
 
-  const getRoute = async (start, endPosition) => {
-    const query = await getDirections(start, endPosition);
+  const getRoute = async (start, endPosition, type) => {
+    const query = await getDirections(
+      type,
+      start,
+      endPosition
+    );
     const data = query.data.routes[0];
-
     setRouteCords(data.geometry.coordinates);
     setShowRouteDetails(true);
     setRouteDetails({
@@ -247,6 +266,7 @@ const MapHolder = ({
         <RouteDetails
           onClose={closeRoute}
           details={routeDetails}
+          getRouteToPosition={getRouteToPosition}
         />
       )}
 
@@ -274,9 +294,7 @@ const MapHolder = ({
         {Object.keys(newPoint).length !== 0 && (
           <AddedPin coordinates={newPoint} />
         )}
-
         <PopupHolder />
-
         {routeCoords.length > 0 && (
           <>
             <RouteLayer coordinates={routeCoords} />
@@ -319,6 +337,7 @@ MapHolder.propTypes = {
 
 export default connect(
   state => ({
+    transportTypeState: state.type,
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,

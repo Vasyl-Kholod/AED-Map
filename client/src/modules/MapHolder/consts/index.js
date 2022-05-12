@@ -12,6 +12,8 @@ export const START_WATCHING_POSITION = "START_WATCHING_POSITION";
 export const STOP_WATCHING_POSITION = "STOP_WATCHING_POISITION"
 export const SET_GEOLOCATION_STATUS = "SET_GEOLOCATION_STATUS";
 
+export const SET_TYPE = "SET_TYPE"
+
 export const popupOffsets = {
   bottom: [0, -30],
   left: [0, -30],
