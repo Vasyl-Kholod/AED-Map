@@ -2,7 +2,7 @@ const { USER, ADMIN } = require('../../../shared/consts');
 
 const createFilter = (req) => {
   const { query } = req;
-  const filter = {};
+  const filter = { $or: [] };
   const skipKeys = [
     'page',
     'per_page',
@@ -12,9 +12,13 @@ const createFilter = (req) => {
 
   Object.keys(query).forEach((key) => {
     if (!skipKeys.includes(key)) {
-      filter[key] = new RegExp(query[key], 'i');
+      filter.$or.push({ [key]: new RegExp(query[key], 'i') })
     }
   });
+
+  if (filter.$or.length === 0) {
+    delete filter.$or
+  }
 
   const authorized =
     req.role === ADMIN || req.role === USER;

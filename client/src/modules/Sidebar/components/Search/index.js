@@ -42,16 +42,16 @@ const Search = ({
       resetData(data);
     };
 
-    setSearch({ address: value });
+    setSearch({ title: value, address: value });
 
     if (
       value.length >= 2 ||
       (value.length < 2 && verifyQuery.test(value))
     ) {
       resetPagination(1, []);
-      fetchDefItems({ address: value });
+      fetchDefItems({ title: value, address: value });
     } else if (value.length < 2) {
-      setSearch({ address: value });
+      setSearch({ title: value, address: value });
       resetPagination(1, []);
       fetchDefItems();
     }
