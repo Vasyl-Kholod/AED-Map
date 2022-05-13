@@ -1,10 +1,11 @@
 import { SET_SEARCH } from '../consts';
 
 const initialState = {
+  title: '',
   address: ''
 };
 
-export default function(
+export default function (
   state = initialState,
   { type, payload }
 ) {
