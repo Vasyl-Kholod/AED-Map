@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
-import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { fetchDefs } from '../Sidebar/components/ItemList/actions/list.js';
@@ -93,6 +92,8 @@ const MapHolderMobile = ({
   fetchDefItems,
   mapState,
   userPosition,
+  endRouteCoords,
+  transportType,
   newPoint,
   setMapCenter,
   startWatchingPosition,
@@ -105,9 +106,7 @@ const MapHolderMobile = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
-  const type = useSelector(
-    reducer => reducer.mapState.type
-  );
+  
 
   const handlePopupClose = event => {
     if (event.target.tagName === 'CANVAS') {
@@ -199,22 +198,6 @@ const MapHolderMobile = ({
     }
   };
 
-  const getRouteToPosition = async (
-    endLng,
-    endLat,
-    types = type
-  ) => {
-    await setMapCenter({ lng: endLng, lat: endLat });
-    getRoute(
-      userPosition.coords,
-      {
-        lng: endLng,
-        lat: endLat
-      },
-      types
-    );
-  };
-
   const [routeCoords, setRouteCords] = useState([]);
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
@@ -246,6 +229,27 @@ const MapHolderMobile = ({
     getCurrentLocation();
   };
 
+   // To build the route, set ending point coordinates to the redux state
+  // you can use setRoutePosition from mapState.js or custom
+  useEffect( () => {
+    const getRouteToPosition = async ( types = transportType ) => {
+      if (!!endRouteCoords.lng) {
+        setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
+        setMapZoom(13.5)
+        await getRoute(
+          userPosition.coords,
+          {
+            lng: endRouteCoords.lng,
+            lat: endRouteCoords.lat
+          },
+          types
+        );
+      }
+    } 
+    getRouteToPosition()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endRouteCoords, transportType])
+
   return (
     <div className={classes.mapContainer}>
       <div className={classes.buttonContainer}>
@@ -255,9 +259,7 @@ const MapHolderMobile = ({
           />
         </div>
         <div className={classes.buttonItem}>
-          <QuickSearchButtonMobile
-            getRouteToPosition={getRouteToPosition}
-          />
+          <QuickSearchButtonMobile/>
         </div>
         <div
           className={classes.buttonItem}
@@ -326,7 +328,14 @@ MapHolderMobile.propTypes = {
   mapState: PropTypes.shape({
     lng: PropTypes.number,
     lat: PropTypes.number,
-    zoom: PropTypes.number
+    zoom: PropTypes.number,
+    routeDetails: {
+      endCoordinates: {
+        lng: PropTypes.string,
+        lat: PropTypes.string,
+      },
+      transportType: PropTypes.string
+    }
   }),
   newPoint: PropTypes.shape({
     lng: PropTypes.number,
@@ -347,7 +356,9 @@ export default connect(
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
-    userPosition: state.userPosition
+    userPosition: state.userPosition,
+    transportType: state.mapState.routeDetails.transportType,
+    endRouteCoords: state.mapState.routeDetails.endCoordinates
   }),
   dispatch => ({
     fetchDefItems: params => dispatch(fetchDefs(params)),
