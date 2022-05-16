@@ -31,6 +31,7 @@ import RouteDetails from './components/RouteDetails';
 import DefibrillatorPinLayer from './layers/DefibrillatorPinLayer';
 import GeoLocationButton from './components/GeoLocationButton';
 import QuickSearchButton from './components/QuickSearchButton';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
 
 const useStyles = makeStyles(() => ({
   mapContainer: ({ visible }) => ({
@@ -57,9 +58,8 @@ const useStyles = makeStyles(() => ({
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
-    transform: `${
-      visible ? 'rotate(180deg)' : 'rotate(0)'
-    }`,
+    transform: `${visible ? 'rotate(180deg)' : 'rotate(0)'
+      }`,
     transition: 'transform 0.2s'
   })
 }));
@@ -78,6 +78,7 @@ const MapHolder = ({
   addNewPoint,
   hidePopup,
   setVisible,
+  setActiveId,
   visible
 }) => {
   const type = useSelector(
@@ -239,6 +240,7 @@ const MapHolder = ({
     setRouteCords([]);
     setShowRouteDetails(false);
     getCurrentLocation();
+    setActiveId(null);
   };
 
   return (
@@ -310,10 +312,10 @@ MapHolder.defaultProps = {
   mapState: {},
   setVisible: {},
   visible: null,
-  setMapCenter: () => {},
-  setGeolocation: () => {},
-  startWatchingPosition: () => {},
-  hidePopup: () => {}
+  setMapCenter: () => { },
+  setGeolocation: () => { },
+  startWatchingPosition: () => { },
+  hidePopup: () => { }
 };
 
 MapHolder.propTypes = {
@@ -351,6 +353,7 @@ export default connect(
     setMapZoom: zoom => dispatch(setMapZoom(zoom)),
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
-    hidePopup: () => dispatch(hidePopup())
+    hidePopup: () => dispatch(hidePopup()),
+    setActiveId: id => dispatch(setActive(id)),
   })
 )(MapHolder);

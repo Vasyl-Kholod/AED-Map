@@ -6,11 +6,13 @@ import Logo from 'shared/icons/logo.svg';
 import useAlert from 'shared/ui/Alert/useAlert';
 
 import { getAvailableDefItems } from '../../../Sidebar/api/index.js';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
 function QuickSearchButtonMobile({
   coords,
   geolocationProvided,
-  getRouteToPosition
+  getRouteToPosition,
+  setActiveId
 }) {
   const [, ShowAlert] = useAlert();
 
@@ -35,7 +37,9 @@ function QuickSearchButtonMobile({
         lng,
         lat
       ] = nearestItem.data.listDefs.location.coordinates;
+      const { _id } = nearestItem.data.listDefs;
       await getRouteToPosition(lng, lat);
+      setActiveId(_id);
     } else {
       ShowAlert({
         open: true,
@@ -65,5 +69,7 @@ export default connect(
     geolocationProvided:
       state.userPosition.geolocationProvided
   }),
-  null
+  dispatch => ({
+    setActiveId: (id) => dispatch(setActive(id)),
+  })
 )(QuickSearchButtonMobile);

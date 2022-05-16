@@ -10,7 +10,7 @@ import { MAPBOX_TOKEN } from 'shared/consts/keys';
 import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
-import { fetchDefs } from '../Sidebar/components/ItemList/actions/list.js';
+import { fetchDefs, setActive } from '../Sidebar/components/ItemList/actions/list.js';
 import {
   setMapCenter,
   setMapZoom,
@@ -78,9 +78,8 @@ const useStyles = makeStyles(() => ({
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
-    transform: `${
-      visible ? 'rotate(180deg)' : 'rotate(0)'
-    }`,
+    transform: `${visible ? 'rotate(180deg)' : 'rotate(0)'
+      }`,
     transition: 'transform 0.2s'
   })
 }));
@@ -99,6 +98,7 @@ const MapHolderMobile = ({
   setGeolocation,
   addNewPoint,
   hidePopup,
+  setActiveId,
   visible
 }) => {
   const classes = useStyles({ visible });
@@ -244,6 +244,7 @@ const MapHolderMobile = ({
     setRouteCords([]);
     setShowRouteDetails(false);
     getCurrentLocation();
+    setActiveId(null);
   };
 
   return (
@@ -316,10 +317,10 @@ MapHolderMobile.defaultProps = {
   mapState: {},
   setVisible: {},
   visible: null,
-  setMapCenter: () => {},
-  setGeolocation: () => {},
-  startWatchingPosition: () => {},
-  hidePopup: () => {}
+  setMapCenter: () => { },
+  setGeolocation: () => { },
+  startWatchingPosition: () => { },
+  hidePopup: () => { }
 };
 
 MapHolderMobile.propTypes = {
@@ -358,6 +359,7 @@ export default connect(
     setMapZoom: zoom => dispatch(setMapZoom(zoom)),
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
-    hidePopup: () => dispatch(hidePopup())
+    hidePopup: () => dispatch(hidePopup()),
+    setActiveId: id => dispatch(setActive(id)),
   })
 )(MapHolderMobile);
