@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
+import DirectionsIcon from '@material-ui/icons/Directions';
 import React, { useState, useEffect } from 'react';
 
 import { cancelToken } from 'shared/utils';
 import Loader from 'shared/ui/Loader';
 
+import { setRoutePosition } from 'modules/MapHolder/actions/mapState';
 import { titles } from './consts';
 import { hidePopup } from '../../actions/popupDisplay';
 import { fetchSingleDefById } from '../../../Sidebar/api';
@@ -43,7 +45,7 @@ const useStyle = makeStyles({
     position: 'fixed',
     zIndex: 1000,
     right: 20,
-    top: 10,
+    top: 15,
     width: 20,
     height: 20,
     cursor: 'pointer',
@@ -56,10 +58,26 @@ const useStyle = makeStyles({
     marginBottom: 5,
     borderRadius: 5,
     boxShadow: '0 2px 10px rgba(255, 255, 255, .4)'
+  },
+  routeIconContainer: {
+    position: 'fixed',
+    top: 10,
+    right: 50,
+  },
+  routeIcon: {
+    fontSize: '30px',
+    color: 'grey',
+    '&:hover' : {
+      color:'#1976d2'
+    }
   }
 });
 
-const DefibrillatorPopupContent = ({ id, hidePopup }) => {
+const DefibrillatorPopupContent = ({
+  id, 
+  hidePopup,
+  setRoutePosition
+}) => {
   const classes = useStyle();
   const [currDef, setCurrDef] = useState(null);
 
@@ -94,6 +112,13 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
 
     return def[key];
   };
+
+  const handleRoute = () => {
+    const [ lng, lat ] = currDef.location.coordinates;
+    const { _id : id } = currDef
+    setRoutePosition( { lng, lat }, id );
+    hidePopup();
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,6 +159,12 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
           )
         );
       })}
+      <div 
+        className={classes.routeIconContainer}
+        onClick={handleRoute}
+      >
+        <DirectionsIcon className={classes.routeIcon}/>
+      </div>
       <Cancel
         className={classes.closeBtn}
         onClick={hidePopup}
@@ -147,9 +178,12 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
 
 DefibrillatorPopupContent.propTypes = {
   id: PropTypes.string.isRequired,
-  hidePopup: PropTypes.func.isRequired
+  hidePopup: PropTypes.func.isRequired,
+  setRoutePosition: PropTypes.func
 };
 
 export default connect(null, dispatch => ({
-  hidePopup: () => dispatch(hidePopup())
+  hidePopup: () => dispatch(hidePopup()),
+  setRoutePosition: ( routeCoords, id ) =>
+    dispatch(setRoutePosition( routeCoords, id ))
 }))(DefibrillatorPopupContent);
