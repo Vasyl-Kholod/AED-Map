@@ -7,6 +7,7 @@ import {
 } from 'modules/MapHolder/actions/mapState.js';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { getAvailableDefItems } from '../../../Sidebar/api/index.js';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
 const getNearestDeviceButton = {
   fontSize: '0.8rem',
@@ -28,7 +29,8 @@ const getNearestDeviceButton = {
 function QuickSearchButton({
   coords,
   geolocationProvided,
-  setRoutePosition
+  setRoutePosition,
+  setActiveId
 }) {
   const [, ShowAlert] = useAlert();
 
@@ -54,7 +56,8 @@ function QuickSearchButton({
         lat
       ] = nearestItem.data.listDefs.location.coordinates;
       const { _id : id } = nearestItem.data.listDefs;
-      setRoutePosition( { lng, lat }, id )
+      setRoutePosition({ lng, lat }, id);
+      setActiveId(id);
     } else {
       ShowAlert({
         open: true,
@@ -86,7 +89,8 @@ export default connect(
       state.userPosition.geolocationProvided
   }),
   dispatch => ({
+    setActiveId: id => dispatch(setActive(id)),
     setRoutePosition: ( routeCoords, id ) => 
-      dispatch(setRoutePosition( routeCoords, id ))
+      dispatch(setRoutePosition( routeCoords, id )),
   })
 )(QuickSearchButton);

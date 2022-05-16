@@ -7,13 +7,15 @@ import useAlert from 'shared/ui/Alert/useAlert';
 
 import { setRoutePosition } from 'modules/MapHolder/actions/mapState.js';
 import { getAvailableDefItems } from '../../../Sidebar/api/index.js';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
 function QuickSearchButtonMobile({
   coords,
   active,
   defs,
   geolocationProvided,
-  setRoutePosition
+  setRoutePosition,
+  setActiveId
 }) {
   const [, ShowAlert] = useAlert();
 
@@ -41,6 +43,7 @@ function QuickSearchButtonMobile({
         ] = nearestItem.data.listDefs.location.coordinates;
         const { _id: id } = nearestItem.data.listDefs;
          setRoutePosition({ lng, lat }, id);
+        setActiveId(id);
       } else {
         ShowAlert({
           open: true,
@@ -77,7 +80,8 @@ export default connect(
     defs: state.defs.mapData
   }),
   dispatch => ({
-    setRoutePosition: ( routeCoords, id ) => 
-      dispatch(setRoutePosition( routeCoords, id ))
+    setActiveId: (id) => dispatch(setActive(id)),
+    setRoutePosition: (routeCoords, id) => 
+      dispatch(setRoutePosition(routeCoords, id)),
   })
 )(QuickSearchButtonMobile);
