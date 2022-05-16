@@ -176,14 +176,11 @@ const MyImageField = ({
   const classes = useStyles();
 
   const [images, setImages] = useState([]);
-  const [imageURL, setUrl] = useState([]);
+  const [aImageUrls, setUrl] = useState([]);
 
   useEffect(() => {
-    const newImageUrl = [];
-    images.forEach(image =>
-      newImageUrl.push(URL.createObjectURL(image))
-    );
-    setUrl(newImageUrl);
+    setUrl(images.map(image =>(URL.createObjectURL(image)
+    )));
   }, [images]);
 
   return (
@@ -215,7 +212,7 @@ const MyImageField = ({
           className={classes.gridList}
           cols={2.5}
         >
-          {imageURL.map((imageSrc, index) => (
+          {aImageUrls && aImageUrls.map((imageSrc, index) => (
             <GridListTile key={index}>
               <img
                 src={imageSrc}
