@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { 
+  setRoutePosition
+} from 'modules/MapHolder/actions/mapState.js';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { getAvailableDefItems } from '../../../Sidebar/api/index.js';
 
@@ -25,7 +28,7 @@ const getNearestDeviceButton = {
 function QuickSearchButton({
   coords,
   geolocationProvided,
-  getRouteToPosition
+  setRoutePosition
 }) {
   const [, ShowAlert] = useAlert();
 
@@ -50,7 +53,8 @@ function QuickSearchButton({
         lng,
         lat
       ] = nearestItem.data.listDefs.location.coordinates;
-      await getRouteToPosition(lng, lat);
+      const { _id : id } = nearestItem.data.listDefs;
+      setRoutePosition( { lng, lat }, id )
     } else {
       ShowAlert({
         open: true,
@@ -72,8 +76,7 @@ function QuickSearchButton({
 }
 
 QuickSearchButton.propTypes = {
-  coords: PropTypes.object.isRequired,
-  getRouteToPosition: PropTypes.func.isRequired
+  coords: PropTypes.object.isRequired
 };
 
 export default connect(
@@ -82,5 +85,8 @@ export default connect(
     geolocationProvided:
       state.userPosition.geolocationProvided
   }),
-  null
+  dispatch => ({
+    setRoutePosition: ( routeCoords, id ) => 
+      dispatch(setRoutePosition( routeCoords, id ))
+  })
 )(QuickSearchButton);
