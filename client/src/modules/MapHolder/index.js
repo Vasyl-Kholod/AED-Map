@@ -9,7 +9,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import useAlert from 'shared/ui/Alert/useAlert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
-import { useSelector } from 'react-redux';
 import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { sidebarWidth } from '../Sidebar/styleConstants';
@@ -31,6 +30,7 @@ import RouteDetails from './components/RouteDetails';
 import DefibrillatorPinLayer from './layers/DefibrillatorPinLayer';
 import GeoLocationButton from './components/GeoLocationButton';
 import QuickSearchButton from './components/QuickSearchButton';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
 
 const useStyles = makeStyles(() => ({
   mapContainer: ({ visible }) => ({
@@ -57,9 +57,8 @@ const useStyles = makeStyles(() => ({
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
-    transform: `${
-      visible ? 'rotate(180deg)' : 'rotate(0)'
-    }`,
+    transform: `${visible ? 'rotate(180deg)' : 'rotate(0)'
+      }`,
     transition: 'transform 0.2s'
   })
 }));
@@ -72,18 +71,18 @@ const MapHolder = ({
   mapState,
   userPosition,
   newPoint,
+  transportType,
+  endRouteCoords,
   setMapCenter,
+  setMapZoom,
   startWatchingPosition,
   setGeolocation,
   addNewPoint,
   hidePopup,
   setVisible,
+  setActiveId,
   visible
 }) => {
-  const type = useSelector(
-    reducer => reducer.mapState.type
-  );
-
   const classes = useStyles({ visible });
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
@@ -193,22 +192,6 @@ const MapHolder = ({
     }
   };
 
-  const getRouteToPosition = async (
-    endLng,
-    endLat,
-    types = type
-  ) => {
-    await setMapCenter({ lng: endLng, lat: endLat });
-    getRoute(
-      userPosition.coords,
-      {
-        lng: endLng,
-        lat: endLat
-      },
-      types
-    );
-  };
-
   const [routeCoords, setRouteCords] = useState([]);
 
   const [routeDetails, setRouteDetails] = useState({
@@ -239,13 +222,33 @@ const MapHolder = ({
     setRouteCords([]);
     setShowRouteDetails(false);
     getCurrentLocation();
+    setActiveId(null);
   };
+
+  // To build the route, set ending point coordinates to the redux state
+  // you can use setRoutePosition from mapState.js or custom
+  useEffect( () => {
+    const getRouteToPosition = async ( types = transportType ) => {
+      if (!!endRouteCoords.lng) {
+        setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
+        setMapZoom(13.5)
+        await getRoute(
+          userPosition.coords,
+          {
+            lng: endRouteCoords.lng,
+            lat: endRouteCoords.lat
+          },
+          types
+        );
+      }
+    } 
+    getRouteToPosition()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endRouteCoords, transportType])
 
   return (
     <div className={classes.mapContainer}>
-      <QuickSearchButton
-        getRouteToPosition={getRouteToPosition}
-      />
+      <QuickSearchButton/>
       <GeoLocationButton
         currentLocation={getCurrentLocation}
       />
@@ -266,7 +269,6 @@ const MapHolder = ({
         <RouteDetails
           onClose={closeRoute}
           details={routeDetails}
-          getRouteToPosition={getRouteToPosition}
         />
       )}
 
@@ -310,17 +312,24 @@ MapHolder.defaultProps = {
   mapState: {},
   setVisible: {},
   visible: null,
-  setMapCenter: () => {},
-  setGeolocation: () => {},
-  startWatchingPosition: () => {},
-  hidePopup: () => {}
+  setMapCenter: () => { },
+  setGeolocation: () => { },
+  startWatchingPosition: () => { },
+  hidePopup: () => { }
 };
 
 MapHolder.propTypes = {
   mapState: PropTypes.shape({
     lng: PropTypes.number,
     lat: PropTypes.number,
-    zoom: PropTypes.number
+    zoom: PropTypes.number,
+    routeDetails: {
+      endCoordinates:{
+        lng: PropTypes.number,
+        lat: PropTypes.number
+      },
+      transportType: PropTypes.string
+    }
   }),
   newPoint: PropTypes.shape({
     lng: PropTypes.number,
@@ -337,7 +346,8 @@ MapHolder.propTypes = {
 
 export default connect(
   state => ({
-    transportTypeState: state.type,
+    transportType: state.mapState.routeDetails.transportType,
+    endRouteCoords: state.mapState.routeDetails.endCoordinates,
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
@@ -351,6 +361,7 @@ export default connect(
     setMapZoom: zoom => dispatch(setMapZoom(zoom)),
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
-    hidePopup: () => dispatch(hidePopup())
+    hidePopup: () => dispatch(hidePopup()),
+    setActiveId: id => dispatch(setActive(id)),
   })
 )(MapHolder);

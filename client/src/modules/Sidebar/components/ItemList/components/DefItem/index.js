@@ -16,7 +16,8 @@ import {
 } from '../../../EditForm/actions/setFullTime';
 import {
   setMapCenter,
-  setMapZoom
+  setMapZoom,
+  setRoutePosition
 } from '../../../../../MapHolder/actions/mapState';
 import {
   deleteDefItem,
@@ -32,9 +33,11 @@ import {
 } from '../../consts';
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
+import DirectionsIcon from '@material-ui/icons/Directions';
 
 const useStyles = makeStyles({
   pointCard: {
+    position: 'relative',
     minHeight: 100,
     '&:not(:last-of-type)': {
       borderBottom: '1px solid #fff',
@@ -71,6 +74,19 @@ const useStyles = makeStyles({
   descStyle: {
     color: '#bbb',
     fontSize: 13
+  },
+  routeIconContainer: {
+    display: props => (props.isActive ? 'block' : 'none'),
+    position: 'absolute',
+    top: '7px',
+    right: '6px',
+  },
+  routeIcon: {
+    fontSize: '40px',
+    color: '#696969',
+    '&:hover' : {
+      color:'#1976d2'
+    }
   }
 });
 const DefItem = ({
@@ -79,6 +95,7 @@ const DefItem = ({
   defItemInfo,
   setMapCenterCoords,
   setMapZoomParam,
+  setRoutePosition,
   // eslint-disable-next-line react/prop-types
   style,
   deleteDefibrPoint,
@@ -150,6 +167,12 @@ const DefItem = ({
       });
     }
   };
+  
+  const handleRoute = () => {
+    const [ lng, lat ] = defItemInfo.location.coordinates;
+    const { _id : id } = defItemInfo
+    setRoutePosition( { lng, lat }, id )
+  }
 
   useEffect(() => {
     const permissionEdit = permissionService(
@@ -240,6 +263,12 @@ const DefItem = ({
           />
         )}
       </div>
+      <div 
+        className={classes.routeIconContainer}
+        onClick={handleRoute}
+      >
+        <DirectionsIcon className={classes.routeIcon}/>
+      </div>
     </NavLink>
   );
 };
@@ -284,7 +313,8 @@ DefItem.propTypes = {
   deleteDefibrPoint: PropTypes.func,
   blockDefibrPoint: PropTypes.func,
   activeItemId: PropTypes.string,
-  makeItemActive: PropTypes.func.isRequired
+  makeItemActive: PropTypes.func.isRequired,
+  setRoutePosition: PropTypes.func
 };
 
 export default connect(
@@ -304,6 +334,8 @@ export default connect(
       dispatch(blockDefItem(id, blocked)),
     setTime: value => dispatch(setFullTime(value)),
     setFromTime: time => dispatch(setFromTime(time)),
-    setUntilTime: time => dispatch(setUntilTime(time))
+    setUntilTime: time => dispatch(setUntilTime(time)),
+    setRoutePosition: ( routeCoords, id ) => 
+      dispatch(setRoutePosition( routeCoords, id ))
   })
 )(DefItem);

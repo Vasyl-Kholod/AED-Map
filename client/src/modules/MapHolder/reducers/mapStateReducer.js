@@ -1,14 +1,21 @@
 import {
   SET_MAP_CENTER,
   SET_MAP_ZOOM,
-  SET_TYPE
+  SET_ROUTE_END_POSITION,
+  SET_TRANSPORT_TYPE
 } from '../consts';
 
 const initialState = {
   lng: 24.0311,
   lat: 49.842,
   zoom: 12.5,
-  type: 'cycling'
+  routeDetails: {
+    endCoordinates: {
+      lng: null,
+      lat: null
+    },
+    transportType: 'cycling'
+  }
 };
 export default (
   state = initialState,
@@ -27,8 +34,13 @@ export default (
     case SET_MAP_ZOOM: {
       return { ...state, zoom: payload }; // here payload is number
     }
-    case SET_TYPE: {
-      return { ...state, type: payload }; // here payload is driving or cycling
+    case SET_ROUTE_END_POSITION: {
+      //payload is {lng: number, lat: number}
+      return { ...state, routeDetails: { ...state.routeDetails, endCoordinates: payload } };
+    }
+    case SET_TRANSPORT_TYPE: {
+      // here payload is driving or cycling
+      return { ...state, routeDetails: { ...state.routeDetails, transportType: payload } };
     }
     default:
       return state;
