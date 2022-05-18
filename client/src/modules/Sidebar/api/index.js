@@ -9,8 +9,11 @@ export const getDefItems = (params, cancelToken) => {
 export const fetchSingleDefById = id => {
   return http.get(`${URL}/${id}`);
 };
-export const getAvailableDefItems = params => {
-  return http.get(`${URL}/nearestDevice/`, params);
+export const getNearestDevices = (params) => {
+  return http.get(
+    `${URL}/nearestDevices/`,
+    params
+  );
 };
 export const createItem = params => {
   return http.post(URL, params);

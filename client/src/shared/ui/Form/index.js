@@ -11,7 +11,7 @@ import PlatesSelect from './PlatesSelect';
 import AddTelephone from './AddTelephone';
 import AddMoreInfo from './AddMoreInfo';
 import FormValidation from './validator';
-import useAlert from '../Alert/useAlert';
+import useAlert from '../Alert/use-alert';
 import { MyTextField, MyImageField } from '../Fields';
 import MyTimeField from '../Fields/timeField';
 import {

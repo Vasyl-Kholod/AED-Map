@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import Alert from 'shared/ui/Alert';
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 import { LOGO_IMG } from 'shared/consts/header';
 
 import SearchMobile from './components/Search/SearchMobile';

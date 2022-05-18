@@ -3,7 +3,10 @@ import {
   SET_MAP_CENTER,
   SET_MAP_ZOOM,
   SET_ROUTE_END_POSITION,
-  SET_TRANSPORT_TYPE
+  SET_TRANSPORT_TYPE,
+  SET_NEAREST_DEF_INDEX,
+  INCREMENT_NEAREST_DEF_INDEX,
+  IS_SEARCH_NEXT_NEAREST_DEF_BUTTON
 } from '../consts';
 
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
@@ -30,15 +33,15 @@ export const addNewPoint = newPoint => {
 };
 
 // Sets end route coordinated and set the item with id as active
-export const setRoutePosition = ( routeCoords, id ) => {
+export const setRoutePosition = (routeCoords, id) => {
   return dispatch => {
-    dispatch( (() => {
+    dispatch((() => {
       return {
         type: SET_ROUTE_END_POSITION,
         payload: routeCoords
       }
     })())
-    if ( !!id ) {
+    if (!!id) {
       dispatch(setActive(id))
     }
   }
@@ -48,5 +51,26 @@ export const changeTransportType = type => {
   return {
     type: SET_TRANSPORT_TYPE,
     payload: type
+  };
+};
+
+export const setDefIndex = value => {
+  return {
+    type: SET_NEAREST_DEF_INDEX,
+    payload: value
+  };
+};
+
+export const incrementDefIndex = value => {
+  return {
+    type: INCREMENT_NEAREST_DEF_INDEX,
+    payload: value
+  };
+};
+
+export const setNextNearestDefButtonStatus = value => {
+  return {
+    type: IS_SEARCH_NEXT_NEAREST_DEF_BUTTON,
+    payload: value
   };
 };

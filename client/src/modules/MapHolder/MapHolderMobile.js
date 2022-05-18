@@ -4,7 +4,7 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
 import { getDirections } from './api';
@@ -28,7 +28,7 @@ import ResetButton from './components/ResetButton';
 import PopupHolder from './components/PopupHolder';
 import DefibrillatorPinLayer from './layers/DefibrillatorPinLayer';
 import GeoLocationButtonMobile from './components/GeoLocationButton/GeoLocationButtonMobile';
-import QuickSearchButtonMobile from './components/QuickSearchButton/QuickSearchButtonMobile';
+import SearchNearestDefButtonMobile from './components/SearchNearestDefButton/SearchNearestDefButtonMobile';
 import RouteDetailsMobile from './components/RouteDetails/RouteDetailsMobile';
 
 const useStyles = makeStyles(() => ({
@@ -106,7 +106,7 @@ const MapHolderMobile = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
-  
+
 
   const handlePopupClose = event => {
     if (event.target.tagName === 'CANVAS') {
@@ -230,10 +230,10 @@ const MapHolderMobile = ({
     setActiveId(null);
   };
 
-   // To build the route, set ending point coordinates to the redux state
+  // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
-  useEffect( () => {
-    const getRouteToPosition = async ( types = transportType ) => {
+  useEffect(() => {
+    const getRouteToPosition = async (types = transportType) => {
       if (!!endRouteCoords.lng) {
         setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
         setMapZoom(13.5)
@@ -246,9 +246,9 @@ const MapHolderMobile = ({
           types
         );
       }
-    } 
+    }
     getRouteToPosition()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endRouteCoords, transportType])
 
   return (
@@ -260,7 +260,7 @@ const MapHolderMobile = ({
           />
         </div>
         <div className={classes.buttonItem}>
-          <QuickSearchButtonMobile/>
+          <SearchNearestDefButtonMobile />
         </div>
         <div
           className={classes.buttonItem}

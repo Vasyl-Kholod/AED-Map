@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { invoke } = require('lodash');
 
 const { Defibrillator } = require('../../../db/models');
 const {
@@ -52,10 +53,10 @@ module.exports.getDefibrillators = async (req, res) => {
   }
 };
 
-module.exports.getNearestDevice = async (req, res) => {
+module.exports.getNearestDevices = async (req, res) => {
   try {
     const requestHour = new Date().getHours();
-    let listDefs = await Defibrillator.findOne({
+    const listDefs = await invoke(Defibrillator, req.query?.single ? 'findOne' : 'find', {
       location: {
         $near: {
           $geometry: {
