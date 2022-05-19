@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+axios.defaults.baseURL = 'http://localhost:3012';
+
 axios.interceptors.request.use(
   config => {
-    const authorization = JSON.parse(localStorage.getItem('authorization'));
+    const authorization = JSON.parse(
+      localStorage.getItem('authorization')
+    );
     if (authorization) {
       config.headers.Authorization = authorization;
     }
@@ -35,7 +39,7 @@ const http = {
       method: 'post',
       url,
       data: params,
-      headers: {'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data' },
       cancelToken: cancel ? cancel.token : null
     });
   },

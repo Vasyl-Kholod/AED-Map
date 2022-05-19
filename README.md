@@ -34,6 +34,14 @@ yarn build - build React production-build
 yarn start - run start.js file with setupped environment
 ```
 
+3. Run locally with help of Docker
+
+```
+3.1 Install Docker Desktop
+3.2 Run a command "docker-compose build" in the root folder
+3.3 Run a command "docker-compose up" in the root folder
+```
+
 ## 3. Database connection
 
 ### Environment variables

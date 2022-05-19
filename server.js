@@ -1,7 +1,9 @@
 const http = require('http');
+const path = require('path');
+const cors = require('cors');
 const express = require('express');
 const passport = require('passport');
-const path = require('path');
+const { isEqual } = require('lodash');
 
 const app = express();
 const server = http.Server(app);
@@ -11,6 +13,10 @@ const PORT = process.env.PORT || 3012;
 const bootstrap = () => {
   // Websocket event for sign out
   require('./shared/websocket')(server);
+
+  if (isEqual(process.env.NODE_ENV, 'development')) {
+    app.use(cors());
+  }
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
