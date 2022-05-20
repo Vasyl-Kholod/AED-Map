@@ -100,7 +100,7 @@ const DefItemMobile = ({
           {defItemInfo.address}
         </h3>
         <p className={classes.descStyle}>
-          {defItemInfo.title}
+          {defItemInfo.title},
           {defItemInfo.address}
         </p>
       </div>
