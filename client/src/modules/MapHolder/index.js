@@ -43,8 +43,8 @@ const useStyles = makeStyles(() => ({
   }),
   map: {
     display: 'flex',
-    height: '100%',
-    width: '100%'
+    height: '100vh',
+    width: '100vw'
   },
   showIcon: {
     position: 'fixed',
@@ -141,6 +141,7 @@ const MapHolder = ({
       }, 100);
     }
   };
+ 
 
   const getCurrentLocation = _ => {
     setGeolocation(coords => {
