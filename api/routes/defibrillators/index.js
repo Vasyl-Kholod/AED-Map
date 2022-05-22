@@ -20,7 +20,7 @@ router.get(
   checkPermission,
   controller.getDefibrillators
 );
-router.get('/nearestDevice', controller.getNearestDevice);
+router.get('/nearestDevices', controller.getNearestDevices);
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
