@@ -285,7 +285,7 @@ const MapHolder = ({
         onDragEnd={changeMapCenterCoords}
         onDblClick={onDblClickMap}
       >
-        {map && <DefibrillatorPinLayer map={map} />}
+        {map && <DefibrillatorPinLayer/>}
         {userPosition.geolocationProvided && (
           <UserPin
             classes={classes}
