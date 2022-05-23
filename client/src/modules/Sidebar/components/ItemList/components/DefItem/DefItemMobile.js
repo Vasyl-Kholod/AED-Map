@@ -140,6 +140,6 @@ export default connect(
     setMapZoomParam: mapState =>
       dispatch(setMapZoom(mapState)),
     setSearch: value =>
-      dispatch(setSearch({ adress: value }))
+      dispatch(setSearch({ title: value, adress: value }))
   })
 )(DefItemMobile);

@@ -9,7 +9,7 @@ import {
   GridListTile
 } from '@material-ui/core';
 
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 import UploadImage from 'shared/ui/UploadImage';
 import { hidePopup } from '../../../actions/popupDisplay';
 import { createImage } from '../../../../Sidebar/api';

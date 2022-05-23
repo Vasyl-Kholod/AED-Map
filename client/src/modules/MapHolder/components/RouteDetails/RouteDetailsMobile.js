@@ -38,8 +38,7 @@ function RouteDetails({ details }) {
           style={detailsStyle.logo}
         />
         <p>
-          {' '}
-          {approximateTime}хв{' '}
+          {approximateTime}хв
           <span>({finalDistance}км)</span>
         </p>
       </div>

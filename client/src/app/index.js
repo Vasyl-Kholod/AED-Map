@@ -79,10 +79,8 @@ const App = ({
   fail,
   user,
   success,
-  mapData,
   location,
   searchInput,
-  makeItemActive
 }) => {
   const classes = useStyles();
   const transitionClasses = {
@@ -93,7 +91,6 @@ const App = ({
     appear: classes.startModalFadeAppear,
     appearActive: classes.startModalFadeAppearActive
   };
-  const { pathname, search } = location;
   const closeModal =
     sessionStorage.getItem('startModal') === 'close';
   const [isStartModalOpen, setStartModal] = useState(
@@ -102,10 +99,6 @@ const App = ({
   const history = useHistory();
   const [didMount, setDidMount] = useState(false);
   const [screenWidth, setScreenWidth] = useState();
-
-  if (pathname === '/' && search && mapData.length) {
-    makeItemActive(search.split('=')[1]);
-  }
 
   useEffect(() => {
     setDidMount(true);
@@ -166,7 +159,7 @@ const App = ({
           unmountOnExit
         >
           {screenWidth < media.ipad &&
-          window.orientation !== 90 ? (
+            window.orientation !== 90 ? (
             <Suspense
               fallback={
                 <div>Завантаження модального вікна...</div>

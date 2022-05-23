@@ -91,7 +91,11 @@ const DefibrillatorPinLayer = ({
           onClick={() => defibrillatorPinClick(feature)}
         >
           <div className={classes.markerWrapper}>
-            <img alt="Map Pin" src={defibrillatorsActiveId === feature?.properties?.defID ? activeMapPin : mapPin} className={classes.pin} />
+            <img
+              alt="Map Pin"
+              src={defibrillatorsActiveId === feature?.properties?.defID ? activeMapPin : mapPin}
+              className={classes.pin}
+            />
             <p className={classes.title}>
               {feature.properties.title}
             </p>

@@ -1,14 +1,26 @@
 import {
   SET_MAP_CENTER,
   SET_MAP_ZOOM,
-  SET_TYPE
+  SET_ROUTE_END_POSITION,
+  SET_TRANSPORT_TYPE,
+  SET_NEAREST_DEF_INDEX,
+  INCREMENT_NEAREST_DEF_INDEX,
+  IS_SEARCH_NEXT_NEAREST_DEF_BUTTON
 } from '../consts';
 
 const initialState = {
   lng: 24.0311,
   lat: 49.842,
   zoom: 12.5,
-  type: 'cycling'
+  defIndex: -1,
+  isSearchNextDefButton: false,
+  routeDetails: {
+    endCoordinates: {
+      lng: null,
+      lat: null
+    },
+    transportType: 'cycling'
+  }
 };
 export default (
   state = initialState,
@@ -28,9 +40,25 @@ export default (
     case SET_MAP_ZOOM: {
       return { ...state, zoom: payload }; // here payload is number
     }
-    case SET_TYPE: {
-
-      return { ...state, type: payload }; // here payload is driving or cycling
+    case SET_ROUTE_END_POSITION: {
+      //payload is {lng: number, lat: number}
+      return { ...state, routeDetails: { ...state.routeDetails, endCoordinates: payload } };
+    }
+    case SET_TRANSPORT_TYPE: {
+      // here payload is driving or cycling
+      return { ...state, routeDetails: { ...state.routeDetails, transportType: payload } };
+    }
+    case SET_NEAREST_DEF_INDEX: {
+      // here payload is number
+      return { ...state, defIndex: payload };
+    }
+    case IS_SEARCH_NEXT_NEAREST_DEF_BUTTON: {
+      // here payload is boolean
+      return { ...state, isSearchNextDefButton: payload };
+    }
+    case INCREMENT_NEAREST_DEF_INDEX: {
+      // here payload is number
+      return { ...state, defIndex: state.defIndex + 1 };
     }
     default:
       return state;

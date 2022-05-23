@@ -11,7 +11,7 @@ import PlatesSelect from './PlatesSelect';
 import AddTelephone from './AddTelephone';
 import AddMoreInfo from './AddMoreInfo';
 import FormValidation from './validator';
-import useAlert from '../Alert/useAlert';
+import useAlert from '../Alert/use-alert';
 import { MyTextField, MyImageField } from '../Fields';
 import MyTimeField from '../Fields/timeField';
 import {
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(255,255,255,0.3)'
     }
-  }
+  },
 });
 
 const MyForm = ({
@@ -116,11 +116,9 @@ const MyForm = ({
                 label="Введіть назву"
                 className={classes.input}
               />
-
               <MyTimeField
                 label={'Коли доступний пристрій?'}
               />
-
               <MyTextField
                 name="storage_place"
                 label="Де розташований в будівлі?"
@@ -140,6 +138,7 @@ const MyForm = ({
                 className={classes.input}
                 name="phone"
               />
+
               <MyImageField
                 variant="contained"
                 color="primary"
@@ -149,6 +148,7 @@ const MyForm = ({
                 name="images"
                 setFieldValue={setFieldValue}
               />
+
               <AddMoreInfo
                 className={classes.input}
                 name="additional_information"
