@@ -146,7 +146,7 @@ const MapHolderMobile = ({
     });
   };
 
-  const onZoomStarted = () => {
+  const onZoomStarted = (event) => {
     hidePopup();
   };
 
@@ -175,7 +175,7 @@ const MapHolderMobile = ({
     // eslint-disable-next-line
   }, [newPoint]);
 
-  //Sets map center to current Position of the user
+  // Sets map center to current Position of the user
   useEffect(() => {
     setGeolocation(coords => {
       if (coords == null) {
@@ -183,7 +183,7 @@ const MapHolderMobile = ({
       }
       const { longitude, latitude } = coords;
       setMapCenter({ lng: longitude, lat: latitude });
-      startWatchingPosition();
+      // startWatchingPosition();
     });
   }, [setGeolocation, setMapCenter, startWatchingPosition]);
 

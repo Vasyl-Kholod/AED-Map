@@ -88,6 +88,7 @@ const MapHolder = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
+ 
 
   const tooltipMessage = visible
     ? 'Приховати меню'
@@ -278,7 +279,7 @@ const MapHolder = ({
         center={[lng, lat]}
         zoom={[zoom]}
         onStyleLoad={loadMap}
-        onZoomEnd={onZoomEnded}
+        // onZoomEnd={onZoomEnded}
         onZoomStart={onZoomStarted}
         onRotateEnd={changeMapCenterCoords}
         onDragEnd={changeMapCenterCoords}

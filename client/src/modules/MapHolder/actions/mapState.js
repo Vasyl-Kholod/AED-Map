@@ -13,6 +13,7 @@ export const setMapCenter = mapState => {
 };
 
 export const setMapZoom = zoom => {
+
   return {
     type: SET_MAP_ZOOM,
     payload: zoom

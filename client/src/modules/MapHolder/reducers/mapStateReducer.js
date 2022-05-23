@@ -14,6 +14,7 @@ export default (
   state = initialState,
   { type, payload }
 ) => {
+
   switch (type) {
     case SET_MAP_CENTER: {
       if (
@@ -28,6 +29,7 @@ export default (
       return { ...state, zoom: payload }; // here payload is number
     }
     case SET_TYPE: {
+
       return { ...state, type: payload }; // here payload is driving or cycling
     }
     default:
