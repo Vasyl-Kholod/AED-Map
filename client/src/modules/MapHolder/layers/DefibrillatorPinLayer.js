@@ -76,8 +76,8 @@ const DefibrillatorPinLayer = ({
         },
         coordinates
       });
-      // makeItemActive(defID);
-      // history.push(`/?id=${defID}`);
+      makeItemActive(defID);
+      history.push(`/?id=${defID}`);
     }
   };
 
