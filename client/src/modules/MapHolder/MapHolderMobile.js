@@ -145,7 +145,7 @@ const MapHolderMobile = ({
     });
   };
 
-  const onZoomStarted = (event) => {
+  const onZoomStarted = () => {
     hidePopup();
   };
 
