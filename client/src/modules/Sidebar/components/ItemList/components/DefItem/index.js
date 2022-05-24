@@ -36,6 +36,7 @@ import {
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   pointCard: {
@@ -80,7 +81,7 @@ const useStyles = makeStyles({
   routeIconContainer: {
     display: props => (props.isActive ? 'block' : 'none'),
     position: 'absolute',
-    top: '7px',
+    bottom: '5px',
     right: '6px',
   },
   routeIcon: {
@@ -273,9 +274,13 @@ const DefItem = ({
       </div>
       <div
         className={classes.routeIconContainer}
-        onClick={handleRoute}
       >
-        <DirectionsIcon className={classes.routeIcon} />
+        <Tooltip
+          title="Прокласти шлях"
+          onClick={handleRoute}
+        >
+          <DirectionsIcon className={classes.routeIcon}/>
+        </Tooltip>
       </div>
     </NavLink>
   );
