@@ -106,10 +106,12 @@ const ItemList = ({
         parent={parent}
         columnIndex={0}
         rowIndex={index}
+        index={index}
       >
         <DefItem
           style={style}
           defItemInfo={defibrillators[index]}
+          index={index}
         />
       </CellMeasurer>
     );
@@ -127,7 +129,7 @@ const ItemList = ({
 
   // Update camera position when clicking on defibrilattor icon
   useEffect(() => {
-    const getDef = async (callback = () => {}) => {
+    const getDef = async (callback = () => { }) => {
       const { data } = await fetchSingleDefById(activeDef);
       callback(data.defibrillator);
       return data.defibrillator;

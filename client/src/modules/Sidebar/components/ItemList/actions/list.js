@@ -80,7 +80,7 @@ export const fetchDefs = params => {
     ) => {
       try {
         if (isObject(params)) {
-          keys(params).forEach( (key) => {
+          keys(params).forEach((key) => {
             if (!params[key]) {
               delete params[key]
             }
