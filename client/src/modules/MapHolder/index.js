@@ -6,7 +6,7 @@ import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
 import { getDirections } from './api';
@@ -21,6 +21,8 @@ import {
   setGeolocation,
   startWatchingPosition
 } from './actions/userPosition';
+import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
+
 import AddedPin from './layers/AddedPin';
 import UserPin from './components/UserPin';
 import PointLayer from './layers/PointLayer';
@@ -29,8 +31,8 @@ import PopupHolder from './components/PopupHolder';
 import RouteDetails from './components/RouteDetails';
 import DefibrillatorPinLayer from './layers/DefibrillatorPinLayer';
 import GeoLocationButton from './components/GeoLocationButton';
-import QuickSearchButton from './components/QuickSearchButton';
-import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
+import SearchNearestDefButton from './components/SearchNearestDefButton';
+import SearchNextNearestDefButton from './components/SearchNextNearestDefButton';
 
 const useStyles = makeStyles(() => ({
   mapContainer: ({ visible }) => ({
@@ -43,8 +45,8 @@ const useStyles = makeStyles(() => ({
   }),
   map: {
     display: 'flex',
-    height: '100%',
-    width: '100%'
+    height: '100vh',
+    width: '100vw'
   },
   showIcon: {
     position: 'fixed',
@@ -81,6 +83,7 @@ const MapHolder = ({
   hidePopup,
   setVisible,
   setActiveId,
+  isSearchNextDefButton,
   visible
 }) => {
   const classes = useStyles({ visible });
@@ -141,6 +144,7 @@ const MapHolder = ({
       }, 100);
     }
   };
+ 
 
   const getCurrentLocation = _ => {
     setGeolocation(coords => {
@@ -227,8 +231,8 @@ const MapHolder = ({
 
   // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
-  useEffect( () => {
-    const getRouteToPosition = async ( types = transportType ) => {
+  useEffect(() => {
+    const getRouteToPosition = async (types = transportType) => {
       if (!!endRouteCoords.lng) {
         setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
         setMapZoom(13.5)
@@ -241,14 +245,19 @@ const MapHolder = ({
           types
         );
       }
-    } 
+    }
     getRouteToPosition()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endRouteCoords, transportType])
 
   return (
     <div className={classes.mapContainer}>
-      <QuickSearchButton/>
+      <SearchNearestDefButton />
+
+      {routeCoords.length > 0 && isSearchNextDefButton && (
+        <SearchNextNearestDefButton />
+      )}
+
       <GeoLocationButton
         currentLocation={getCurrentLocation}
       />
@@ -324,7 +333,7 @@ MapHolder.propTypes = {
     lat: PropTypes.number,
     zoom: PropTypes.number,
     routeDetails: {
-      endCoordinates:{
+      endCoordinates: {
         lng: PropTypes.number,
         lat: PropTypes.number
       },
@@ -351,7 +360,10 @@ export default connect(
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
-    userPosition: state.userPosition
+    userPosition: state.userPosition,
+    defActiveId: state.defs.active,
+    defIndex: state.defs.defIndex,
+    isSearchNextDefButton: state.mapState.isSearchNextDefButton
   }),
   dispatch => ({
     setGeolocation: f => dispatch(setGeolocation(f)),
@@ -362,6 +374,6 @@ export default connect(
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
     hidePopup: () => dispatch(hidePopup()),
-    setActiveId: id => dispatch(setActive(id)),
+    setActiveId: id => dispatch(setActive(id))
   })
 )(MapHolder);

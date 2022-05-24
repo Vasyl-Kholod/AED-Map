@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Logo from 'shared/icons/logo.svg';
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 
 import { setRoutePosition } from 'modules/MapHolder/actions/mapState.js';
-import { getAvailableDefItems } from '../../../Sidebar/api/index.js';
+import { getNearestDevices } from '../../../Sidebar/api';
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
-function QuickSearchButtonMobile({
+function SearchNearestDefButtonMobile({
   coords,
   active,
   defs,
@@ -20,10 +20,11 @@ function QuickSearchButtonMobile({
   const [, ShowAlert] = useAlert();
 
   const handleRoute = async () => {
-    if ( !active ) {
+    if (!active) {
       let nearestItem;
       if (geolocationProvided) {
-        nearestItem = await getAvailableDefItems({
+        nearestItem = await getNearestDevices({
+          single: true,
           longitude: coords.lng,
           latitude: coords.lat
         });
@@ -35,14 +36,14 @@ function QuickSearchButtonMobile({
         });
         return;
       }
-  
+
       if (nearestItem.data.listDefs) {
         const [
           lng,
           lat
         ] = nearestItem.data.listDefs.location.coordinates;
         const { _id: id } = nearestItem.data.listDefs;
-         setRoutePosition({ lng, lat }, id);
+        setRoutePosition({ lng, lat }, id);
         setActiveId(id);
       } else {
         ShowAlert({
@@ -52,8 +53,8 @@ function QuickSearchButtonMobile({
         });
       }
     } else {
-      const activeDef = defs.find( def => def._id === active);
-      const [ lng, lat ] = activeDef.location.coordinates;
+      const activeDef = defs.find(def => def._id === active);
+      const [lng, lat] = activeDef.location.coordinates;
       setRoutePosition({ lng, lat })
     }
   };
@@ -67,7 +68,7 @@ function QuickSearchButtonMobile({
   );
 }
 
-QuickSearchButtonMobile.propTypes = {
+SearchNearestDefButtonMobile.propTypes = {
   coords: PropTypes.object.isRequired
 };
 
@@ -81,7 +82,7 @@ export default connect(
   }),
   dispatch => ({
     setActiveId: (id) => dispatch(setActive(id)),
-    setRoutePosition: (routeCoords, id) => 
+    setRoutePosition: (routeCoords, id) =>
       dispatch(setRoutePosition(routeCoords, id)),
   })
-)(QuickSearchButtonMobile);
+)(SearchNearestDefButtonMobile);

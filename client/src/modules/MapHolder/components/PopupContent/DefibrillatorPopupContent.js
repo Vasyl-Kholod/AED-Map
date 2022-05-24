@@ -4,16 +4,17 @@ import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import React, { useState, useEffect } from 'react';
+import { findIndex } from 'lodash';
 
 import { cancelToken } from 'shared/utils';
 import Loader from 'shared/ui/Loader';
 
-import { setRoutePosition } from 'modules/MapHolder/actions/mapState';
+import ModalPhoto from './PhotoGallery';
+
 import { titles } from './consts';
+import { setRoutePosition, setDefIndex } from 'modules/MapHolder/actions/mapState';
 import { hidePopup } from '../../actions/popupDisplay';
 import { fetchSingleDefById } from '../../../Sidebar/api';
-
-import ModalPhoto from './PhotoGallery';
 
 const currDefCancelToken = cancelToken();
 
@@ -67,16 +68,18 @@ const useStyle = makeStyles({
   routeIcon: {
     fontSize: '30px',
     color: 'grey',
-    '&:hover' : {
-      color:'#1976d2'
+    '&:hover': {
+      color: '#1976d2'
     }
   }
 });
 
 const DefibrillatorPopupContent = ({
-  id, 
+  listData,
+  id,
   hidePopup,
-  setRoutePosition
+  setRoutePosition,
+  setDefIndex
 }) => {
   const classes = useStyle();
   const [currDef, setCurrDef] = useState(null);
@@ -102,11 +105,11 @@ const DefibrillatorPopupContent = ({
         def.fullTimeAvailable === true
           ? 'Цілодобово доступний'
           : `${def.availableFrom
-              .toString()
-              .padStart(2, '0')}:00 - 
+            .toString()
+            .padStart(2, '0')}:00 - 
              ${def.availableUntil
-               .toString()
-               .padStart(2, '0')}:00`;
+            .toString()
+            .padStart(2, '0')}:00`;
       return availableTime;
     }
 
@@ -114,9 +117,10 @@ const DefibrillatorPopupContent = ({
   };
 
   const handleRoute = () => {
-    const [ lng, lat ] = currDef.location.coordinates;
-    const { _id : id } = currDef
-    setRoutePosition( { lng, lat }, id );
+    const [lng, lat] = currDef.location.coordinates;
+    const { _id: id } = currDef
+    setRoutePosition({ lng, lat }, id);
+    setDefIndex((findIndex(listData, { _id: id }) || 0));
     hidePopup();
   }
 
@@ -159,11 +163,11 @@ const DefibrillatorPopupContent = ({
           )
         );
       })}
-      <div 
+      <div
         className={classes.routeIconContainer}
         onClick={handleRoute}
       >
-        <DirectionsIcon className={classes.routeIcon}/>
+        <DirectionsIcon className={classes.routeIcon} />
       </div>
       <Cancel
         className={classes.closeBtn}
@@ -182,8 +186,12 @@ DefibrillatorPopupContent.propTypes = {
   setRoutePosition: PropTypes.func
 };
 
-export default connect(null, dispatch => ({
-  hidePopup: () => dispatch(hidePopup()),
-  setRoutePosition: ( routeCoords, id ) =>
-    dispatch(setRoutePosition( routeCoords, id ))
-}))(DefibrillatorPopupContent);
+export default connect((state) => ({
+  listData: state.defs.listData
+}),
+  dispatch => ({
+    hidePopup: () => dispatch(hidePopup()),
+    setRoutePosition: (routeCoords, id) =>
+      dispatch(setRoutePosition(routeCoords, id)),
+    setDefIndex: (value) => dispatch(setDefIndex(value))
+  }))(DefibrillatorPopupContent);
