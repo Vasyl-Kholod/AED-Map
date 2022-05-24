@@ -63,6 +63,7 @@ const DefibrillatorPinLayer = ({
   const classes = useStyles();
 
   const defibrillatorPinClick = feature => {
+    
     const { defID } = feature.properties;
     const { coordinates } = feature.geometry;
     const currentRoute = window.location.pathname;
