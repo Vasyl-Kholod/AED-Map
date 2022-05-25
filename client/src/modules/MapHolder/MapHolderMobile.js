@@ -174,7 +174,7 @@ const MapHolderMobile = ({
     // eslint-disable-next-line
   }, [newPoint]);
 
-  //Sets map center to current Position of the user
+  // Sets map center to current Position of the user
   useEffect(() => {
     setGeolocation(coords => {
       if (coords == null) {
@@ -182,9 +182,10 @@ const MapHolderMobile = ({
       }
       const { longitude, latitude } = coords;
       setMapCenter({ lng: longitude, lat: latitude });
-      startWatchingPosition();
+       //TODO: this method must be deleted, because it causes to error in console and causes to return icons to the previous state. 
+      // startWatchingPosition();
     });
-  }, [setGeolocation, setMapCenter, startWatchingPosition]);
+  }, [setGeolocation, setMapCenter]);
 
   const onDblClickMap = (_, event) => {
     const currentRoute = window.location.pathname;
