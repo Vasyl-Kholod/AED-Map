@@ -17,12 +17,14 @@ import {
 import {
   setMapCenter,
   setMapZoom,
-  setRoutePosition
+  setDefIndex,
+  setRoutePosition,
+  setNextNearestDefButtonStatus
 } from '../../../../../MapHolder/actions/mapState';
 import {
   deleteDefItem,
   blockDefItem,
-  setActive
+  setActive,
 } from '../../actions/list';
 import {
   ENTER_BUTTON_CODE,
@@ -34,6 +36,7 @@ import {
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   pointCard: {
@@ -78,14 +81,14 @@ const useStyles = makeStyles({
   routeIconContainer: {
     display: props => (props.isActive ? 'block' : 'none'),
     position: 'absolute',
-    top: '7px',
+    bottom: '5px',
     right: '6px',
   },
   routeIcon: {
     fontSize: '40px',
     color: '#696969',
-    '&:hover' : {
-      color:'#1976d2'
+    '&:hover': {
+      color: '#1976d2'
     }
   }
 });
@@ -93,6 +96,7 @@ const DefItem = ({
   makeItemActive,
   activeItemId,
   defItemInfo,
+  index,
   setMapCenterCoords,
   setMapZoomParam,
   setRoutePosition,
@@ -103,7 +107,9 @@ const DefItem = ({
   user,
   setTime,
   setFromTime,
-  setUntilTime
+  setUntilTime,
+  setDefIndex,
+  setNextNearestDefButtonStatus,
 }) => {
   const isActive = defItemInfo._id === activeItemId;
   const hasPermission =
@@ -137,6 +143,7 @@ const DefItem = ({
 
   const handleEditClick = event => {
     event.preventDefault();
+    setNextNearestDefButtonStatus(false);
     setDefCheckbox(defItemInfo._id);
     history.push(`/edit-form/${defItemInfo._id}`);
   };
@@ -147,13 +154,13 @@ const DefItem = ({
     setTime(data.fullTimeAvailable);
     const timeFrom =
       data.availableFrom === undefined ||
-      data.availableFrom === null
+        data.availableFrom === null
         ? 0
         : data.availableFrom;
     setFromTime(timeFrom);
     const timeUntil =
       data.availableUntil === undefined ||
-      data.availableUntil === null
+        data.availableUntil === null
         ? 23
         : data.availableUntil;
     setUntilTime(timeUntil);
@@ -167,11 +174,13 @@ const DefItem = ({
       });
     }
   };
-  
+
   const handleRoute = () => {
-    const [ lng, lat ] = defItemInfo.location.coordinates;
-    const { _id : id } = defItemInfo
-    setRoutePosition( { lng, lat }, id )
+    const [lng, lat] = defItemInfo.location.coordinates;
+    const { _id: id } = defItemInfo
+    setRoutePosition({ lng, lat }, id)
+    setDefIndex(index);
+    setNextNearestDefButtonStatus(true);
   }
 
   useEffect(() => {
@@ -263,11 +272,15 @@ const DefItem = ({
           />
         )}
       </div>
-      <div 
+      <div
         className={classes.routeIconContainer}
-        onClick={handleRoute}
       >
-        <DirectionsIcon className={classes.routeIcon}/>
+        <Tooltip
+          title="Прокласти шлях"
+          onClick={handleRoute}
+        >
+          <DirectionsIcon className={classes.routeIcon}/>
+        </Tooltip>
       </div>
     </NavLink>
   );
@@ -335,7 +348,9 @@ export default connect(
     setTime: value => dispatch(setFullTime(value)),
     setFromTime: time => dispatch(setFromTime(time)),
     setUntilTime: time => dispatch(setUntilTime(time)),
-    setRoutePosition: ( routeCoords, id ) => 
-      dispatch(setRoutePosition( routeCoords, id ))
+    setRoutePosition: (routeCoords, id) =>
+      dispatch(setRoutePosition(routeCoords, id)),
+    setDefIndex: value => dispatch(setDefIndex(value)),
+    setNextNearestDefButtonStatus: (value) => dispatch(setNextNearestDefButtonStatus(value))
   })
 )(DefItem);
