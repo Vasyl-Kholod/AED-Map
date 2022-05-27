@@ -79,7 +79,8 @@ const MyForm = ({
         fullTimeAvailable: fullTimeStatus,
         availableFrom: fullTimeStatus ? null : timeFrom,
         availableUntil: fullTimeStatus ? null : timeUntil,
-        actualDate
+        actualDate,
+        defs_amount: !!values.defs_amount ? values.defs_amount : 1
       });
       ShowAlert({
         open: true,
@@ -131,6 +132,15 @@ const MyForm = ({
                 type="number"
                 InputProps={{
                   inputProps: { min: 0, max: 20 }
+                }}
+              />
+              <MyTextField
+                className={classes.input}
+                name="defs_amount"
+                label="Скільки пристроїв за цією адресою?"
+                type="number"
+                InputProps={{
+                  inputProps: { min: 1 }
                 }}
               />
               <PlatesSelect name="informational_plates" />

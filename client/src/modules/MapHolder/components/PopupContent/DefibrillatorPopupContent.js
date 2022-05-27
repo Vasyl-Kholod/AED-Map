@@ -110,7 +110,7 @@ const DefibrillatorPopupContent = ({
              ${def.availableUntil
             .toString()
             .padStart(2, '0')}:00`;
-      return availableTime;
+      return `${availableTime}, ${def.defs_amount}`;
     }
 
     return def[key];
