@@ -71,6 +71,7 @@ const useStyles = makeStyles({
   },
   titleStyle: {
     color: '#fff',
+    paddingRight: 30,
     fontSize: 17,
     marginBottom: 10
   },
@@ -81,8 +82,8 @@ const useStyles = makeStyles({
   routeIconContainer: {
     display: props => (props.isActive ? 'block' : 'none'),
     position: 'absolute',
-    bottom: '5px',
-    right: '6px',
+    top: 5,
+    right: 3,
   },
   routeIcon: {
     fontSize: '40px',
