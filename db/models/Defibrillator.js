@@ -86,6 +86,12 @@ const defibrillatorSchema = new Schema({
     required: true
   },
 
+  defs_amount: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+
   language: {
     type: String,
     required: true

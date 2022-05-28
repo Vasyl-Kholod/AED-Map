@@ -78,7 +78,6 @@ const MyTimeField = ({
               <MuiMenuItem
                 value={hour}
                 key={hour}
-                disabled={timeUntil <= hour}
               >
                 {`${hour}`.padStart(2, '0')}:00
               </MuiMenuItem>
