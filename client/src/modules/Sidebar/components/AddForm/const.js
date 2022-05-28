@@ -7,6 +7,7 @@ const INITIAL_VALUES = {
   phone: [],
   additional_information: '',
   storage_place: '',
+  defs_amount: 1,
   availableFrom: '',
   availableUntil: '',
   fullTimeAvailable: false,

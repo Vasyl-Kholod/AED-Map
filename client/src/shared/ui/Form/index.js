@@ -108,7 +108,7 @@ const MyForm = ({
         validationSchema={FormValidation}
         onSubmit={handleSubmit}
       >
-        {({ isValid, setFieldValue }) => {
+        {({ isValid, dirty, setFieldValue }) => {
           return (
             <Form>
               <AddAdressText className={classes.input} />
@@ -169,7 +169,7 @@ const MyForm = ({
                 color="primary"
                 size="large"
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || !dirty}
                 endIcon={<SaveIcon />}
                 onClick={() => {
                   if (isValid === false) {
@@ -202,6 +202,7 @@ MyForm.propTypes = {
     phone: PropTypes.array.isRequired,
     additional_information: PropTypes.string.isRequired,
     storage_place: PropTypes.string.isRequired,
+    defs_amount: PropTypes.string,
     coordinates: PropTypes.array.isRequired,
     images: PropTypes.array.isRequired
   }).isRequired,
