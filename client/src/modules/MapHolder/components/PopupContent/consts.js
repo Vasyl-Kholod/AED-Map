@@ -3,7 +3,7 @@ export const titles = {
   title: 'Назва: ',
   address: 'Адреса: ',
   storage_place: 'Місце зберігання: ',
-  availableFrom: 'Доступнo: ',
+  availableFrom: 'Доступнo та кількість: ',
   language: 'Мовний інтерфейс: ',
   additional_information: 'Додаткова інформація: ',
   informational_plates: 'Iнформаційні таблички: ',

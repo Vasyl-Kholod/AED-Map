@@ -11,7 +11,7 @@ import PlatesSelect from './PlatesSelect';
 import AddTelephone from './AddTelephone';
 import AddMoreInfo from './AddMoreInfo';
 import FormValidation from './validator';
-import useAlert from '../Alert/useAlert';
+import useAlert from '../Alert/use-alert';
 import { MyTextField, MyImageField } from '../Fields';
 import MyTimeField from '../Fields/timeField';
 import {
@@ -79,7 +79,8 @@ const MyForm = ({
         fullTimeAvailable: fullTimeStatus,
         availableFrom: fullTimeStatus ? null : timeFrom,
         availableUntil: fullTimeStatus ? null : timeUntil,
-        actualDate
+        actualDate,
+        defs_amount: !!values.defs_amount ? values.defs_amount : 1
       });
       ShowAlert({
         open: true,
@@ -107,7 +108,7 @@ const MyForm = ({
         validationSchema={FormValidation}
         onSubmit={handleSubmit}
       >
-        {({ isValid, setFieldValue }) => {
+        {({ isValid, dirty, setFieldValue }) => {
           return (
             <Form>
               <AddAdressText className={classes.input} />
@@ -131,6 +132,15 @@ const MyForm = ({
                 type="number"
                 InputProps={{
                   inputProps: { min: 0, max: 20 }
+                }}
+              />
+              <MyTextField
+                className={classes.input}
+                name="defs_amount"
+                label="Скільки пристроїв за цією адресою?"
+                type="number"
+                InputProps={{
+                  inputProps: { min: 1 }
                 }}
               />
               <PlatesSelect name="informational_plates" />
@@ -159,7 +169,7 @@ const MyForm = ({
                 color="primary"
                 size="large"
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || !dirty}
                 endIcon={<SaveIcon />}
                 onClick={() => {
                   if (isValid === false) {
@@ -192,6 +202,7 @@ MyForm.propTypes = {
     phone: PropTypes.array.isRequired,
     additional_information: PropTypes.string.isRequired,
     storage_place: PropTypes.string.isRequired,
+    defs_amount: PropTypes.string,
     coordinates: PropTypes.array.isRequired,
     images: PropTypes.array.isRequired
   }).isRequired,

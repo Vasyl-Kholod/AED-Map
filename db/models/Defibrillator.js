@@ -76,14 +76,26 @@ const defibrillatorSchema = new Schema({
   },
 
   availableFrom: {
-    type: Number
+    type: Number,
+    required: function () {
+      return !this.fullTimeAvailable
+    }
   },
   availableUntil: {
-    type: Number
+    type: Number,
+    required: function () {
+      return !this.fullTimeAvailable
+    }
   },
   fullTimeAvailable: {
     type: Boolean,
     required: true
+  },
+
+  defs_amount: {
+    type: Number,
+    required: true,
+    min: 1
   },
 
   language: {

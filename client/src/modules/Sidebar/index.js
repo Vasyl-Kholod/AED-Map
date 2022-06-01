@@ -10,7 +10,7 @@ import {
   Route
 } from 'react-router-dom';
 
-import useAlert from 'shared/ui/Alert/useAlert';
+import useAlert from 'shared/ui/Alert/use-alert';
 import Alert from 'shared/ui/Alert';
 import PrivateRoute from 'shared/ui/PrivateRoute';
 

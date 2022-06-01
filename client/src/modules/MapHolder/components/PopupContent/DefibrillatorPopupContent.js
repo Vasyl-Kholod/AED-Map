@@ -2,18 +2,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
-import DirectionsIcon from '@material-ui/icons/Directions';
 import React, { useState, useEffect } from 'react';
 
 import { cancelToken } from 'shared/utils';
 import Loader from 'shared/ui/Loader';
 
-import { setRoutePosition } from 'modules/MapHolder/actions/mapState';
+import ModalPhoto from './PhotoGallery';
+
 import { titles } from './consts';
+import { setRoutePosition, setDefIndex } from 'modules/MapHolder/actions/mapState';
 import { hidePopup } from '../../actions/popupDisplay';
 import { fetchSingleDefById } from '../../../Sidebar/api';
-
-import ModalPhoto from './PhotoGallery';
+import { isEmpty, isEqual } from 'lodash';
 
 const currDefCancelToken = cancelToken();
 
@@ -58,25 +58,12 @@ const useStyle = makeStyles({
     marginBottom: 5,
     borderRadius: 5,
     boxShadow: '0 2px 10px rgba(255, 255, 255, .4)'
-  },
-  routeIconContainer: {
-    position: 'fixed',
-    top: 10,
-    right: 50,
-  },
-  routeIcon: {
-    fontSize: '30px',
-    color: 'grey',
-    '&:hover' : {
-      color:'#1976d2'
-    }
   }
 });
 
 const DefibrillatorPopupContent = ({
-  id, 
-  hidePopup,
-  setRoutePosition
+  id,
+  hidePopup
 }) => {
   const classes = useStyle();
   const [currDef, setCurrDef] = useState(null);
@@ -100,25 +87,18 @@ const DefibrillatorPopupContent = ({
     if (key === 'availableFrom') {
       const availableTime =
         def.fullTimeAvailable === true
-          ? 'Цілодобово доступний'
+          ? 'Цілодобово'
           : `${def.availableFrom
-              .toString()
-              .padStart(2, '0')}:00 - 
+            .toString()
+            .padStart(2, '0')}:00 - 
              ${def.availableUntil
-               .toString()
-               .padStart(2, '0')}:00`;
-      return availableTime;
+            .toString()
+            .padStart(2, '0')}:00`;
+      return `${availableTime}, доступно ${def.defs_amount}`;
     }
 
     return def[key];
   };
-
-  const handleRoute = () => {
-    const [ lng, lat ] = currDef.location.coordinates;
-    const { _id : id } = currDef
-    setRoutePosition( { lng, lat }, id );
-    hidePopup();
-  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,24 +127,18 @@ const DefibrillatorPopupContent = ({
       )}
 
       {Object.keys(titles).map(key => {
-        return (
-          currDef[key] !== undefined && (
-            <p key={key}>
-              <span className={classes.title}>
-                {titles[key]}
-              </span>
-              <br />
-              {formatData(key, currDef)}
-            </p>
-          )
-        );
+        if (!isEmpty(currDef[key]) || isEqual(key, 'availableFrom')){
+          return (
+              <p key={key}>
+                <span className={classes.title}>
+                  {titles[key]}
+                </span>
+                <br />
+                {formatData(key, currDef)}
+              </p>
+          );
+        }
       })}
-      <div 
-        className={classes.routeIconContainer}
-        onClick={handleRoute}
-      >
-        <DirectionsIcon className={classes.routeIcon}/>
-      </div>
       <Cancel
         className={classes.closeBtn}
         onClick={hidePopup}
@@ -177,13 +151,18 @@ const DefibrillatorPopupContent = ({
 };
 
 DefibrillatorPopupContent.propTypes = {
+  listData: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,
   hidePopup: PropTypes.func.isRequired,
   setRoutePosition: PropTypes.func
 };
 
-export default connect(null, dispatch => ({
-  hidePopup: () => dispatch(hidePopup()),
-  setRoutePosition: ( routeCoords, id ) =>
-    dispatch(setRoutePosition( routeCoords, id ))
-}))(DefibrillatorPopupContent);
+export default connect((state) => ({
+  listData: state.defs.listData
+}),
+  dispatch => ({
+    hidePopup: () => dispatch(hidePopup()),
+    setRoutePosition: (routeCoords, id) =>
+      dispatch(setRoutePosition(routeCoords, id)),
+    setDefIndex: (value) => dispatch(setDefIndex(value))
+  }))(DefibrillatorPopupContent);

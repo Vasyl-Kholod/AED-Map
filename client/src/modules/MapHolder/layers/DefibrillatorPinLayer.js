@@ -7,7 +7,7 @@ import { Cluster, Marker } from 'react-mapbox-gl';
 import { makeStyles } from '@material-ui/core/styles';
 
 import mapPin from 'shared/icons/map-pin-icon.jpg';
-import activeMapPin from 'shared/icons/active-map-pin-icon.jpg'
+import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
 import geoJsonData from '../geoJsonData';
 import { showPopup } from '../actions/popupDisplay';
@@ -33,7 +33,8 @@ const useStyles = makeStyles(() => ({
     borderRadius: '50%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    maxWidth: '200px'
   },
   markerWrapper: {
     textAlign: 'center',
@@ -62,6 +63,7 @@ const DefibrillatorPinLayer = ({
   const classes = useStyles();
 
   const defibrillatorPinClick = feature => {
+    
     const { defID } = feature.properties;
     const { coordinates } = feature.geometry;
     const currentRoute = window.location.pathname;
@@ -98,7 +100,7 @@ const DefibrillatorPinLayer = ({
             <p className={classes.title}>
               {feature.properties.title}
             </p>
-          </div>
+          </div> 
         </Marker>
       );
     }
@@ -122,6 +124,7 @@ const DefibrillatorPinLayer = ({
       zoomOnClick
       zoomOnClickPadding={80}
       radius={100}
+      extent={290}
     >
       {clusterRender}
     </Cluster>
@@ -129,18 +132,11 @@ const DefibrillatorPinLayer = ({
 };
 
 DefibrillatorPinLayer.defaultProps = {
-  map: {},
   defibrillators: [],
   showPopup: () => null
 };
 
 DefibrillatorPinLayer.propTypes = {
-  map: PropTypes.shape({
-    getCanvas: PropTypes.func,
-    getZoom: PropTypes.func,
-    getSource: PropTypes.func,
-    easeTo: PropTypes.func
-  }),
   defibrillators: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
