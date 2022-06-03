@@ -1,2 +1,1 @@
-import RouteDetails from './RouteDetails';
-export default RouteDetails;
+export { default } from './RouteDetails';

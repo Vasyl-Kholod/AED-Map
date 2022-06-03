@@ -1,4 +1,6 @@
-import { SET_USER_POSITION,
+import {
+  SET_USER_POSITION,
+  INPUT_USER_POSITION,
   SET_GEOLOCATION_STATUS,
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION
@@ -21,16 +23,16 @@ export const setUserPosition = (payload) => {
 export const setGeolocation = (f) => {
   return (dispatch) => {
     const error = () => {
-      dispatch({type: SET_GEOLOCATION_STATUS, payload: false});
+      dispatch({ type: SET_GEOLOCATION_STATUS, payload: false });
       f(null);
     }
     const success = ({ coords }) => {
-      const { latitude, longitude} = coords;
-      dispatch({type: SET_USER_POSITION, payload: {lat: latitude, lng: longitude}});
-      dispatch({type: SET_GEOLOCATION_STATUS, payload: true});
-      f({latitude, longitude})
+      const { latitude, longitude } = coords;
+      dispatch({ type: SET_USER_POSITION, payload: { lat: latitude, lng: longitude } });
+      dispatch({ type: SET_GEOLOCATION_STATUS, payload: true });
+      f({ latitude, longitude })
     }
-    navigator.geolocation.getCurrentPosition(success, error, {maximumAge:60000, enableHighAccuracy:true});
+    navigator.geolocation.getCurrentPosition(success, error, { maximumAge: 60000, enableHighAccuracy: true });
   }
 }
 
@@ -43,16 +45,16 @@ export const startWatchingPosition = () => {
       return
     }
     const error = (e) => {
-      dispatch({type: SET_GEOLOCATION_STATUS, payload: false});
+      dispatch({ type: SET_GEOLOCATION_STATUS, payload: false });
     }
 
     const success = ({ coords }) => {
-      const { latitude, longitude} = coords;
-      dispatch({type: SET_USER_POSITION, payload: {lat: latitude, lng: longitude}});
-      dispatch({type: SET_GEOLOCATION_STATUS, payload: true});
+      const { latitude, longitude } = coords;
+      dispatch({ type: SET_USER_POSITION, payload: { lat: latitude, lng: longitude } });
+      dispatch({ type: SET_GEOLOCATION_STATUS, payload: true });
     }
-    const id = navigator.geolocation.watchPosition(success, error, {maximumAge:60000, enableHighAccuracy:true})
-    dispatch({type: START_WATCHING_POSITION, payload: id});
+    const id = navigator.geolocation.watchPosition(success, error, { maximumAge: 60000, enableHighAccuracy: true })
+    dispatch({ type: START_WATCHING_POSITION, payload: id });
   }
 }
 
@@ -72,5 +74,15 @@ export const setGeolocationStatus = (payload) => {
 export const stopWatching = () => {
   return {
     type: STOP_WATCHING_POSITION
+  }
+}
+
+/*
+ * User input his positon
+ */
+export const inputUserPosition = (payload) => {
+  return {
+    type: INPUT_USER_POSITION,
+    payload: payload
   }
 }

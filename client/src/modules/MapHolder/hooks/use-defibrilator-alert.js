@@ -17,9 +17,17 @@ const useDefibrillatorAlert = () => {
             message: 'Позиція користувача не знайдена'
         });
 
+    const showChangePositionAlert = () =>
+        ShowAlert({
+            open: true,
+            severity: 'error',
+            message: 'Введіть ваше місцезнаходження'
+        });
+
     return {
         showDevicesAlert,
-        showPositionAlert
+        showPositionAlert,
+        showChangePositionAlert
     };
 };
 

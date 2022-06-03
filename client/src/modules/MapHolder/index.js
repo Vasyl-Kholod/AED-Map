@@ -18,8 +18,8 @@ import {
   addNewPoint
 } from './actions/mapState';
 import {
-  setGeolocation,
-  startWatchingPosition
+  inputUserPosition,
+  setGeolocation
 } from './actions/userPosition';
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
 
@@ -31,8 +31,8 @@ import PopupHolder from './components/PopupHolder';
 import RouteDetails from './components/RouteDetails';
 import DefibrillatorPinLayer from './layers/DefibrillatorPinLayer';
 import GeoLocationButton from './components/GeoLocationButton';
-import SearchNearestDefButton from './components/SearchNearestDefButton';
 import SearchNextNearestDefButton from './components/SearchNextNearestDefButton';
+import SearchUserPosition from './components/SearchUserPosition';
 
 const useStyles = makeStyles(() => ({
   mapContainer: ({ visible }) => ({
@@ -56,6 +56,20 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'rgba(33, 150, 243, 0.2)',
     borderRadius: '50%'
   },
+  contentButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    position: 'fixed',
+    right: '8px',
+    bottom: '5%',
+    zIndex: '30',
+  },
+  contentSearchButtons: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
+  },
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
@@ -77,20 +91,21 @@ const MapHolder = ({
   endRouteCoords,
   setMapCenter,
   setMapZoom,
-  startWatchingPosition,
   setGeolocation,
   addNewPoint,
   hidePopup,
   setVisible,
   setActiveId,
   isSearchNextDefButton,
+  inputUserPosition,
+  userLocation,
   visible
 }) => {
   const classes = useStyles({ visible });
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
- 
+
 
   const tooltipMessage = visible
     ? 'Приховати меню'
@@ -145,9 +160,14 @@ const MapHolder = ({
       }, 100);
     }
   };
- 
+
 
   const getCurrentLocation = _ => {
+    if (userLocation.trim()) {
+      setRouteCords([]);
+      inputUserPosition("");
+    }
+
     setGeolocation(coords => {
       if (coords == null) {
         showAlert({
@@ -229,6 +249,12 @@ const MapHolder = ({
     setShowRouteDetails(false);
     getCurrentLocation();
     setActiveId(null);
+    inputUserPosition("");
+  };
+
+  const closeRouteDetails = () => {
+    setRouteCords([]);
+    setShowRouteDetails(false);
   };
 
   // To build the route, set ending point coordinates to the redux state
@@ -254,15 +280,30 @@ const MapHolder = ({
 
   return (
     <div className={classes.mapContainer}>
-      <SearchNearestDefButton />
+      <div className={classes.contentButtons}>
+        {routeCoords.length > 0 && isSearchNextDefButton && (
+          <SearchNextNearestDefButton />
+        )}
 
-      {routeCoords.length > 0 && isSearchNextDefButton && (
-        <SearchNextNearestDefButton />
-      )}
+        <div className={classes.contentSearchButtons}>
+          {showRouteDetails && (
+            <RouteDetails
+              onClose={closeRoute}
+              details={routeDetails}
+            />
+          )}
 
-      <GeoLocationButton
-        currentLocation={getCurrentLocation}
-      />
+          <GeoLocationButton
+            currentLocation={getCurrentLocation}
+          />
+
+          <SearchUserPosition
+            currentLocation={getCurrentLocation}
+            closeRouteDetails={closeRouteDetails}
+          />
+        </div>
+      </div>
+
       <Button
         className={classes.showIcon}
         color="primary"
@@ -275,13 +316,6 @@ const MapHolder = ({
           />
         </Tooltip>
       </Button>
-
-      {showRouteDetails && (
-        <RouteDetails
-          onClose={closeRoute}
-          details={routeDetails}
-        />
-      )}
 
       <Map
         // eslint-disable-next-line react/style-prop-object
@@ -296,7 +330,7 @@ const MapHolder = ({
         onDragEnd={changeMapCenterCoords}
         onDblClick={onDblClickMap}
       >
-        {map && <DefibrillatorPinLayer/>}
+        {map && <DefibrillatorPinLayer />}
         {userPosition.geolocationProvided && (
           <UserPin
             classes={classes}
@@ -365,17 +399,17 @@ export default connect(
     userPosition: state.userPosition,
     defActiveId: state.defs.active,
     defIndex: state.defs.defIndex,
-    isSearchNextDefButton: state.mapState.isSearchNextDefButton
+    isSearchNextDefButton: state.mapState.isSearchNextDefButton,
+    userLocation: state.userPosition.userLocation
   }),
   dispatch => ({
     setGeolocation: f => dispatch(setGeolocation(f)),
-    startWatchingPosition: () =>
-      dispatch(startWatchingPosition()),
     setMapCenter: map => dispatch(setMapCenter(map)),
     setMapZoom: zoom => dispatch(setMapZoom(zoom)),
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
     hidePopup: () => dispatch(hidePopup()),
-    setActiveId: id => dispatch(setActive(id))
+    setActiveId: id => dispatch(setActive(id)),
+    inputUserPosition: value => dispatch(inputUserPosition(value))
   })
 )(MapHolder);
