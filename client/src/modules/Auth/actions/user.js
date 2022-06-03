@@ -24,7 +24,7 @@ export const successSignIn = (user, authorization) => {
 };
 
 export const failSignIn = () => {
-  localStorage.removeItem('authorization');
+  // localStorage.removeItem('authorization');
 
   return {
     type: FAIL_SIGNIN

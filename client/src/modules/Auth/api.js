@@ -22,6 +22,14 @@ export function resetUser(data) {
   return http.post(`${URL}/reset`, data);
 }
 
-export const validateUser = data => {
+export const validateUser = (data) => {
+  const token = localStorage.getItem('authorization');
+  if (!!token) {
+    data = {
+      headers: {
+        'Authorization': token
+      }
+    }
+  }
   return http.get(`${URL}/validate`, data);
 };

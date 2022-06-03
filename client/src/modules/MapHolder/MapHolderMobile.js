@@ -331,13 +331,13 @@ MapHolderMobile.propTypes = {
     lng: PropTypes.number,
     lat: PropTypes.number,
     zoom: PropTypes.number,
-    routeDetails: {
-      endCoordinates: {
-        lng: PropTypes.string,
-        lat: PropTypes.string,
-      },
+    routeDetails: PropTypes.shape({
+      endCoordinates: PropTypes.shape({
+        lng: PropTypes.number,
+        lat: PropTypes.number,
+      }),
       transportType: PropTypes.string
-    }
+    })
   }),
   newPoint: PropTypes.shape({
     lng: PropTypes.number,

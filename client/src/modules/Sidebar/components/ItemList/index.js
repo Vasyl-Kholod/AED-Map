@@ -136,12 +136,16 @@ const ItemList = ({
     };
 
     const setCenterOnDef = def => {
-      const [lng, lat] = def.location.coordinates;
-      setMapCenterCoords({
-        lng,
-        lat
-      });
-      setMapZoomParam(BASE_ZOOM_VALUE);
+      //when deleting def item, the error of reading def appears, because the 
+      //item is still in array, but has a meaning of null
+      if (!!def) {
+        const [lng, lat] = def.location.coordinates;
+        setMapCenterCoords({
+          lng,
+          lat
+        });
+        setMapZoomParam(BASE_ZOOM_VALUE);
+      }
     };
 
     if (
@@ -195,7 +199,10 @@ ItemList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   defibrillators: PropTypes.arrayOf(PropTypes.object)
     .isRequired,
-  activeDef: PropTypes.oneOfType([PropTypes.object]),
+  activeDef: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string
+  ]),
   fetchDefItems: PropTypes.func,
   filter: PropTypes.oneOfType([PropTypes.object]),
   totalCount: PropTypes.number.isRequired,

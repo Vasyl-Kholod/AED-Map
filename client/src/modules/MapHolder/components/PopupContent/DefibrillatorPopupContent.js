@@ -94,7 +94,7 @@ const DefibrillatorPopupContent = ({
              ${def.availableUntil
             .toString()
             .padStart(2, '0')}:00`;
-      return `${availableTime}, доступно ${def.defs_amount}`;
+      return `${availableTime}`;
     }
 
     return def[key];
@@ -127,7 +127,11 @@ const DefibrillatorPopupContent = ({
       )}
 
       {Object.keys(titles).map(key => {
-        if (!isEmpty(currDef[key]) || isEqual(key, 'availableFrom')){
+        if (
+          !isEmpty(currDef[key]) || 
+          isEqual(key, 'availableFrom') ||
+          isEqual(key, 'defs_amount')
+        ){
           return (
               <p key={key}>
                 <span className={classes.title}>
