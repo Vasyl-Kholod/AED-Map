@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { getNearestDevices } from 'shared/api/defs';
+
 import Logo from 'shared/icons/logo.svg';
 import useAlert from 'shared/ui/Alert/use-alert';
 
 import { setRoutePosition } from 'modules/MapHolder/actions/mapState.js';
-import { getNearestDevices } from '../../../Sidebar/api';
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
 function SearchNearestDefButtonMobile({
@@ -53,9 +54,11 @@ function SearchNearestDefButtonMobile({
         });
       }
     } else {
-      const activeDef = defs.find(def => def._id === active);
+      const activeDef = defs.find(
+        def => def._id === active
+      );
       const [lng, lat] = activeDef.location.coordinates;
-      setRoutePosition({ lng, lat })
+      setRoutePosition({ lng, lat });
     }
   };
 
@@ -81,8 +84,8 @@ export default connect(
     defs: state.defs.mapData
   }),
   dispatch => ({
-    setActiveId: (id) => dispatch(setActive(id)),
+    setActiveId: id => dispatch(setActive(id)),
     setRoutePosition: (routeCoords, id) =>
-      dispatch(setRoutePosition(routeCoords, id)),
+      dispatch(setRoutePosition(routeCoords, id))
   })
 )(SearchNearestDefButtonMobile);
