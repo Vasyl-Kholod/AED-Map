@@ -4,12 +4,16 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { getDirections } from 'shared/api/map';
+
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
-import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
-import { fetchDefs, setActive } from '../Sidebar/components/ItemList/actions/list.js';
+import {
+  fetchDefs,
+  setActive
+} from '../Sidebar/components/ItemList/actions/list.js';
 import {
   setMapCenter,
   setMapZoom,
@@ -77,8 +81,9 @@ const useStyles = makeStyles(() => ({
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
-    transform: `${visible ? 'rotate(180deg)' : 'rotate(0)'
-      }`,
+    transform: `${
+      visible ? 'rotate(180deg)' : 'rotate(0)'
+    }`,
     transition: 'transform 0.2s'
   })
 }));
@@ -106,7 +111,6 @@ const MapHolderMobile = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
-
 
   const handlePopupClose = event => {
     if (event.target.tagName === 'CANVAS') {
@@ -182,7 +186,7 @@ const MapHolderMobile = ({
       }
       const { longitude, latitude } = coords;
       setMapCenter({ lng: longitude, lat: latitude });
-       //TODO: this method must be deleted, because it causes to error in console and causes to return icons to the previous state. 
+      //TODO: this method must be deleted, because it causes to error in console and causes to return icons to the previous state.
       // startWatchingPosition();
     });
   }, [setGeolocation, setMapCenter]);
@@ -234,10 +238,15 @@ const MapHolderMobile = ({
   // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
   useEffect(() => {
-    const getRouteToPosition = async (types = transportType) => {
+    const getRouteToPosition = async (
+      types = transportType
+    ) => {
       if (!!endRouteCoords.lng) {
-        setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
-        setMapZoom(13.5)
+        setMapCenter({
+          lng: endRouteCoords.lng,
+          lat: endRouteCoords.lat
+        });
+        setMapZoom(13.5);
         await getRoute(
           userPosition.coords,
           {
@@ -247,10 +256,10 @@ const MapHolderMobile = ({
           types
         );
       }
-    }
-    getRouteToPosition()
+    };
+    getRouteToPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endRouteCoords, transportType])
+  }, [endRouteCoords, transportType]);
 
   return (
     <div className={classes.mapContainer}>
@@ -320,10 +329,10 @@ MapHolderMobile.defaultProps = {
   mapState: {},
   setVisible: {},
   visible: null,
-  setMapCenter: () => { },
-  setGeolocation: () => { },
-  startWatchingPosition: () => { },
-  hidePopup: () => { }
+  setMapCenter: () => {},
+  setGeolocation: () => {},
+  startWatchingPosition: () => {},
+  hidePopup: () => {}
 };
 
 MapHolderMobile.propTypes = {
@@ -334,7 +343,7 @@ MapHolderMobile.propTypes = {
     routeDetails: {
       endCoordinates: {
         lng: PropTypes.string,
-        lat: PropTypes.string,
+        lat: PropTypes.string
       },
       transportType: PropTypes.string
     }
@@ -359,8 +368,10 @@ export default connect(
     mapState: state.mapState,
     newPoint: state.newPoint,
     userPosition: state.userPosition,
-    transportType: state.mapState.routeDetails.transportType,
-    endRouteCoords: state.mapState.routeDetails.endCoordinates
+    transportType:
+      state.mapState.routeDetails.transportType,
+    endRouteCoords:
+      state.mapState.routeDetails.endCoordinates
   }),
   dispatch => ({
     fetchDefItems: params => dispatch(fetchDefs(params)),
@@ -372,6 +383,6 @@ export default connect(
     addNewPoint: newPoint =>
       dispatch(addNewPoint(newPoint)),
     hidePopup: () => dispatch(hidePopup()),
-    setActiveId: id => dispatch(setActive(id)),
+    setActiveId: id => dispatch(setActive(id))
   })
 )(MapHolderMobile);

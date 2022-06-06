@@ -6,10 +6,11 @@ import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+import { getDirections } from 'shared/api/map';
+
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
-import { getDirections } from './api';
 import { hidePopup } from './actions/popupDisplay';
 import { sidebarWidth } from '../Sidebar/styleConstants';
 import {
@@ -59,8 +60,9 @@ const useStyles = makeStyles(() => ({
   showMenuIcon: ({ visible }) => ({
     height: 35,
     width: 35,
-    transform: `${visible ? 'rotate(180deg)' : 'rotate(0)'
-      }`,
+    transform: `${
+      visible ? 'rotate(180deg)' : 'rotate(0)'
+    }`,
     transition: 'transform 0.2s'
   })
 }));
@@ -90,7 +92,6 @@ const MapHolder = ({
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
- 
 
   const tooltipMessage = visible
     ? 'Приховати меню'
@@ -145,7 +146,6 @@ const MapHolder = ({
       }, 100);
     }
   };
- 
 
   const getCurrentLocation = _ => {
     setGeolocation(coords => {
@@ -181,7 +181,7 @@ const MapHolder = ({
       }
       const { longitude, latitude } = coords;
       setMapCenter({ lng: longitude, lat: latitude });
-      //TODO: this method must be deleted, because it causes to error in console and causes to return icons to the previous state. 
+      //TODO: this method must be deleted, because it causes to error in console and causes to return icons to the previous state.
       // startWatchingPosition();
     });
   }, [setGeolocation, setMapCenter]);
@@ -234,10 +234,15 @@ const MapHolder = ({
   // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
   useEffect(() => {
-    const getRouteToPosition = async (types = transportType) => {
+    const getRouteToPosition = async (
+      types = transportType
+    ) => {
       if (!!endRouteCoords.lng) {
-        setMapCenter({ lng: endRouteCoords.lng, lat: endRouteCoords.lat });
-        setMapZoom(13.5)
+        setMapCenter({
+          lng: endRouteCoords.lng,
+          lat: endRouteCoords.lat
+        });
+        setMapZoom(13.5);
         await getRoute(
           userPosition.coords,
           {
@@ -247,10 +252,10 @@ const MapHolder = ({
           types
         );
       }
-    }
-    getRouteToPosition()
+    };
+    getRouteToPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endRouteCoords, transportType])
+  }, [endRouteCoords, transportType]);
 
   return (
     <div className={classes.mapContainer}>
@@ -296,7 +301,7 @@ const MapHolder = ({
         onDragEnd={changeMapCenterCoords}
         onDblClick={onDblClickMap}
       >
-        {map && <DefibrillatorPinLayer/>}
+        {map && <DefibrillatorPinLayer />}
         {userPosition.geolocationProvided && (
           <UserPin
             classes={classes}
@@ -323,10 +328,10 @@ MapHolder.defaultProps = {
   mapState: {},
   setVisible: {},
   visible: null,
-  setMapCenter: () => { },
-  setGeolocation: () => { },
-  startWatchingPosition: () => { },
-  hidePopup: () => { }
+  setMapCenter: () => {},
+  setGeolocation: () => {},
+  startWatchingPosition: () => {},
+  hidePopup: () => {}
 };
 
 MapHolder.propTypes = {
@@ -357,15 +362,18 @@ MapHolder.propTypes = {
 
 export default connect(
   state => ({
-    transportType: state.mapState.routeDetails.transportType,
-    endRouteCoords: state.mapState.routeDetails.endCoordinates,
+    transportType:
+      state.mapState.routeDetails.transportType,
+    endRouteCoords:
+      state.mapState.routeDetails.endCoordinates,
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
     userPosition: state.userPosition,
     defActiveId: state.defs.active,
     defIndex: state.defs.defIndex,
-    isSearchNextDefButton: state.mapState.isSearchNextDefButton
+    isSearchNextDefButton:
+      state.mapState.isSearchNextDefButton
   }),
   dispatch => ({
     setGeolocation: f => dispatch(setGeolocation(f)),

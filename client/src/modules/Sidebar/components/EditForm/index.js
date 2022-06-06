@@ -5,15 +5,16 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { cancelToken } from 'shared/utils';
-import { getReverseGeocoding } from 'shared/api';
+import { getReverseGeocoding } from 'shared/api/gmap';
+import {
+  editItem,
+  createImage,
+  fetchSingleDefById
+} from 'shared/api/defs';
+
 import MyForm from 'shared/ui/Form';
 import Loader from 'shared/ui/Loader';
 
-import {
-  editItem,
-  fetchSingleDefById,
-  createImage
-} from '../../api';
 import { setMapCenter } from '../../../MapHolder/actions/mapState';
 
 const defCancelToken = cancelToken();
