@@ -13,10 +13,6 @@ const detailsStyle = {
     fontSize: '1.25rem',
     fontWeight: 'bold',
     color: 'rgba(255, 255, 255, 1)',
-    position: 'fixed',
-    bottom: '5%',
-    right: '160px',
-    zIndex: '30',
     backgroundColor: 'rgba(40, 44, 52, 1)',
     borderRadius: '5px',
     border: '2px solid rgba(0, 0, 0, 0.6)',
@@ -108,11 +104,10 @@ function RouteDetails({
             <IconButton
               onClick={() => handleClick('driving')}
               color="inherit"
-              className={`${classes.type_icon} ${
-                type === 'driving'
+              className={`${classes.type_icon} ${type === 'driving'
                   ? classes.type_icon_selected
                   : ''
-              }`}
+                }`}
             >
               <DirectionsCarSharp />
             </IconButton>
@@ -120,11 +115,10 @@ function RouteDetails({
             <IconButton
               onClick={() => handleClick('cycling')}
               color="inherit"
-              className={`${classes.type_icon} ${
-                type === 'cycling'
+              className={`${classes.type_icon} ${type === 'cycling'
                   ? classes.type_icon_selected
                   : ''
-              }`}
+                }`}
             >
               <DirectionsBike />
             </IconButton>

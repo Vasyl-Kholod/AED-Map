@@ -8,7 +8,7 @@ export default function SearchNextNearestDefButton() {
   const { getNextNearestDefibrillator } = useSearchNearestDevice();
 
   return (
-    <BaseButton onClick={getNextNearestDefibrillator} styles={{ backgroundColor: "orange", bottom: 125 }}>
+    <BaseButton onClick={getNextNearestDefibrillator} styles={{ backgroundColor: "orange", bottom: 125, marginRight: 6 }}>
       Знайти наступний
     </BaseButton>
   );

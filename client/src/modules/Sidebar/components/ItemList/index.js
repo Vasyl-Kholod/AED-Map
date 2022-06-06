@@ -58,7 +58,6 @@ const ItemList = ({
   totalCount,
   page,
   search,
-  geolocationProvided,
   setMapCenterCoords,
   setMapZoomParam
 }) => {
@@ -224,9 +223,7 @@ export default connect(
     totalCount: state.defs.totalCount,
     page: state.defs.page,
     search: state.search,
-    user: state.user.user,
-    geolocationProvided:
-      state.userPosition.geolocationProvided
+    user: state.user.user
   }),
   dispatch => ({
     fetchDefItems: params => dispatch(fetchDefs(params)),
