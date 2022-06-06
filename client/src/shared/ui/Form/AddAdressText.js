@@ -10,7 +10,7 @@ import {
   getGeocodingDetails,
   getReverseGeocoding
 } from 'shared/api/gmap';
-import { addNewPoint } from 'modules/MapHolder/actions/mapState';
+import { addNewPoint } from 'shared/store/point/actions';
 
 const AddAdressText = ({
   formik,

@@ -1,12 +1,12 @@
 import {
-  SET_MAP_CENTER,
   SET_MAP_ZOOM,
-  SET_ROUTE_END_POSITION,
+  SET_MAP_CENTER,
   SET_TRANSPORT_TYPE,
   SET_NEAREST_DEF_INDEX,
+  SET_ROUTE_END_POSITION,
   INCREMENT_NEAREST_DEF_INDEX,
   IS_SEARCH_NEXT_NEAREST_DEF_BUTTON
-} from '../consts';
+} from './constants';
 
 const initialState = {
   lng: 24.0311,
@@ -26,7 +26,6 @@ export default (
   state = initialState,
   { type, payload }
 ) => {
-
   switch (type) {
     case SET_MAP_CENTER: {
       if (
@@ -42,11 +41,23 @@ export default (
     }
     case SET_ROUTE_END_POSITION: {
       //payload is {lng: number, lat: number}
-      return { ...state, routeDetails: { ...state.routeDetails, endCoordinates: payload } };
+      return {
+        ...state,
+        routeDetails: {
+          ...state.routeDetails,
+          endCoordinates: payload
+        }
+      };
     }
     case SET_TRANSPORT_TYPE: {
       // here payload is driving or cycling
-      return { ...state, routeDetails: { ...state.routeDetails, transportType: payload } };
+      return {
+        ...state,
+        routeDetails: {
+          ...state.routeDetails,
+          transportType: payload
+        }
+      };
     }
     case SET_NEAREST_DEF_INDEX: {
       // here payload is number

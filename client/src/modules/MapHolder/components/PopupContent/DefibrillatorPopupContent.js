@@ -7,14 +7,14 @@ import React, { useState, useEffect } from 'react';
 
 import { cancelToken } from 'shared/utils';
 import { fetchSingleDefById } from 'shared/api/defs';
+import {
+  setDefIndex,
+  setRoutePosition
+} from 'shared/store/map/actions';
 
 import Loader from 'shared/ui/Loader';
 import ModalPhoto from './PhotoGallery';
 
-import {
-  setRoutePosition,
-  setDefIndex
-} from 'modules/MapHolder/actions/mapState';
 import { titles } from './consts';
 import { hidePopup } from '../../actions/popupDisplay';
 

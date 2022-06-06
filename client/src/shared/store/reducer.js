@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
 import userReducer from './user/reducer';
+import mapStateReducer from './map/reducer';
 import filterReducer from './filter/reducer';
 import searchReducer from './search/reducer';
-import mapStateReducer from 'modules/MapHolder/reducers/mapStateReducer';
-import addNewPointReducer from 'modules/MapHolder/reducers/addNewPointReducer';
+import addNewPointReducer from './point/reducer';
 import popupDisplayReducer from 'modules/MapHolder/reducers/popupDisplayReducer';
 import userPositionReducer from 'modules/MapHolder/reducers/userPositionReducer';
 import listReducer from 'modules/Sidebar/components/ItemList/reducers/listReducer';

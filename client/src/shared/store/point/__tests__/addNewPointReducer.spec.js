@@ -1,7 +1,7 @@
 import { mockNewPoint } from 'shared/mocks';
 
-import * as types from '../../consts';
-import addNewPointReducer from '../addNewPointReducer';
+import * as types from '../constants';
+import addNewPointReducer from '../reducer';
 
 const initialState = {};
 

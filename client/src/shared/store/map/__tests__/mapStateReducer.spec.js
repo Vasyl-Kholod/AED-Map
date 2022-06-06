@@ -1,7 +1,7 @@
 import { mockMap } from 'shared/mocks';
 
-import * as types from '../../consts';
-import mapStateReducer from '../mapStateReducer';
+import * as types from '../constants';
+import mapStateReducer from '../reducer';
 
 // it's also initital map state
 const initialState = {

@@ -1,7 +1,7 @@
+import { mockUser } from 'shared/mocks';
+
 import * as types from '../constants';
 import userReducer from '../reducer';
-
-import { mockUser } from 'shared/mocks';
 
 const initialState = {
   loading: false,

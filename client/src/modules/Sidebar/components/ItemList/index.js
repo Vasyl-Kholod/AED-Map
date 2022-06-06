@@ -13,12 +13,12 @@ import { cancelToken } from 'shared/utils';
 import { fetchSingleDefById } from 'shared/api/defs';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
+import {
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
 import { BASE_ZOOM_VALUE } from './consts';
 import { fetchDefs } from './actions/list';
-import {
-  setMapCenter,
-  setMapZoom
-} from '../../../MapHolder/actions/mapState';
 
 import DefItem from './components/DefItem';
 import InfoMessage from './components/InfoMessage';
