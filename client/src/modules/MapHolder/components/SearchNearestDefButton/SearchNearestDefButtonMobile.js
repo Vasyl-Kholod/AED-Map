@@ -6,8 +6,8 @@ import { getNearestDevices } from 'shared/api/defs';
 
 import Logo from 'shared/icons/logo.svg';
 import useAlert from 'shared/ui/Alert/use-alert';
+import { setRoutePosition } from 'shared/store/map/actions';
 
-import { setRoutePosition } from 'modules/MapHolder/actions/mapState.js';
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
 
 function SearchNearestDefButtonMobile({

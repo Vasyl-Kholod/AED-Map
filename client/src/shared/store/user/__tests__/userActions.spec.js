@@ -1,7 +1,7 @@
+import { mockUser, mockToken } from 'shared/mocks';
+
 import * as types from '../constants';
 import * as actions from '../actions';
-
-import { mockUser, mockToken } from 'shared/mocks';
 
 describe('user actions', () => {
   it(`should create action to ${types.START_SIGNIN}`, () => {

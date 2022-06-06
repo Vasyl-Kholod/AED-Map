@@ -6,9 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { setSearch } from 'shared/store/search/actions';
 
 import {
-  setMapCenter,
-  setMapZoom
-} from '../../../../../MapHolder/actions/mapState';
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
 import { setActive } from '../../actions/list';
 import {
   ENTER_BUTTON_CODE,

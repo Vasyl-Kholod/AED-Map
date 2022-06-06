@@ -8,17 +8,17 @@ import { getDirections } from 'shared/api/map';
 
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
+import { addNewPoint } from 'shared/store/point/actions';
+import {
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
 
 import { hidePopup } from './actions/popupDisplay';
 import {
   fetchDefs,
   setActive
 } from '../Sidebar/components/ItemList/actions/list.js';
-import {
-  setMapCenter,
-  setMapZoom,
-  addNewPoint
-} from './actions/mapState';
 import {
   setGeolocation,
   startWatchingPosition

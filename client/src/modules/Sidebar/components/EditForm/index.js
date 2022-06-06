@@ -11,11 +11,10 @@ import {
   createImage,
   fetchSingleDefById
 } from 'shared/api/defs';
+import { setMapCenter } from 'shared/store/map/actions';
 
 import MyForm from 'shared/ui/Form';
 import Loader from 'shared/ui/Loader';
-
-import { setMapCenter } from '../../../MapHolder/actions/mapState';
 
 const defCancelToken = cancelToken();
 

@@ -18,12 +18,12 @@ import {
   setUntilTime
 } from '../../../EditForm/actions/setFullTime';
 import {
-  setMapCenter,
   setMapZoom,
   setDefIndex,
+  setMapCenter,
   setRoutePosition,
   setNextNearestDefButtonStatus
-} from '../../../../../MapHolder/actions/mapState';
+} from 'shared/store/map/actions';
 import {
   deleteDefItem,
   blockDefItem,

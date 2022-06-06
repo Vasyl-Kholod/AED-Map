@@ -1,4 +1,4 @@
-import { ADD_NEW_POINT } from '../consts';
+import { ADD_NEW_POINT } from './constants';
 
 const initialState = {};
 

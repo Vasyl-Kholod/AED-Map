@@ -1,8 +1,7 @@
-import * as types from '../../consts';
-
-import * as actions from '../mapState';
-
 import { mockNewPoint } from 'shared/mocks';
+
+import * as types from '../constants';
+import * as actions from '../actions';
 
 describe('mapState actions', () => {
   it(`should create action to ${types.ADD_NEW_POINT}`, () => {
