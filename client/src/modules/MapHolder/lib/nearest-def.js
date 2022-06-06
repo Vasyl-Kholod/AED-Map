@@ -1,49 +1,49 @@
 import { get, isEmpty } from 'lodash';
-import { getNearestDevices } from '../../Sidebar/api';
+import { getNearestDevices } from 'shared/api/defs';
 
 const emptyFn = () => null;
 
 const defaultTransformFn = oResponse =>
-    get(oResponse, ['data', 'listDefs'], {});
+  get(oResponse, ['data', 'listDefs'], {});
 
 const getNearestDefibrillatorsFn = ({
-    urlParams,
-    geolocationProvided,
-    showDevicesAlert,
-    showPositionAlert,
-    onDataSuccess = emptyFn,
-    onDevicesError = emptyFn,
-    onPositionError = emptyFn,
-    onGetDataSuccess = emptyFn,
-    onStartGettingValues = emptyFn,
-    transformFn = defaultTransformFn
+  urlParams,
+  geolocationProvided,
+  showDevicesAlert,
+  showPositionAlert,
+  onDataSuccess = emptyFn,
+  onDevicesError = emptyFn,
+  onPositionError = emptyFn,
+  onGetDataSuccess = emptyFn,
+  onStartGettingValues = emptyFn,
+  transformFn = defaultTransformFn
 }) => async () => {
-    onStartGettingValues();
+  onStartGettingValues();
 
-    if (geolocationProvided) {
-        try {
-            const oResponse = await getNearestDevices(urlParams);
-            const oNearestItem = transformFn(oResponse);
+  if (geolocationProvided) {
+    try {
+      const oResponse = await getNearestDevices(urlParams);
+      const oNearestItem = transformFn(oResponse);
 
-            if (!isEmpty(oNearestItem)) {
-                onGetDataSuccess();
+      if (!isEmpty(oNearestItem)) {
+        onGetDataSuccess();
 
-                const { _id: id, location } = oNearestItem || {};
-                const [lng, lat] = location?.coordinates || [];
+        const { _id: id, location } = oNearestItem || {};
+        const [lng, lat] = location?.coordinates || [];
 
-                onDataSuccess({ lng, lat }, id);
-            } else {
-                onDevicesError();
-                showDevicesAlert();
-            }
-        } catch {
-            onDevicesError();
-            showDevicesAlert();
-        }
-    } else {
-        onPositionError();
-        showPositionAlert();
+        onDataSuccess({ lng, lat }, id);
+      } else {
+        onDevicesError();
+        showDevicesAlert();
+      }
+    } catch {
+      onDevicesError();
+      showDevicesAlert();
     }
+  } else {
+    onPositionError();
+    showPositionAlert();
+  }
 };
 
 export { defaultTransformFn, getNearestDefibrillatorsFn };

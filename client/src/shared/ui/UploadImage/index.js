@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
-  Typography,
   GridList,
+  Container,
+  Typography,
   GridListTile,
-  GridListTileBar,
-  Container
+  GridListTileBar
 } from '@material-ui/core';
 
-import { makeStyles } from '@material-ui/core/styles';
+import checkPermission from 'shared/utils/permission';
+
 import { UploadButton } from '../Fields';
-import permissionService from '../../../modules/Auth/permissionService';
 import { ADD_IMAGES } from '../../../modules/MapHolder/consts';
 
 const useStyles = makeStyles({
@@ -51,7 +52,7 @@ const UploadImage = ({
     changePermissionForAddImages
   ] = useState(false);
   useEffect(() => {
-    const permissionToAddImages = permissionService(
+    const permissionToAddImages = checkPermission(
       ADD_IMAGES,
       user,
       defItemInfo

@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash'
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useDispatch, useSelector } from 'react-redux';
 import { IconButton, TextField } from "@material-ui/core"
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import SearchNearestDefButton from '../SearchNearestDefButton';
-
-import ClearIcon from '../../../../shared/icons/icons8-clear.svg'
-
-import { getGeocodingOptions, getGeocodingDetails } from 'shared/api';
-import { setUserPosition, inputUserPosition } from '../../actions/userPosition';
-import { setMapCenter } from '../../actions/mapState'
 import { useDefibrillatorAlert } from '../../hooks'
+import { getGeocodingOptions, getGeocodingDetails } from 'shared/api/gmap';
+import { setUserPosition, inputUserPosition } from '../../actions/userPosition';
+import { setMapCenter } from 'shared/store/map/actions'
 
 import { useStyles } from './use-styles'
+import SearchNearestDefButton from '../SearchNearestDefButton';
+import ClearIcon from 'shared/icons/icons8-clear.svg'
 
 export default function SearchUserPosition({ currentLocation, closeRouteDetails }) {
     const classes = useStyles();
@@ -33,7 +31,7 @@ export default function SearchUserPosition({ currentLocation, closeRouteDetails 
         }
     }
 
-    const SelectOption = async (_, selectedOption) => {
+    const onSelectOption = async (_, selectedOption) => {
         if (selectedOption != null) {
             const response = await getGeocodingDetails(
                 selectedOption.place_id
@@ -65,7 +63,7 @@ export default function SearchUserPosition({ currentLocation, closeRouteDetails 
                 options={options}
                 getOptionLabel={(option) => option.description}
                 getOptionSelected={(option, value) => option === value}
-                onChange={SelectOption}
+                onChange={onSelectOption}
                 renderInput={(params) =>
                     <div className={classes.content}>
                         <TextField
@@ -76,7 +74,7 @@ export default function SearchUserPosition({ currentLocation, closeRouteDetails 
 
                         {userLocationValue.trim() &&
                             <IconButton className={classes.contentClearIcon} onClick={currentLocation}>
-                                <img width={15} height={15} src={ClearIcon} />
+                                <img width={15} height={15} src={ClearIcon} alt="Clear Icon" />
                             </IconButton>
                         }
                     </div>

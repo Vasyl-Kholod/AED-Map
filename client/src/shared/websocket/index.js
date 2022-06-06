@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
+import { signOut } from 'shared/store/user/actions';
 import store from '../store';
-import { signOut } from '../../modules/Auth/actions/user';
 
 const socket = io('http://localhost:3000', {
   autoConnect: false

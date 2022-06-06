@@ -9,14 +9,16 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
-import { getDirections } from './api';
+import { getDirections } from 'shared/api/map';
 import { hidePopup } from './actions/popupDisplay';
 import { sidebarWidth } from '../Sidebar/styleConstants';
 import {
   setMapCenter,
-  setMapZoom,
+  setMapZoom
+} from 'shared/store/map/actions';
+import {
   addNewPoint
-} from './actions/mapState';
+} from 'shared/store/point/actions';
 import {
   inputUserPosition,
   setGeolocation
@@ -166,6 +168,7 @@ const MapHolder = ({
     if (userLocation.trim()) {
       setRouteCords([]);
       inputUserPosition("");
+      setShowRouteDetails(false);
     }
 
     setGeolocation(coords => {

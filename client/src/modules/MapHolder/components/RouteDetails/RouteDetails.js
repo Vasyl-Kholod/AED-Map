@@ -1,11 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeTransportType } from 'modules/MapHolder/actions/mapState';
-import { DirectionsCarSharp } from '@material-ui/icons';
-import { DirectionsBike } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
+import { DirectionsBike } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { DirectionsCarSharp } from '@material-ui/icons';
+
+import { changeTransportType } from 'shared/store/map/actions';
 
 const detailsStyle = {
   container: {

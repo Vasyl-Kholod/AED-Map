@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'shared/utils';
+import React, { Component } from 'react';
 
+import { compose } from 'shared/utils';
 import {
   failSignIn,
   successSignIn
-} from 'modules/Auth/actions/user';
-import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
+} from 'shared/store/user/actions';
 
 const withData = Cmp => {
   class Wrapper extends Component {
@@ -25,9 +24,7 @@ const withData = Cmp => {
       dispatch => ({
         fail: () => dispatch(failSignIn()),
         success: (user, authorization) =>
-          dispatch(successSignIn(user, authorization)),
-        makeItemActive: itemId =>
-          dispatch(setActive(itemId))
+          dispatch(successSignIn(user, authorization))
       })
     )
   )(Wrapper);

@@ -1,5 +1,13 @@
-import { cancelToken } from 'shared/utils';
 import { isObject, keys } from 'lodash';
+
+import { cancelToken } from 'shared/utils';
+import {
+  editItem,
+  blockItem,
+  createItem,
+  deleteItem,
+  getDefItems
+} from 'shared/api/defs';
 
 import {
   START_LOAD_DATA,
@@ -15,13 +23,6 @@ import {
   SET_PAGE,
   SET_PER_PAGE
 } from '../consts';
-import {
-  getDefItems,
-  createItem,
-  deleteItem,
-  editItem,
-  blockItem
-} from '../../../api';
 
 import { setGeolocation } from '../../../../MapHolder/actions/userPosition';
 
@@ -80,11 +81,11 @@ export const fetchDefs = params => {
     ) => {
       try {
         if (isObject(params)) {
-          keys(params).forEach((key) => {
+          keys(params).forEach(key => {
             if (!params[key]) {
-              delete params[key]
+              delete params[key];
             }
-          })
+          });
         }
         const { data } = await getDefItems(
           { ...params, ...userCoordinates },

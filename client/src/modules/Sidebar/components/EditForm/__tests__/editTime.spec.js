@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import rootReducer from 'shared/reducer';
+import rootReducer from 'shared/store/reducer';
 import MyTimeField from 'shared/ui/Fields/timeField';
 
 const mockInitialState = {

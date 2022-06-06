@@ -7,10 +7,10 @@ import {
 } from 'react-router-dom';
 
 import Alert from 'shared/ui/Alert';
+import { SearchMobile } from 'features/search';
 import useAlert from 'shared/ui/Alert/use-alert';
 import { LOGO_IMG } from 'shared/consts/header';
 
-import SearchMobile from './components/Search/SearchMobile';
 import ItemListMobile from './components/ItemList/ItemListMobile';
 // import { setSearch } from './components/Search/actions';
 
