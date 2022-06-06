@@ -1,4 +1,4 @@
-import { SHOW_POPUP, HIDE_POPUP } from '../consts';
+import { SHOW_POPUP, HIDE_POPUP } from "modules/MapHolder/consts";
 
 const initialState = null;
 

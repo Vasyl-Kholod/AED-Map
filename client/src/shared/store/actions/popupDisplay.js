@@ -1,4 +1,4 @@
-import { SHOW_POPUP, HIDE_POPUP } from '../consts';
+
 
 export const showPopup = popupData => {
   return {
