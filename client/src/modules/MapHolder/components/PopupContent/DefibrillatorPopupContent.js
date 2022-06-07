@@ -16,7 +16,7 @@ import Loader from 'shared/ui/Loader';
 import ModalPhoto from './PhotoGallery';
 
 import { titles } from './consts';
-import { hidePopup } from '../../../../shared/store/popupDisplay/actions';
+import { hidePopup } from 'shared/store/popup/actions';
 
 const currDefCancelToken = cancelToken();
 

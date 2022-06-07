@@ -16,7 +16,7 @@ import {
   setFullTime,
   setFromTime,
   setUntilTime
-} from '../../../../../../shared/store/setFullTime/actions';
+} from 'shared/store/full-time/actions';
 import {
   setMapZoom,
   setDefIndex,
@@ -28,14 +28,14 @@ import {
   deleteDefItem,
   blockDefItem,
   setActive
-} from '../../../../../../shared/store/list/list';
+} from 'shared/store/list/list';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE,
   EDIT_DEF_POINT,
   DELETE_DEF_POINT,
   BLOCK_DEF_POINT
-} from '../../../../../../shared/store/list/constants';
+} from 'shared/store/list/constants';
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
 

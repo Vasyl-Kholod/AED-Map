@@ -14,7 +14,7 @@ import { createImage } from 'shared/api/defs';
 import useAlert from 'shared/ui/Alert/use-alert';
 import UploadImage from 'shared/ui/UploadImage';
 
-import { hidePopup } from '../../../../../shared/store/popupDisplay/actions';
+import { hidePopup } from '../../../../../shared/store/popup/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {

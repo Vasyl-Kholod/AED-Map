@@ -10,8 +10,8 @@ import mapPin from 'shared/icons/map-pin-icon.jpg';
 import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
 import geoJsonData from '../geoJsonData';
-import { showPopup } from '../../../shared/store/popupDisplay/actions';
-import { setActive } from '../../../shared/store/list/list';
+import { showPopup } from 'shared/store/popup/actions';
+import { setActive } from 'shared/store/list/list';
 
 const useStyles = makeStyles(() => ({
   clusterMarker: {

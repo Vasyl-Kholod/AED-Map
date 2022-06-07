@@ -4,7 +4,7 @@ import {
   setFullTime,
   setFromTime,
   setUntilTime
-} from '../../store/setFullTime/actions';
+} from '../../store/full-time/actions';
 import {
   Checkbox,
   FormControlLabel,
