@@ -14,7 +14,7 @@ import {
   setMapCenter
 } from 'shared/store/map/actions';
 
-import { hidePopup } from './actions/popupDisplay';
+import { hidePopup } from '../../shared/store/popupDisplay/actions';
 import {
   fetchDefs,
   setActive
@@ -22,7 +22,7 @@ import {
 import {
   setGeolocation,
   startWatchingPosition
-} from './actions/userPosition';
+} from '../../shared/store/userPosition/actions';
 
 import AddedPin from './layers/AddedPin';
 import UserPin from './components/UserPin';

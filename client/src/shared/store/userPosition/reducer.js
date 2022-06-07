@@ -4,7 +4,7 @@ import {
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION,
   SET_GEOLOCATION_STATUS,
-} from "../consts"
+} from "./constants.js"
 
 const initialState = {
   coords: {

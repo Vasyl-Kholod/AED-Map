@@ -10,7 +10,7 @@ import mapPin from 'shared/icons/map-pin-icon.jpg';
 import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
 import geoJsonData from '../geoJsonData';
-import { showPopup } from '../actions/popupDisplay';
+import { showPopup } from '../../../shared/store/popupDisplay/actions';
 import { setActive } from '../../Sidebar/components/ItemList/actions/list';
 
 const useStyles = makeStyles(() => ({

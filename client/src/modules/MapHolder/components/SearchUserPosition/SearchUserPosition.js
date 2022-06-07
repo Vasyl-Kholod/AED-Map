@@ -6,7 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { useDefibrillatorAlert } from '../../hooks'
 import { getGeocodingOptions, getGeocodingDetails } from 'shared/api/gmap';
-import { setUserPosition, inputUserPosition } from '../../actions/userPosition';
+import { setUserPosition, inputUserPosition } from '../../../../shared/store/userPosition/actions';
 import { setMapCenter } from 'shared/store/map/actions'
 
 import { useStyles } from './use-styles'

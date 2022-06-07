@@ -10,7 +10,7 @@ import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 
 import { getDirections } from 'shared/api/map';
-import { hidePopup } from './actions/popupDisplay';
+import { hidePopup } from '../../shared/store/popupDisplay/actions';
 import { sidebarWidth } from '../Sidebar/styleConstants';
 import {
   setMapCenter,
@@ -22,7 +22,7 @@ import {
 import {
   inputUserPosition,
   setGeolocation
-} from './actions/userPosition';
+} from '../../shared/store/userPosition/actions';
 import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
 
 import AddedPin from './layers/AddedPin';

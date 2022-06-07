@@ -5,8 +5,8 @@ import mapStateReducer from './map/reducer';
 import filterReducer from './filter/reducer';
 import searchReducer from './search/reducer';
 import addNewPointReducer from './point/reducer';
-import popupDisplayReducer from 'modules/MapHolder/reducers/popupDisplayReducer';
-import userPositionReducer from 'modules/MapHolder/reducers/userPositionReducer';
+import popupDisplayReducer from 'shared/store/popupDisplay/reducer';
+import userPositionReducer from 'shared/store/userPosition/reducer';
 import listReducer from 'modules/Sidebar/components/ItemList/reducers/listReducer';
 import setFullTimeReducer from 'modules/Sidebar/components/EditForm/reducers/index';
 

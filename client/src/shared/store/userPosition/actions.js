@@ -4,7 +4,7 @@ import {
   SET_GEOLOCATION_STATUS,
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION
-} from "../consts"
+} from "./constants.js"
 
 
 /* 

@@ -1,6 +1,6 @@
-import * as types from '../../consts';
+import * as types from '../../../../modules/MapHolder/consts';
 
-import * as actions from '../popupDisplay';
+import * as actions from '../actions';
 
 import { mockCurrDef } from 'shared/mocks';
 

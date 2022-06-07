@@ -24,7 +24,7 @@ import {
   SET_PER_PAGE
 } from '../consts';
 
-import { setGeolocation } from '../../../../MapHolder/actions/userPosition';
+import { setGeolocation } from '../../../../../shared/store/userPosition/actions';
 
 const defsCancelToken = cancelToken();
 export const startLoadDef = () => {
