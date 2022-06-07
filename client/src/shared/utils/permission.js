@@ -4,7 +4,7 @@ import {
   BLOCK_DEF_POINT,
   DELETE_DEF_POINT,
   CREATE_DEF_POINT
-} from 'modules/Sidebar/components/ItemList/consts';
+} from 'shared/store/list/constants';
 
 import { ADD_IMAGES } from 'modules/MapHolder/consts';
 import {

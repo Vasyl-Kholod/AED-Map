@@ -11,7 +11,7 @@ import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
 import geoJsonData from '../geoJsonData';
 import { showPopup } from '../../../shared/store/popupDisplay/actions';
-import { setActive } from '../../Sidebar/components/ItemList/actions/list';
+import { setActive } from '../../../shared/store/list/list';
 
 const useStyles = makeStyles(() => ({
   clusterMarker: {

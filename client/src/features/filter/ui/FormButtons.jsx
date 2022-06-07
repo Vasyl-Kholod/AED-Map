@@ -15,7 +15,7 @@ import {
   fetchDefs,
   setPage,
   setData
-} from 'modules/Sidebar/components/ItemList/actions/list';
+} from 'shared/store/list/list';
 
 const FormButtons = ({
   formik: {

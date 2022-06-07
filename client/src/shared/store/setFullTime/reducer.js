@@ -1,4 +1,4 @@
-import { SET_FULL_TIME,SET_FROM_TIME,SET_UNTIL_TIME } from '../consts';
+import { SET_FULL_TIME,SET_FROM_TIME,SET_UNTIL_TIME } from './constants';
 
 export const initialState = {
   fullTime: false,

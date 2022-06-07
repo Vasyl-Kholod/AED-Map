@@ -4,7 +4,7 @@ import {
   setFullTime,
   setFromTime,
   setUntilTime
-} from '../../../modules/Sidebar/components/EditForm/actions/setFullTime';
+} from '../../store/setFullTime/actions';
 import {
   Checkbox,
   FormControlLabel,

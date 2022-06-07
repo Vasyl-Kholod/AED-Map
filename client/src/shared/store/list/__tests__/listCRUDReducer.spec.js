@@ -1,7 +1,7 @@
 import { mockState, mockNewDefInfo } from 'shared/mocks';
 
-import * as types from '../../consts';
-import listReducer from '../listReducer';
+import * as types from '../constants';
+import listReducer from '../reducer';
 
 const initialState = {
   loading: false,

@@ -1,4 +1,4 @@
-import editReducer, {initialState} from '../reducers/';
+import editReducer, {initialState} from '../reducer';
 import * as types from '../consts';
 
 describe('set time reducer for edit page', () => {

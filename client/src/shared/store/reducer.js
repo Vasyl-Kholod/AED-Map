@@ -7,8 +7,8 @@ import searchReducer from './search/reducer';
 import addNewPointReducer from './point/reducer';
 import popupDisplayReducer from 'shared/store/popupDisplay/reducer';
 import userPositionReducer from 'shared/store/userPosition/reducer';
-import listReducer from 'modules/Sidebar/components/ItemList/reducers/listReducer';
-import setFullTimeReducer from 'modules/Sidebar/components/EditForm/reducers/index';
+import listReducer from 'shared/store/list/reducer';
+import setFullTimeReducer from 'shared/store/setFullTime/reducer';
 
 export default combineReducers({
   defs: listReducer,

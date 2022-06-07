@@ -16,8 +16,8 @@ import {
 } from 'shared/store/map/actions';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
-import { BASE_ZOOM_VALUE } from './consts';
-import { fetchDefs } from './actions/list';
+import { BASE_ZOOM_VALUE } from '../../../../shared/store/list/constants';
+import { fetchDefs } from '../../../../shared/store/list/list';
 
 import DefItemMobile from './components/DefItem/DefItemMobile';
 import InfoMessageMobile from './components/InfoMessage/infoMessageMobile';

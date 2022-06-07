@@ -1,5 +1,5 @@
-import * as types from '../../consts';
-import * as actions from '../list';
+import * as types from '../constants';
+import * as actions from '../../../../../../shared/store/list/list';
 
 import { mockData, mockError } from 'shared/mocks';
 

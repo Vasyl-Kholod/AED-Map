@@ -22,7 +22,7 @@ import useAlert from '../Alert/use-alert';
 import {
   setPage,
   setData
-} from '../../../modules/Sidebar/components/ItemList/actions/list';
+} from '../../store/list/list';
 
 const useStyles = makeStyles({
   input: {

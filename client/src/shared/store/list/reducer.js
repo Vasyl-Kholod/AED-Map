@@ -11,7 +11,7 @@ import {
   BLOCK_DEF_POINT,
   SET_PAGE,
   SET_PER_PAGE
-} from '../consts';
+} from './constants';
 
 const initialState = {
   loading: false,

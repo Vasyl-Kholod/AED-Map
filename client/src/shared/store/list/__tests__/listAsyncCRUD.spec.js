@@ -2,8 +2,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
-import * as types from '../../consts';
-import * as actions from '../list';
+import * as types from '../constants';
+import * as actions from '../../../../../../shared/store/list/list';
 import {
   mockNewDefInfo,
   mockError,

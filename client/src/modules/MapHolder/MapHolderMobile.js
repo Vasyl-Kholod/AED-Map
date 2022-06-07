@@ -18,7 +18,7 @@ import { hidePopup } from '../../shared/store/popupDisplay/actions';
 import {
   fetchDefs,
   setActive
-} from '../Sidebar/components/ItemList/actions/list.js';
+} from '../../shared/store/list/list.js';
 import {
   setGeolocation,
   startWatchingPosition

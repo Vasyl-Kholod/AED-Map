@@ -16,7 +16,7 @@ import {
   setPage,
   setData,
   fetchDefs
-} from 'modules/Sidebar/components/ItemList/actions/list';
+} from 'shared/store/list/list';
 
 import FormFormik from './FormFormik';
 import FilterHeader from './FilterFormHeader';

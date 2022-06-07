@@ -22,9 +22,9 @@ import {
   SET_ACTIVE,
   SET_PAGE,
   SET_PER_PAGE
-} from '../consts';
+} from './constants';
 
-import { setGeolocation } from '../../../../../shared/store/userPosition/actions';
+import { setGeolocation } from '../userPosition/actions';
 
 const defsCancelToken = cancelToken();
 export const startLoadDef = () => {

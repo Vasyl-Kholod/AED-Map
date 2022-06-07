@@ -1,5 +1,5 @@
-import * as types from '../consts';
-import * as actions from '../actions/setFullTime'
+import * as types from '../constants';
+import * as actions from '../actions'
 
 describe('set time action', () => {
   it(`should create action to ${types.SET_FULL_TIME}`, () => {

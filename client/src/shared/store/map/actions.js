@@ -8,7 +8,7 @@ import {
   IS_SEARCH_NEXT_NEAREST_DEF_BUTTON
 } from './constants';
 
-import { setActive } from 'modules/Sidebar/components/ItemList/actions/list';
+import { setActive } from 'shared/store/list/list';
 
 export const setMapCenter = mapState => {
   return {

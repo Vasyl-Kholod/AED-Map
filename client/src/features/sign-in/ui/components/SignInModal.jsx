@@ -18,7 +18,7 @@ import {
 import {
   fetchDefs,
   clearData
-} from 'modules/Sidebar/components/ItemList/actions/list';
+} from 'shared/store/list/list';
 
 import Form from './Form';
 import Header from './Header';

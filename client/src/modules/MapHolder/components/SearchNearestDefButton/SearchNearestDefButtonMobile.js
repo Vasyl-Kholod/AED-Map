@@ -8,7 +8,7 @@ import Logo from 'shared/icons/logo.svg';
 import useAlert from 'shared/ui/Alert/use-alert';
 import { setRoutePosition } from 'shared/store/map/actions';
 
-import { setActive } from 'modules/Sidebar/components/ItemList/actions/list.js';
+import { setActive } from 'shared/store/list/list.js';
 
 function SearchNearestDefButtonMobile({
   coords,
