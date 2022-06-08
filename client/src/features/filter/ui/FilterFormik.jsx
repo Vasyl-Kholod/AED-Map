@@ -11,9 +11,13 @@ import FilterSchema from 'features/filter/model/validator';
 import { INITIAL_VALUES } from 'features/filter/lib/constants';
 import { useFilterFormikStyles } from 'features/filter/model/use-styles';
 
-import { hidePopup } from 'modules/MapHolder/actions/popupDisplay';
+import { hidePopup } from 'shared/store/popup/actions';
 
-import { setPage,setData,fetchDefs } from 'shared/store/list/actions';
+import {
+  setPage,
+  setData,
+  fetchDefs
+} from 'shared/store/defs/actions';
 
 import FormFormik from './FormFormik';
 import FilterHeader from './FilterFormHeader';

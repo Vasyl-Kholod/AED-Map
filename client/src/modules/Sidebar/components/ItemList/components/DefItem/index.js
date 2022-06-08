@@ -28,14 +28,14 @@ import {
   deleteDefItem,
   blockDefItem,
   setActive
-} from 'shared/store/list/actions';
+} from 'shared/store/defs/actions';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE,
   EDIT_DEF_POINT,
   DELETE_DEF_POINT,
   BLOCK_DEF_POINT
-} from 'shared/store/list/constants';
+} from 'shared/store/defs/constants';
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
 

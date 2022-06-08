@@ -18,7 +18,7 @@ import { hidePopup } from 'shared/store/popup/actions';
 import {
   fetchDefs,
   setActive
-} from 'shared/store/list/list.js';
+} from 'shared/store/defs/actions';
 import {
   setGeolocation,
   startWatchingPosition

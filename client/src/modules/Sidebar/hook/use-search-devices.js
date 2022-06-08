@@ -5,7 +5,7 @@ import {
   fetchDefs,
   setPage,
   setData
-} from 'shared/store/list/actions';
+} from 'shared/store/defs/actions';
 
 const useSearchDevices = () => {
   const dispatch = useDispatch();

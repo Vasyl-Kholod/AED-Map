@@ -4,7 +4,7 @@ import {
   setFullTime,
   setFromTime,
   setUntilTime
-} from '../../store/full-time/actions';
+} from 'shared/store/full-time/actions';
 import {
   Checkbox,
   FormControlLabel,
@@ -75,10 +75,7 @@ const MyTimeField = ({
           >
             <MuiMenuItem disabled>з</MuiMenuItem>
             {hours(0, 23).map(hour => (
-              <MuiMenuItem
-                value={hour}
-                key={hour}
-              >
+              <MuiMenuItem value={hour} key={hour}>
                 {`${hour}`.padStart(2, '0')}:00
               </MuiMenuItem>
             ))}

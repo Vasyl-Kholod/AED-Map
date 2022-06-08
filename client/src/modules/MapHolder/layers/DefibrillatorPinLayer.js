@@ -11,7 +11,7 @@ import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
 import geoJsonData from '../geoJsonData';
 import { showPopup } from 'shared/store/popup/actions';
-import { setActive } from 'shared/store/list/actions';
+import { setActive } from 'shared/store/defs/actions';
 
 const useStyles = makeStyles(() => ({
   clusterMarker: {
@@ -63,7 +63,6 @@ const DefibrillatorPinLayer = ({
   const classes = useStyles();
 
   const defibrillatorPinClick = feature => {
-    
     const { defID } = feature.properties;
     const { coordinates } = feature.geometry;
     const currentRoute = window.location.pathname;
@@ -94,13 +93,18 @@ const DefibrillatorPinLayer = ({
           <div className={classes.markerWrapper}>
             <img
               alt="Map Pin"
-              src={defibrillatorsActiveId === feature?.properties?.defID ? activeMapPin : mapPin}
+              src={
+                defibrillatorsActiveId ===
+                feature?.properties?.defID
+                  ? activeMapPin
+                  : mapPin
+              }
               className={classes.pin}
             />
             <p className={classes.title}>
               {feature.properties.title}
             </p>
-          </div> 
+          </div>
         </Marker>
       );
     }

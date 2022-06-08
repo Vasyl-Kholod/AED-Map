@@ -1,5 +1,5 @@
 import * as types from '../constants';
-import * as actions from 'shared/store/list/actions';
+import * as actions from 'shared/store/defs/actions';
 
 import { mockNewDefInfo } from 'shared/mocks';
 

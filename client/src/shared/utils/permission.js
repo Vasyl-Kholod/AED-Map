@@ -4,9 +4,9 @@ import {
   BLOCK_DEF_POINT,
   DELETE_DEF_POINT,
   CREATE_DEF_POINT
-} from 'shared/store/list/constants';
+} from 'shared/store/defs/constants';
 
-import { ADD_IMAGES } from 'modules/MapHolder/consts';
+import { ADD_IMAGES } from 'shared/ui/UploadImage/const';
 import {
   USER,
   ADMIN,

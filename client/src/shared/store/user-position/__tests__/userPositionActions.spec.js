@@ -1,5 +1,4 @@
-import * as types from 'modules/MapHolder/consts';
-
+import * as types from '../constants';
 import * as actions from '../actions';
 
 import { mockUserPosition } from 'shared/mocks';

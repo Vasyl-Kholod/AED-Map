@@ -3,18 +3,18 @@ import {
   INPUT_USER_POSITION,
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION,
-  SET_GEOLOCATION_STATUS,
-} from "./constants.js"
+  SET_GEOLOCATION_STATUS
+} from './constants';
 
 const initialState = {
   coords: {
     lng: null,
-    lat: null,
+    lat: null
   },
   userLocation: '',
   watchId: null,
-  geolocationProvided: false,
-}
+  geolocationProvided: false
+};
 
 export default (
   state = initialState,
@@ -27,24 +27,24 @@ export default (
 
     case START_WATCHING_POSITION:
       if (state.watchId === null) {
-        return { ...state, watchId: payload }
+        return { ...state, watchId: payload };
       } else {
-        return state
+        return state;
       }
 
     case STOP_WATCHING_POSITION:
       if (state.watchId !== null) {
         navigator.geolocation.clearWatch(state.watchId);
       }
-      return { ...state, watchId: null }
+      return { ...state, watchId: null };
 
     case SET_GEOLOCATION_STATUS:
-      return { ...state, geolocationProvided: payload }
+      return { ...state, geolocationProvided: payload };
 
     case INPUT_USER_POSITION:
-      return { ...state, userLocation: payload }
+      return { ...state, userLocation: payload };
 
     default:
-      return state
+      return state;
   }
-}
+};

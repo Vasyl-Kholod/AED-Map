@@ -22,7 +22,7 @@ import useAlert from '../Alert/use-alert';
 import {
   setPage,
   setData
-} from 'store/list/actions';
+} from 'shared/store/defs/actions';
 
 const useStyles = makeStyles({
   input: {
