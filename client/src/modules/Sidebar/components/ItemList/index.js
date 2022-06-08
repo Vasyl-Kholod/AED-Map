@@ -17,8 +17,8 @@ import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
-import { BASE_ZOOM_VALUE } from '../../../../shared/store/list/constants';
-import { fetchDefs } from '../../../../shared/store/list/list';
+import { BASE_ZOOM_VALUE } from 'shared/store/list/constants';
+import { fetchDefs } from 'shared/store/list/actions';
 
 import DefItem from './components/DefItem';
 import InfoMessage from './components/InfoMessage';

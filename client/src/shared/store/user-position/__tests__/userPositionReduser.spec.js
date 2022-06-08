@@ -1,6 +1,6 @@
 import { mockUserPosition } from 'shared/mocks';
 
-import * as types from '../../../../modules/MapHolder/consts';
+import * as types from 'modules/MapHolder/consts';
 import userPositionReducer from '../reducer';
 
 const initialState = {

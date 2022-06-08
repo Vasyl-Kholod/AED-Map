@@ -23,7 +23,7 @@ import {
   inputUserPosition,
   setGeolocation
 } from 'shared/store/user-position/actions';
-import { setActive } from 'shared/store/list/list';
+import { setActive } from 'shared/store/list/actions';
 
 import AddedPin from './layers/AddedPin';
 import UserPin from './components/UserPin';

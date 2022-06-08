@@ -9,11 +9,11 @@ import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
-import { setActive } from '../../../../../../shared/store/list/list';
+import { setActive } from 'shared/store/list/actions';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE
-} from '../../../../../../shared/store/list/constants';
+} from 'shared/store/list/constants';
 
 const useStyles = makeStyles({
   pointCard: {

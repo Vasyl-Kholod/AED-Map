@@ -18,7 +18,7 @@ import {
 import {
   fetchDefs,
   clearData
-} from 'shared/store/list/list';
+} from 'shared/store/list/actions';
 
 import Form from './Form';
 import Header from './Header';

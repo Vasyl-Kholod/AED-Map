@@ -1,6 +1,6 @@
 import { mockCurrDef } from 'shared/mocks';
 
-import * as types from '../../../../modules/MapHolder/consts';
+import * as types from 'modules/MapHolder/consts';
 import popupDisplayReducer from '../reducer';
 
 describe('map reducer', () => {

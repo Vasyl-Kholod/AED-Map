@@ -9,7 +9,7 @@ import { useButtonSignOutStyles } from 'features/sign-in/model/use-styles';
 import {
   fetchDefs,
   clearData
-} from 'shared/store/list/list';
+} from 'shared/store/list/actions';
 
 import ConfirmationModalWrapper from 'shared/ui/ConfirmationModalWrapper';
 

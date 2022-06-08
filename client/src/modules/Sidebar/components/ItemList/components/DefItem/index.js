@@ -28,7 +28,7 @@ import {
   deleteDefItem,
   blockDefItem,
   setActive
-} from 'shared/store/list/list';
+} from 'shared/store/list/actions';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE,

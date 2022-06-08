@@ -8,7 +8,7 @@ import {
   IS_SEARCH_NEXT_NEAREST_DEF_BUTTON
 } from './constants';
 
-import { setActive } from 'shared/store/list/list';
+import { setActive } from 'shared/store/list/actions';
 
 export const setMapCenter = mapState => {
   return {

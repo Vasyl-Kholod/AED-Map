@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { SignIn } from 'features/sign-in';
 import { LOGO_IMG } from 'shared/consts/header';
 
-import { setActive } from 'shared/store/list/list';
+import { setActive } from 'shared/store/list/actions';
 
 const useStyles = makeStyles({
   headerWrapper: {

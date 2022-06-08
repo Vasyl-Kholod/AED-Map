@@ -12,11 +12,8 @@ import { INITIAL_VALUES } from 'features/filter/lib/constants';
 import { useFilterFormikStyles } from 'features/filter/model/use-styles';
 
 import { hidePopup } from 'modules/MapHolder/actions/popupDisplay';
-import {
-  setPage,
-  setData,
-  fetchDefs
-} from 'shared/store/list/list';
+
+import { setPage,setData,fetchDefs } from 'shared/store/list/actions';
 
 import FormFormik from './FormFormik';
 import FilterHeader from './FilterFormHeader';

@@ -15,7 +15,7 @@ import {
   fetchDefs,
   setPage,
   setData
-} from 'shared/store/list/list';
+} from 'shared/store/list/actions';
 
 const FormButtons = ({
   formik: {
