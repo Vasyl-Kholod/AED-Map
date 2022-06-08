@@ -10,7 +10,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { resetFilter } from 'shared/store/filter/actions';
 import { useFormButtonsStyles } from 'features/filter/model/use-styles';
 
-import { hidePopup } from 'modules/MapHolder/actions/popupDisplay';
+import { hidePopup } from 'shared/store/popup/actions';
 import {
   fetchDefs,
   setPage,

@@ -6,7 +6,7 @@ import {
   CREATE_DEF_POINT
 } from 'shared/store/list/constants';
 
-import { ADD_IMAGES } from 'modules/MapHolder/consts';
+import {ADD_IMAGES} from 'shared/ui/UploadImage/const';
 import {
   USER,
   ADMIN,

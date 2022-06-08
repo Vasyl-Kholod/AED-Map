@@ -14,7 +14,7 @@ import {
 import checkPermission from 'shared/utils/permission';
 
 import { UploadButton } from '../Fields';
-import { ADD_IMAGES } from 'modules/MapHolder/consts';
+import {ADD_IMAGES} from 'shared/ui/UploadImage/const';
 
 const useStyles = makeStyles({
   root: {

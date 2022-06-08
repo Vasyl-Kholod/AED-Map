@@ -19,10 +19,7 @@ import { MyTextField, MyImageField } from '../Fields';
 import FormValidation from './validator';
 import useAlert from '../Alert/use-alert';
 
-import {
-  setPage,
-  setData
-} from 'store/list/actions';
+import { setPage, setData} from 'shared/store/list/actions';
 
 const useStyles = makeStyles({
   input: {
