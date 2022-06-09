@@ -22,7 +22,7 @@ import { sidebarWidth } from './styleConstants';
 import {
   CREATE_DEF_POINT,
   ACCOUNT
-} from './components/ItemList/consts';
+} from 'shared/store/defs/constants';
 
 import AddForm from './components/AddForm';
 import Account from './components/Account';

@@ -2,10 +2,12 @@ import React from 'react';
 
 import { useSearchNearestDevice } from 'modules/MapHolder/hooks';
 
-import BaseButton from '../BaseButton/BaseButton.js';
+import BaseButton from '../BaseButton/BaseButton';
 
 export default function SearchNearestDefButton() {
-  const { getNearestDefibrillators } = useSearchNearestDevice();
+  const {
+    getNearestDefibrillators
+  } = useSearchNearestDevice();
 
   return (
     <BaseButton onClick={getNearestDefibrillators}>
@@ -13,5 +15,3 @@ export default function SearchNearestDefButton() {
     </BaseButton>
   );
 }
-
-

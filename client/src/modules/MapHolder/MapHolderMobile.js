@@ -14,15 +14,15 @@ import {
   setMapCenter
 } from 'shared/store/map/actions';
 
-import { hidePopup } from './actions/popupDisplay';
+import { hidePopup } from 'shared/store/popup/actions';
 import {
   fetchDefs,
   setActive
-} from '../Sidebar/components/ItemList/actions/list.js';
+} from 'shared/store/defs/actions';
 import {
   setGeolocation,
   startWatchingPosition
-} from './actions/userPosition';
+} from 'shared/store/user-position/actions';
 
 import AddedPin from './layers/AddedPin';
 import UserPin from './components/UserPin';

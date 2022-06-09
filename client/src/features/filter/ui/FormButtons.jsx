@@ -10,12 +10,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { resetFilter } from 'shared/store/filter/actions';
 import { useFormButtonsStyles } from 'features/filter/model/use-styles';
 
-import { hidePopup } from 'modules/MapHolder/actions/popupDisplay';
+import { hidePopup } from 'shared/store/popup/actions';
 import {
   fetchDefs,
   setPage,
   setData
-} from 'modules/Sidebar/components/ItemList/actions/list';
+} from 'shared/store/defs/actions';
 
 const FormButtons = ({
   formik: {
