@@ -1,21 +1,18 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeTransportType } from 'modules/MapHolder/actions/mapState';
-import { DirectionsCarSharp } from '@material-ui/icons';
-import { DirectionsBike } from '@material-ui/icons';
 import { IconButton } from '@material-ui/core';
+import { DirectionsBike } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { DirectionsCarSharp } from '@material-ui/icons';
+
+import { changeTransportType } from 'shared/store/map/actions';
 
 const detailsStyle = {
   container: {
     fontSize: '1.25rem',
     fontWeight: 'bold',
     color: 'rgba(255, 255, 255, 1)',
-    position: 'fixed',
-    bottom: '5%',
-    right: '160px',
-    zIndex: '30',
     backgroundColor: 'rgba(40, 44, 52, 1)',
     borderRadius: '5px',
     border: '2px solid rgba(0, 0, 0, 0.6)',
@@ -93,7 +90,7 @@ function RouteDetails({
   const type = useSelector(
     reducer => reducer.mapState.routeDetails.transportType
   );
-  
+
   const handleClick = type => {
     dispatch(changeTransportType(type));
   };
@@ -107,11 +104,10 @@ function RouteDetails({
             <IconButton
               onClick={() => handleClick('driving')}
               color="inherit"
-              className={`${classes.type_icon} ${
-                type === 'driving'
+              className={`${classes.type_icon} ${type === 'driving'
                   ? classes.type_icon_selected
                   : ''
-              }`}
+                }`}
             >
               <DirectionsCarSharp />
             </IconButton>
@@ -119,11 +115,10 @@ function RouteDetails({
             <IconButton
               onClick={() => handleClick('cycling')}
               color="inherit"
-              className={`${classes.type_icon} ${
-                type === 'cycling'
+              className={`${classes.type_icon} ${type === 'cycling'
                   ? classes.type_icon_selected
                   : ''
-              }`}
+                }`}
             >
               <DirectionsBike />
             </IconButton>

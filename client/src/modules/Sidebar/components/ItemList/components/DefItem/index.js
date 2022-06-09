@@ -1,42 +1,43 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink, useHistory } from 'react-router-dom';
+import DirectionsIcon from '@material-ui/icons/Directions';
+
+import { fetchSingleDefById } from 'shared/api/defs';
+import checkPermissions from 'shared/utils/permission';
 
 import ConfirmationModalWrapper from 'shared/ui/ConfirmationModalWrapper';
 
-import permissionService from '../../../../../Auth/permissionService';
-import { fetchSingleDefById } from '../../../../../Sidebar/api/index';
 import {
   setFullTime,
   setFromTime,
   setUntilTime
-} from '../../../EditForm/actions/setFullTime';
+} from 'shared/store/full-time/actions';
 import {
-  setMapCenter,
   setMapZoom,
   setDefIndex,
+  setMapCenter,
   setRoutePosition,
   setNextNearestDefButtonStatus
-} from '../../../../../MapHolder/actions/mapState';
+} from 'shared/store/map/actions';
 import {
   deleteDefItem,
   blockDefItem,
-  setActive,
-} from '../../actions/list';
+  setActive
+} from 'shared/store/defs/actions';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE,
   EDIT_DEF_POINT,
   DELETE_DEF_POINT,
   BLOCK_DEF_POINT
-} from '../../consts';
+} from 'shared/store/defs/constants';
 import BlockBtn from './BlockBtn';
 import DeleteBtn from './DeleteBtn';
-import DirectionsIcon from '@material-ui/icons/Directions';
-import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   pointCard: {
@@ -83,7 +84,7 @@ const useStyles = makeStyles({
     display: props => (props.isActive ? 'block' : 'none'),
     position: 'absolute',
     top: 5,
-    right: 3,
+    right: 3
   },
   routeIcon: {
     fontSize: '40px',
@@ -110,7 +111,7 @@ const DefItem = ({
   setFromTime,
   setUntilTime,
   setDefIndex,
-  setNextNearestDefButtonStatus,
+  setNextNearestDefButtonStatus
 }) => {
   const isActive = defItemInfo._id === activeItemId;
   const hasPermission =
@@ -155,13 +156,13 @@ const DefItem = ({
     setTime(data.fullTimeAvailable);
     const timeFrom =
       data.availableFrom === undefined ||
-        data.availableFrom === null
+      data.availableFrom === null
         ? 0
         : data.availableFrom;
     setFromTime(timeFrom);
     const timeUntil =
       data.availableUntil === undefined ||
-        data.availableUntil === null
+      data.availableUntil === null
         ? 23
         : data.availableUntil;
     setUntilTime(timeUntil);
@@ -178,24 +179,24 @@ const DefItem = ({
 
   const handleRoute = () => {
     const [lng, lat] = defItemInfo.location.coordinates;
-    const { _id: id } = defItemInfo
-    setRoutePosition({ lng, lat }, id)
+    const { _id: id } = defItemInfo;
+    setRoutePosition({ lng, lat }, id);
     setDefIndex(index);
     setNextNearestDefButtonStatus(true);
-  }
+  };
 
   useEffect(() => {
-    const permissionEdit = permissionService(
+    const permissionEdit = checkPermissions(
       EDIT_DEF_POINT,
       user,
       defItemInfo
     );
-    const permissionDelete = permissionService(
+    const permissionDelete = checkPermissions(
       DELETE_DEF_POINT,
       user,
       defItemInfo
     );
-    const permissionBlockDef = permissionService(
+    const permissionBlockDef = checkPermissions(
       BLOCK_DEF_POINT,
       user
     );
@@ -273,14 +274,12 @@ const DefItem = ({
           />
         )}
       </div>
-      <div
-        className={classes.routeIconContainer}
-      >
+      <div className={classes.routeIconContainer}>
         <Tooltip
           title="Прокласти шлях"
           onClick={handleRoute}
         >
-          <DirectionsIcon className={classes.routeIcon}/>
+          <DirectionsIcon className={classes.routeIcon} />
         </Tooltip>
       </div>
     </NavLink>
@@ -352,6 +351,7 @@ export default connect(
     setRoutePosition: (routeCoords, id) =>
       dispatch(setRoutePosition(routeCoords, id)),
     setDefIndex: value => dispatch(setDefIndex(value)),
-    setNextNearestDefButtonStatus: (value) => dispatch(setNextNearestDefButtonStatus(value))
+    setNextNearestDefButtonStatus: value =>
+      dispatch(setNextNearestDefButtonStatus(value))
   })
 )(DefItem);

@@ -10,19 +10,20 @@ import {
   Route
 } from 'react-router-dom';
 
-import useAlert from 'shared/ui/Alert/use-alert';
 import Alert from 'shared/ui/Alert';
+import Header from 'shared/ui/Header';
+import { Search } from 'features/search';
 import PrivateRoute from 'shared/ui/PrivateRoute';
 
+import useAlert from 'shared/ui/Alert/use-alert';
+import checkPermission from 'shared/utils/permission';
+
 import { sidebarWidth } from './styleConstants';
-import permissionService from '../Auth/permissionService';
 import {
   CREATE_DEF_POINT,
   ACCOUNT
-} from './components/ItemList/consts';
+} from 'shared/store/defs/constants';
 
-import Header from './components/Header';
-import Search from './components/Search';
 import AddForm from './components/AddForm';
 import Account from './components/Account';
 import EditForm from './components/EditForm';
@@ -64,11 +65,11 @@ const Sidebar = ({ user, visible }) => {
   ] = useState(false);
 
   useEffect(() => {
-    const permissionAdd = permissionService(
+    const permissionAdd = checkPermission(
       CREATE_DEF_POINT,
       user
     );
-    const permissionAccount = permissionService(
+    const permissionAccount = checkPermission(
       ACCOUNT,
       user
     );

@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  GridList,
   Container,
   Typography,
-  GridList,
   GridListTile
 } from '@material-ui/core';
 
+import { createImage } from 'shared/api/defs';
+
 import useAlert from 'shared/ui/Alert/use-alert';
 import UploadImage from 'shared/ui/UploadImage';
-import { hidePopup } from '../../../actions/popupDisplay';
-import { createImage } from '../../../../Sidebar/api';
+
+import { hidePopup } from 'shared/store/popup/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {

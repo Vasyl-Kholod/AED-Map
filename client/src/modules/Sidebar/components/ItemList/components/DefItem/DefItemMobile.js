@@ -1,18 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { setSearch } from 'shared/store/search/actions';
+
 import {
-  setMapCenter,
-  setMapZoom
-} from '../../../../../MapHolder/actions/mapState';
-import { setActive } from '../../actions/list';
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
+import { setActive } from 'shared/store/defs/actions';
 import {
   ENTER_BUTTON_CODE,
   BASE_ZOOM_VALUE
-} from '../../consts';
-import { setSearch } from '../../../Search/actions';
+} from 'shared/store/defs/constants';
 
 const useStyles = makeStyles({
   pointCard: {
@@ -100,8 +101,7 @@ const DefItemMobile = ({
           {defItemInfo.address}
         </h3>
         <p className={classes.descStyle}>
-          {defItemInfo.title},
-          {defItemInfo.address}
+          {defItemInfo.title},{defItemInfo.address}
         </p>
       </div>
     </NavLink>

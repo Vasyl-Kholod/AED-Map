@@ -1,19 +1,22 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isEmpty, isEqual } from 'lodash';
 import { Cancel } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 
 import { cancelToken } from 'shared/utils';
-import Loader from 'shared/ui/Loader';
+import { fetchSingleDefById } from 'shared/api/defs';
+import {
+  setDefIndex,
+  setRoutePosition
+} from 'shared/store/map/actions';
 
+import Loader from 'shared/ui/Loader';
 import ModalPhoto from './PhotoGallery';
 
 import { titles } from './consts';
-import { setRoutePosition, setDefIndex } from 'modules/MapHolder/actions/mapState';
-import { hidePopup } from '../../actions/popupDisplay';
-import { fetchSingleDefById } from '../../../Sidebar/api';
-import { isEmpty, isEqual } from 'lodash';
+import { hidePopup } from 'shared/store/popup/actions';
 
 const currDefCancelToken = cancelToken();
 
@@ -61,10 +64,7 @@ const useStyle = makeStyles({
   }
 });
 
-const DefibrillatorPopupContent = ({
-  id,
-  hidePopup
-}) => {
+const DefibrillatorPopupContent = ({ id, hidePopup }) => {
   const classes = useStyle();
   const [currDef, setCurrDef] = useState(null);
 
@@ -89,11 +89,11 @@ const DefibrillatorPopupContent = ({
         def.fullTimeAvailable === true
           ? 'Цілодобово'
           : `${def.availableFrom
-            .toString()
-            .padStart(2, '0')}:00 - 
+              .toString()
+              .padStart(2, '0')}:00 - 
              ${def.availableUntil
-            .toString()
-            .padStart(2, '0')}:00`;
+               .toString()
+               .padStart(2, '0')}:00`;
       return `${availableTime}, доступно ${def.defs_amount}`;
     }
 
@@ -127,15 +127,18 @@ const DefibrillatorPopupContent = ({
       )}
 
       {Object.keys(titles).map(key => {
-        if (!isEmpty(currDef[key]) || isEqual(key, 'availableFrom')){
+        if (
+          !isEmpty(currDef[key]) ||
+          isEqual(key, 'availableFrom')
+        ) {
           return (
-              <p key={key}>
-                <span className={classes.title}>
-                  {titles[key]}
-                </span>
-                <br />
-                {formatData(key, currDef)}
-              </p>
+            <p key={key}>
+              <span className={classes.title}>
+                {titles[key]}
+              </span>
+              <br />
+              {formatData(key, currDef)}
+            </p>
           );
         }
       })}
@@ -157,12 +160,14 @@ DefibrillatorPopupContent.propTypes = {
   setRoutePosition: PropTypes.func
 };
 
-export default connect((state) => ({
-  listData: state.defs.listData
-}),
+export default connect(
+  state => ({
+    listData: state.defs.listData
+  }),
   dispatch => ({
     hidePopup: () => dispatch(hidePopup()),
     setRoutePosition: (routeCoords, id) =>
       dispatch(setRoutePosition(routeCoords, id)),
-    setDefIndex: (value) => dispatch(setDefIndex(value))
-  }))(DefibrillatorPopupContent);
+    setDefIndex: value => dispatch(setDefIndex(value))
+  })
+)(DefibrillatorPopupContent);

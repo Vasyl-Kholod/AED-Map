@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 
-import ButtonBack from 'shared/ui/ButtonBack';
+import { SIGNUP } from 'shared/store/user/constants';
+import checkPermission from 'shared/utils/permission';
 
-import { SIGNUP } from '../../../Auth/const';
-import permissionService from '../../../Auth/permissionService';
-import ButtonSignOut from '../../../Auth/submodules/SignIn/components/ButtonSignOut';
-import SignUpSendmail from '../../../Auth/submodules/SignUp/submodules/SignUpSendmail';
+import ButtonBack from 'shared/ui/ButtonBack';
+import { ButtonSignOut } from 'features/sign-in';
+import { SignUpSendMail } from 'features/sign-up-send-mail';
 
 const useStyles = makeStyles({
   container: {
@@ -26,16 +26,13 @@ const Account = ({ user }) => {
   ] = useState(false);
 
   useEffect(() => {
-    const permissionSignUp = permissionService(
-      SIGNUP,
-      user
-    );
+    const permissionSignUp = checkPermission(SIGNUP, user);
     changePermissionForSignUp(permissionSignUp);
   }, [user]);
 
   return (
     <div className={classes.container}>
-      {permissionForSignUp && <SignUpSendmail />}
+      {permissionForSignUp && <SignUpSendMail />}
       <ButtonSignOut />
       <ButtonBack />
     </div>

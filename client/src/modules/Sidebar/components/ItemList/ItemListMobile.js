@@ -10,14 +10,14 @@ import {
 } from 'react-virtualized';
 
 import { cancelToken } from 'shared/utils';
+import {
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
-import { BASE_ZOOM_VALUE } from './consts';
-import { fetchDefs } from './actions/list';
-import {
-  setMapCenter,
-  setMapZoom
-} from '../../../MapHolder/actions/mapState';
+import { BASE_ZOOM_VALUE } from 'shared/store/defs/constants';
+import { fetchDefs } from 'shared/store/defs/actions';
 
 import DefItemMobile from './components/DefItem/DefItemMobile';
 import InfoMessageMobile from './components/InfoMessage/infoMessageMobile';

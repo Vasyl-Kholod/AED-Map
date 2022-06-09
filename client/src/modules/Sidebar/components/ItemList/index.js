@@ -10,15 +10,15 @@ import {
 } from 'react-virtualized';
 
 import { cancelToken } from 'shared/utils';
+import { fetchSingleDefById } from 'shared/api/defs';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
-import { BASE_ZOOM_VALUE } from './consts';
-import { fetchDefs } from './actions/list';
-import { fetchSingleDefById } from '../../api';
 import {
-  setMapCenter,
-  setMapZoom
-} from '../../../MapHolder/actions/mapState';
+  setMapZoom,
+  setMapCenter
+} from 'shared/store/map/actions';
+import { BASE_ZOOM_VALUE } from 'shared/store/defs/constants';
+import { fetchDefs } from 'shared/store/defs/actions';
 
 import DefItem from './components/DefItem';
 import InfoMessage from './components/InfoMessage';
@@ -58,7 +58,6 @@ const ItemList = ({
   totalCount,
   page,
   search,
-  geolocationProvided,
   setMapCenterCoords,
   setMapZoomParam
 }) => {
@@ -129,7 +128,7 @@ const ItemList = ({
 
   // Update camera position when clicking on defibrilattor icon
   useEffect(() => {
-    const getDef = async (callback = () => { }) => {
+    const getDef = async (callback = () => {}) => {
       const { data } = await fetchSingleDefById(activeDef);
       callback(data.defibrillator);
       return data.defibrillator;
@@ -224,9 +223,7 @@ export default connect(
     totalCount: state.defs.totalCount,
     page: state.defs.page,
     search: state.search,
-    user: state.user.user,
-    geolocationProvided:
-      state.userPosition.geolocationProvided
+    user: state.user.user
   }),
   dispatch => ({
     fetchDefItems: params => dispatch(fetchDefs(params)),

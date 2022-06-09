@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 import React from 'react';
 
-import MyForm from 'shared/ui/Form';
+import { createItem, createImage } from 'shared/api/defs';
 
+import MyForm from 'shared/ui/Form';
 import INITIAL_VALUES from './const';
-import { createItem, createImage } from '../../api';
 
 const AddForm = () => {
   const hadleSubmit = async ({ images, ...data }) => {
