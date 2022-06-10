@@ -75,10 +75,6 @@ const withStartModal = Cmp => ({
     setScreenWidth(window.innerWidth);
   }, [searchInput]);
 
-  if (!isEqual(location.pathname, '/')) {
-    return null;
-  }
-
   const isMobileView =
     !isEqual(window.orientation, 90) &&
     screenWidth < media.ipad;
@@ -96,17 +92,19 @@ const withStartModal = Cmp => ({
       setStartModal={setStartModal}
       {...restProps}
     >
-      <CSSTransition
-        appear
-        unmountOnExit
-        timeout={1000}
-        in={isStartModalOpen}
-        classNames={transitionClasses}
-      >
-        <Suspense fallback={<div>{fallbackMessage}</div>}>
-          <StartModalCmp setStartModal={setStartModal} />
-        </Suspense>
-      </CSSTransition>
+      {isEqual(location.pathname, '/') ? (
+        <CSSTransition
+          appear
+          unmountOnExit
+          timeout={1000}
+          in={isStartModalOpen}
+          classNames={transitionClasses}
+        >
+          <Suspense fallback={<div>{fallbackMessage}</div>}>
+            <StartModalCmp setStartModal={setStartModal} />
+          </Suspense>
+        </CSSTransition>
+      ) : null}
     </Cmp>
   );
 };

@@ -1,1 +1,0 @@
-export { useSearchDevices } from './use-search-devices'
