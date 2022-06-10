@@ -62,7 +62,11 @@ const App = ({
     <div className="App">
       <div className={classes.mainStyle}>
         <Switch>
-          <Route path="/admin" component={SignInModal} />
+          <Route
+            path="/admin"
+            exact
+            component={SignInModal}
+          />
           <Route
             path="/signup/:email/:token"
             component={SignUpPassword}

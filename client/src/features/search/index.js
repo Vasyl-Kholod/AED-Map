@@ -1,4 +1,4 @@
-import Search from './ui/Search';
-import SearchMobile from './ui/SearchMobile';
+import Search from './ui/SearchWizard';
+import ResetButton from './ui/ResetButton';
 
-export { Search, SearchMobile };
+export { Search, ResetButton };

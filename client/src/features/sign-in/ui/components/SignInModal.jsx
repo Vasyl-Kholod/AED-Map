@@ -1,12 +1,14 @@
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Container } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
 
 import { cancelToken } from 'shared/utils';
 import { signInUser } from 'shared/api/auth';
 import { socketAuthOpen } from 'shared/websocket';
+import { clearData } from 'shared/store/defs/actions';
 import AuthSchema from 'features/sign-in/model/validator';
 import { INITIAL_VALUES } from 'features/sign-in/lib/constants';
 import { useSignInModalStyles } from 'features/sign-in/model/use-styles';
@@ -15,10 +17,6 @@ import {
   startSignIn,
   successSignIn
 } from 'shared/store/user/actions';
-import {
-  fetchDefs,
-  clearData
-} from 'shared/store/defs/actions';
 
 import Form from './Form';
 import Header from './Header';
@@ -27,12 +25,12 @@ import Footer from './Footer';
 const SignInCancelToken = cancelToken();
 
 const SignInModal = ({
+  fail,
   start,
   success,
-  fail,
-  fetchDefItems,
   clearDefItems
 }) => {
+  const history = useHistory();
   const classes = useSignInModalStyles();
   const [error, setError] = useState('');
 
@@ -47,8 +45,8 @@ const SignInModal = ({
       const { authorization } = headers;
       success(data, authorization);
       socketAuthOpen();
+      history.push('/');
       clearDefItems();
-      fetchDefItems();
     } catch (e) {
       const { message } = e.response.data;
       fail();
@@ -98,6 +96,5 @@ export default connect(null, dispatch => ({
   success: (user, authorization) =>
     dispatch(successSignIn(user, authorization)),
   fail: () => dispatch(failSignIn()),
-  fetchDefItems: () => dispatch(fetchDefs()),
   clearDefItems: () => dispatch(clearData())
 }))(SignInModal);
