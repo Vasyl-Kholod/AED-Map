@@ -12,9 +12,6 @@ import media from 'shared/consts/media';
 const StartModal = React.lazy(() =>
   import('shared/ui/StartModal')
 );
-const StartModalMobile = React.lazy(() =>
-  import('shared/ui/StartModal/StartModalMobile')
-);
 
 const useStyles = makeStyles({
   startModalFadeEnter: {
@@ -81,9 +78,6 @@ const withStartModal = Cmp => ({
   const fallbackMessage = isMobileView
     ? 'Завантаження модального вікна...'
     : 'Завантаження...';
-  const StartModalCmp = isMobileView
-    ? StartModalMobile
-    : StartModal;
 
   return (
     <Cmp
@@ -101,7 +95,7 @@ const withStartModal = Cmp => ({
           classNames={transitionClasses}
         >
           <Suspense fallback={<div>{fallbackMessage}</div>}>
-            <StartModalCmp setStartModal={setStartModal} />
+            <StartModal setStartModal={setStartModal} />
           </Suspense>
         </CSSTransition>
       ) : null}
