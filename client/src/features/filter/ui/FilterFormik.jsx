@@ -1,7 +1,7 @@
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
 
 import {
   setFilter,

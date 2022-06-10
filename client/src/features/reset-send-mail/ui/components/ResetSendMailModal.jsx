@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { Container } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
 
 import { cancelToken } from 'shared/utils';
 import { resetSendmail } from 'shared/api/auth';

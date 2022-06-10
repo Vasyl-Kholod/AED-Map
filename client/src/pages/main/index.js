@@ -1,48 +1,19 @@
-import { isEqual } from 'lodash';
-import React, {
-  Suspense,
-  useEffect,
-  useState
-} from 'react';
+import React, { Suspense, useState } from 'react';
 
-import media from 'shared/consts/media';
-
-const Sidebar = React.lazy(() => import('modules/Sidebar'));
-const SidebarMobile = React.lazy(() =>
-  import('modules/Sidebar/SidebarMobile')
-);
+const Sidebar = React.lazy(() => import('widgets/sidebar'));
 const MapHolder = React.lazy(() =>
-  import('modules/MapHolder')
-);
-const MapHolderMobile = React.lazy(() =>
-  import('modules/MapHolder/MapHolderMobile')
+  import('widgets/map-holder')
 );
 
-const Main = searchInput => {
+const Main = () => {
   const [visible, setVisible] = useState(true);
-  const [screenWidth, setScreenWidth] = useState();
-
-  useEffect(() => {
-    setScreenWidth(window.innerWidth);
-  }, [searchInput]);
-
-  const isMobileView =
-    !isEqual(window.orientation, 90) &&
-    screenWidth < media.ipad;
-  const SidebarCmp = isMobileView ? SidebarMobile : Sidebar;
-  const MapHolderCmp = isMobileView
-    ? MapHolderMobile
-    : MapHolder;
 
   return (
     <Suspense
       fallback={<div>Завантаження меню і мапи...</div>}
     >
-      <SidebarCmp
-        visible={visible}
-        setVisible={setVisible}
-      />
-      <MapHolderCmp
+      <Sidebar visible={visible} setVisible={setVisible} />
+      <MapHolder
         visible={visible}
         setVisible={setVisible}
       />

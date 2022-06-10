@@ -3,11 +3,13 @@ import { Formik } from 'formik';
 import { Paper } from '@material-ui/core';
 import { DebounceInput } from 'react-debounce-input';
 
-import { Filter } from 'features/filter';
-import { MyInputBase } from 'shared/ui/Fields';
-import { useSearchDevices } from 'modules/Sidebar/hook';
 import { INITIAL_VALUES } from 'features/search/lib/constants';
 import { useSearchStyles } from 'features/search/model/use-styles';
+
+import { Filter } from 'features/filter';
+import { MyInputBase } from 'shared/ui/Fields';
+
+import { useSearchDevices } from '../model/use-search-devices';
 
 export default function Search() {
   const classes = useSearchStyles();
