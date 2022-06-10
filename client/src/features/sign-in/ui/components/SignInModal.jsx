@@ -87,7 +87,6 @@ SignInModal.propTypes = {
   start: PropTypes.func.isRequired,
   success: PropTypes.func.isRequired,
   fail: PropTypes.func.isRequired,
-  fetchDefItems: PropTypes.func.isRequired,
   clearDefItems: PropTypes.func.isRequired
 };
 
