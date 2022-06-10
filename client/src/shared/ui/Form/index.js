@@ -1,24 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Formik, Form } from 'formik';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Formik, Form } from 'formik';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import AddAdressText from './AddAdressText';
+
+import AddMoreInfo from './AddMoreInfo';
+import ButtonBack from '../ButtonBack';
 import PlatesSelect from './PlatesSelect';
 import AddTelephone from './AddTelephone';
-import AddMoreInfo from './AddMoreInfo';
+import AddAdressText from './AddAdressText';
+import MyTimeField from '../Fields/timeField';
+import { MyTextField, MyImageField } from '../Fields';
+
 import FormValidation from './validator';
 import useAlert from '../Alert/use-alert';
-import { MyTextField, MyImageField } from '../Fields';
-import MyTimeField from '../Fields/timeField';
+
 import {
   setPage,
   setData
-} from '../../../modules/Sidebar/components/ItemList/actions/list';
-import ButtonBack from '../ButtonBack';
+} from 'shared/store/defs/actions';
 
 const useStyles = makeStyles({
   input: {
@@ -45,7 +49,7 @@ const useStyles = makeStyles({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(255,255,255,0.3)'
     }
-  },
+  }
 });
 
 const MyForm = ({
@@ -80,7 +84,9 @@ const MyForm = ({
         availableFrom: fullTimeStatus ? null : timeFrom,
         availableUntil: fullTimeStatus ? null : timeUntil,
         actualDate,
-        defs_amount: !!values.defs_amount ? values.defs_amount : 1
+        defs_amount: !!values.defs_amount
+          ? values.defs_amount
+          : 1
       });
       ShowAlert({
         open: true,

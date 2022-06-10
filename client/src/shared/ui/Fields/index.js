@@ -1,7 +1,7 @@
-﻿import React, { useRef, useState, useEffect } from 'react';
+﻿import { useField } from 'formik';
 import PropTypes from 'prop-types';
-import { useField } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   TextField,
   InputLabel,
@@ -179,8 +179,7 @@ const MyImageField = ({
   const [aImageUrls, setUrl] = useState([]);
 
   useEffect(() => {
-    setUrl(images.map(image =>(URL.createObjectURL(image)
-    )));
+    setUrl(images.map(image => URL.createObjectURL(image)));
   }, [images]);
 
   return (
@@ -212,15 +211,16 @@ const MyImageField = ({
           className={classes.gridList}
           cols={2.5}
         >
-          {aImageUrls && aImageUrls.map((imageSrc, index) => (
-            <GridListTile key={index}>
-              <img
-                src={imageSrc}
-                alt={imageSrc.title}
-                className={classes.imageItem}
-              />
-            </GridListTile>
-          ))}
+          {aImageUrls &&
+            aImageUrls.map((imageSrc, index) => (
+              <GridListTile key={index}>
+                <img
+                  src={imageSrc}
+                  alt={imageSrc.title}
+                  className={classes.imageItem}
+                />
+              </GridListTile>
+            ))}
         </GridList>
       </div>
     </div>
