@@ -4,7 +4,7 @@ import { getNearestDevices } from 'shared/api/defs';
 const emptyFn = () => null;
 
 const defaultTransformFn = oResponse =>
-  get(oResponse, ['data', 'listDefs'], {});
+  get(oResponse, ['listDefs'], {});
 
 const getNearestDefibrillatorsFn = ({
   urlParams,

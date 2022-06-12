@@ -24,7 +24,7 @@ const SignUpSendMailModal = () => {
     { resetForm, setErrors, setSubmitting }
   ) => {
     try {
-      const { data } = await signUpSendmail(values);
+      const data = await signUpSendmail(values);
       const { message } = data;
       resetForm();
       setSuccess(message);

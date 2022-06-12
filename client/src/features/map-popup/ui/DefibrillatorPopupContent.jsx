@@ -61,7 +61,7 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     const fetchData = async () => {
       setCurrDef(null);
       const res = await fetchSingleDefById(id);
-      const { defibrillator } = res.data;
+      const { defibrillator } = res;
       setCurrDef(defibrillator);
     };
 
