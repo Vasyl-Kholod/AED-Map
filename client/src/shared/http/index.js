@@ -13,6 +13,10 @@ axios.interceptors.request.use(
   }
 );
 
+axios.interceptors.response.use(
+  response => response.data
+);
+
 const http = {
   get(url, params, cancel) {
     return axios({
@@ -35,7 +39,7 @@ const http = {
       method: 'post',
       url,
       data: params,
-      headers: {'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data' },
       cancelToken: cancel ? cancel.token : null
     });
   },

@@ -24,8 +24,8 @@ const ResetSendMailModal = () => {
     { resetForm, setErrors, setSubmitting }
   ) => {
     try {
-      const { data } = await resetSendmail(values);
-      const { message } = data;
+      const res = await resetSendmail(values);
+      const { message } = res;
       resetForm();
       setSuccess(message);
     } catch (e) {

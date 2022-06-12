@@ -25,9 +25,7 @@ const EditForm = ({ setMapCenter }) => {
   const { href } = window.location;
   const id = href.slice(href.lastIndexOf('/') + 1);
 
-  const prepareData = async ({
-    data: { defibrillator }
-  }) => {
+  const prepareData = async ({ defibrillator }) => {
     const [lng, lat] = defibrillator.location.coordinates;
     const correctAddress = await getReverseGeocoding({
       lng,
@@ -37,8 +35,8 @@ const EditForm = ({ setMapCenter }) => {
     setDef({
       title: defibrillator.title,
       address:
-        correctAddress.data.results[0] &&
-        correctAddress.data.results[0].formatted_address,
+        correctAddress.results[0] &&
+        correctAddress.results[0].formatted_address,
       informational_plates:
         defibrillator.informational_plates,
       phone: defibrillator.phone,
@@ -92,7 +90,7 @@ const EditForm = ({ setMapCenter }) => {
 
     await createImage(
       bodyFormData,
-      respond.data.defibrillator._id
+      respond.defibrillator._id
     );
   };
 

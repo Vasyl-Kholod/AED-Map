@@ -41,9 +41,9 @@ const SignInModal = ({
     start();
 
     try {
-      const { data, headers } = await signInUser(values);
-      const { authorization } = headers;
-      success(data, authorization);
+      const res = await signInUser(values);
+      const { authorization } = res;
+      success(res, authorization);
       socketAuthOpen();
       history.push('/');
       clearDefItems();

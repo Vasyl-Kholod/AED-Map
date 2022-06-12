@@ -190,7 +190,7 @@ const MapHolder = ({
       start,
       endPosition
     );
-    const data = query.data.routes[0];
+    const data = query.routes[0];
     setRouteCords(data.geometry.coordinates);
     setShowRouteDetails(true);
     setRouteDetails({

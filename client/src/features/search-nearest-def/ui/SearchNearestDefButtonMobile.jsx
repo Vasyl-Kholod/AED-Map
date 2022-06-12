@@ -38,12 +38,12 @@ function SearchNearestDefButtonMobile({
         return;
       }
 
-      if (nearestItem.data.listDefs) {
+      if (nearestItem.listDefs) {
         const [
           lng,
           lat
-        ] = nearestItem.data.listDefs.location.coordinates;
-        const { _id: id } = nearestItem.data.listDefs;
+        ] = nearestItem.listDefs.location.coordinates;
+        const { _id: id } = nearestItem.listDefs;
         setRoutePosition({ lng, lat }, id);
         setActiveId(id);
       } else {

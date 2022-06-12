@@ -154,8 +154,8 @@ module.exports.userSignIn = async (req, res) => {
       // Response [OK] - jwt and user information
       res
         .status(200)
-        .set('Authorization', `Bearer ${token}`)
-        .json({ _id, email, role });
+        // .set('Authorization', `Bearer ${token}`)
+        .json({ _id, email, role, authorization: `Bearer ${token}` });
     } else {
       // Response [Unauthorized] - error message
       res.status(401).json({

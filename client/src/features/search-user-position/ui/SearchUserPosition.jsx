@@ -42,7 +42,7 @@ export default function SearchUserPosition({
     dispatch(inputUserPosition(value));
     if (value.trim()) {
       const countries = await getGeocodingOptions(value);
-      setOptions(countries.data.predictions);
+      setOptions(countries.predictions);
     }
   };
 
@@ -51,8 +51,7 @@ export default function SearchUserPosition({
       const response = await getGeocodingDetails(
         selectedOption.place_id
       );
-      const coordinates =
-        response.data.result.geometry.location;
+      const coordinates = response.result.geometry.location;
 
       dispatch(
         inputUserPosition(selectedOption.description)
