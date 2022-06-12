@@ -19,6 +19,7 @@
   },
   "production": {
     "NODE_ENV": "production",
-    "NODE_OPTIONS": "--http-parser=legacy"
+    "NODE_OPTIONS": "--http-parser=legacy",
+    "MONGO_URL": "mongodb://host.docker.internal:27017/"
   }
 }
