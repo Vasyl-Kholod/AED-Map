@@ -101,7 +101,7 @@ const DefItem = ({
 
   const setDefCheckbox = async id => {
     const res = await fetchSingleDefById(id);
-    const data = res.data.defibrillator;
+    const data = res.defibrillator;
     setTime(data.fullTimeAvailable);
     const timeFrom =
       data.availableFrom === undefined ||

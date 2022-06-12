@@ -26,7 +26,7 @@ const SignUpPassword = () => {
     { resetForm, setErrors, setSubmitting }
   ) => {
     try {
-      const { data } = await signUpUser({
+      const data = await signUpUser({
         ...values,
         token
       });

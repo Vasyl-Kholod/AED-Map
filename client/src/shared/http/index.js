@@ -17,6 +17,10 @@ axios.interceptors.request.use(
   }
 );
 
+axios.interceptors.response.use(
+  response => response.data
+);
+
 const http = {
   get(url, params, cancel) {
     return axios({

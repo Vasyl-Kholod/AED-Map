@@ -87,11 +87,11 @@ export const fetchDefs = params => {
             }
           });
         }
-        const { data } = await getDefItems(
+        const res = await getDefItems(
           { ...params, ...userCoordinates },
           defsCancelToken.instance
         );
-        dispatch(successLoadDef(data));
+        dispatch(successLoadDef(res));
       } catch (e) {
         dispatch(failLoadDef(e));
       }

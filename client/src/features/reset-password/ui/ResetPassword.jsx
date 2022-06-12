@@ -24,11 +24,11 @@ const ResetPassword = () => {
     { resetForm, setErrors, setSubmitting }
   ) => {
     try {
-      const { data } = await resetUser({
+      const res = await resetUser({
         ...values,
         token
       });
-      const { message } = data;
+      const { message } = res;
       resetForm();
       setSuccess(message);
     } catch (e) {

@@ -104,9 +104,9 @@ const DefsList = ({
   // Update camera position when clicking on defibrilattor icon
   useEffect(() => {
     const getDef = async (callback = () => {}) => {
-      const { data } = await fetchSingleDefById(activeDef);
-      callback(data.defibrillator);
-      return data.defibrillator;
+      const res = await fetchSingleDefById(activeDef);
+      callback(res.defibrillator);
+      return res.defibrillator;
     };
 
     const setCenterOnDef = def => {

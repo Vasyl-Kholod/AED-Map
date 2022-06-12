@@ -26,7 +26,7 @@ const AddDefForm = () => {
 
     await createImage(
       bodyFormData,
-      respond.data.defibrillator._id
+      respond.defibrillator._id
     );
   };
 
