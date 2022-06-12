@@ -11,10 +11,10 @@ export const startSignIn = () => {
   };
 };
 
-export const successSignIn = (user, authorization) => {
+export const successSignIn = (user, token) => {
   localStorage.setItem(
     'authorization',
-    JSON.stringify(authorization)
+    JSON.stringify(token)
   );
 
   return {
