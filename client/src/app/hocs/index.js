@@ -6,6 +6,7 @@ import withStore from './with-store';
 import withBrowserRouter from './with-router';
 import withStartModal from './with-start-modal';
 import withQueryClient from './with-query-client';
+import withConfiguredAuth from './with-configured-auth';
 
 export const withHocs = compose(
   withStore,
@@ -13,5 +14,6 @@ export const withHocs = compose(
   withBrowserRouter,
   withRouter,
   withData,
-  withStartModal
+  withStartModal,
+  withConfiguredAuth
 );

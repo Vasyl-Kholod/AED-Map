@@ -8,7 +8,6 @@ import {
   useHistory
 } from 'react-router-dom';
 
-import { socketAuthOpen } from 'shared/websocket';
 import { useValidateUser } from 'shared/hooks/use-validate-user';
 
 import { Main } from 'pages/main';
@@ -28,13 +27,7 @@ const useStyles = makeStyles({
   }
 });
 
-const App = ({
-  fail,
-  user,
-  success,
-  children,
-  setStartModal
-}) => {
+const App = ({ user, children, setStartModal }) => {
   const classes = useStyles();
   const history = useHistory();
   const validateUserMutation = useValidateUser();
@@ -42,12 +35,9 @@ const App = ({
 
   useEffect(() => {
     validateUserMutation.mutate(null, {
-      onError: () => fail(),
       onMutate: () => setDidMount(true),
-      onSuccess: ({ data, authorization }) => {
-        socketAuthOpen();
+      onSuccess: () => {
         setStartModal(false);
-        success(data, authorization);
       }
     });
     // eslint-disable-next-line
@@ -89,8 +79,6 @@ App.defaultProps = {
 };
 
 App.propTypes = {
-  fail: PropTypes.func.isRequired,
-  success: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
     search: PropTypes.string.isRequired

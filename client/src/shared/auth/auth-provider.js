@@ -9,24 +9,12 @@ class AuthProvider {
     return this._auth;
   }
 
-  get signIn() {
-    return this.auth.signIn;
-  }
-
-  get signOut() {
-    return this.auth.signOut;
-  }
-
   get configure() {
     return this.auth.configure;
   }
 
   get getJWTToken() {
     return this.auth.getJWTToken;
-  }
-
-  get getCurrentAuthenticatedUser() {
-    return this.auth.getCurrentUser;
   }
 
   onAuthStateChange = (eventType, callback) =>

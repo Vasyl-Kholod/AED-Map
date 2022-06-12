@@ -1,26 +1,5 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3012';
-
-axios.interceptors.request.use(
-  config => {
-    const authorization = JSON.parse(
-      localStorage.getItem('authorization')
-    );
-    if (authorization) {
-      config.headers.Authorization = authorization;
-    }
-    return config;
-  },
-  error => {
-    Promise.reject(error);
-  }
-);
-
-axios.interceptors.response.use(
-  response => response.data
-);
-
 const http = {
   get(url, params, cancel) {
     return axios({

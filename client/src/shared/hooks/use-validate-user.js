@@ -1,14 +1,37 @@
-const { useMutation } = require('react-query');
-const { validateUser } = require('shared/api/auth');
+import { isFunction } from 'lodash';
+import { useDispatch } from 'react-redux';
+import { useMutation } from 'react-query';
 
-const useValidateUser = oMutationOpts =>
-  useMutation(async () => {
-    const oResponse = await validateUser();
+import { validateUser } from 'shared/api/auth';
+import { socketAuthOpen } from 'shared/websocket';
+import {
+  failSignIn,
+  successSignIn
+} from 'shared/store/user/actions';
 
-    return {
-      data: oResponse?.headers,
-      authorization: oResponse?.headers?.authorization
-    };
-  }, oMutationOpts);
+const useValidateUser = (oMutationOpts = {}) => {
+  const dispatch = useDispatch();
+
+  return useMutation(() => validateUser(), {
+    ...oMutationOpts,
+    onSuccess: (oResponse, ...restParams) => {
+      const { user, token } = oResponse;
+
+      dispatch(successSignIn(user, token));
+      socketAuthOpen(token);
+
+      if (isFunction(oMutationOpts.onSuccess)) {
+        oMutationOpts.onSuccess(oResponse, ...restParams);
+      }
+    },
+    onError: e => {
+      dispatch(failSignIn());
+
+      if (isFunction(oMutationOpts.onError)) {
+        oMutationOpts.onError(e);
+      }
+    }
+  });
+};
 
 export { useValidateUser };

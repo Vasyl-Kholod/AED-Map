@@ -1,59 +1,25 @@
 import axios from 'axios';
 import { includes } from 'lodash';
 
-// import { isTokenExpired } from 'next/app/auth/common/token';
-import {
-  AUTH_EVENTS,
-  ACCESS_TOKEN_STORAGE_KEY,
-  CURRENT_USER_STORAGE_KEY
-} from './types';
-
 class AuthHelper {
-  constructor(authModule) {
-    this._authModule = authModule;
+  constructor() {
     this._tokenPromise = null;
   }
 
-  get authModule() {
-    return this._authModule;
-  }
-
   getToken = () =>
-    localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    JSON.parse(
+      localStorage.getItem('authorization') || null
+    );
 
   removeToken = () =>
-    localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+    localStorage.removeItem('authorization');
 
-  setToken = token =>
-    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
-
-  getCurrentUser = () =>
-    JSON.parse(
-      localStorage.getItem(CURRENT_USER_STORAGE_KEY)
-    );
-
-  removeCurrentUser = () =>
-    localStorage.removeItem(CURRENT_USER_STORAGE_KEY);
-
-  setCurrentUser = currentUser =>
-    localStorage.setItem(
-      CURRENT_USER_STORAGE_KEY,
-      JSON.stringify(currentUser)
-    );
-
-  removeCurrentAuthenticatedUser = () => {
-    this.removeCurrentUser();
-    this.authModule.authHUB.publish(
-      AUTH_EVENTS.CHANGED_AUTHENTICATED_USER
-    );
-  };
-
-  getJWTTokenConfig = async config => {
+  getJWTTokenConfig = () => {
     try {
-      const token = await this.getJWTToken(config);
+      const token = this.getToken();
       this._tokenPromise = null;
       return {
-        ...(token && { Authorization: `JWT ${token}` })
+        ...(token && { Authorization: `Bearer ${token}` })
       };
     } catch {
       this._tokenPromise = null;
@@ -67,7 +33,7 @@ class AuthHelper {
       ...config.headers,
       Accept: 'application/json',
       'Content-Type': 'application/json;charset=UTF-8',
-      ...(await this.getJWTTokenConfig(config))
+      ...this.getJWTTokenConfig(config)
     }
   });
 
@@ -86,55 +52,26 @@ class AuthHelper {
       const errorResponse = error.response;
 
       if (includes(blockedCodes, errorResponse.status)) {
-        this.authModule.signOut();
+        // TODO
+        // this.authModule.signOut();
+        this.removeToken();
       }
     }
 
     return Promise.reject(error);
   };
 
-  configureAxiosClient = (
-    { baseUrl },
-    httpClient = axios
-  ) => {
-    httpClient.defaults.baseURL = baseUrl;
+  configureAxiosClient = (oConfig, httpClient = axios) => {
+    httpClient.defaults.baseURL = oConfig?.baseUrl;
 
     httpClient.interceptors.request.use(
       this.prepareRequestsConfig
     );
 
     httpClient.interceptors.response.use(
-      oResponse => oResponse,
+      oResponse => oResponse.data,
       this.handleResponseOfRequest
     );
-  };
-
-  getJWTTokenPromise = async () => {
-    const token = this.getToken();
-
-    if (token) {
-      // TODO
-      const [err, isExpired] = isTokenExpired(token, {
-        clockTolerance: 30
-      });
-
-      if (err || isExpired) {
-        this.authModule.signOut();
-        return Promise.resolve();
-      }
-      return token;
-    }
-
-    return null;
-  };
-
-  getJWTToken = async (...params) => {
-    if (!this._tokenPromise) {
-      this._tokenPromise = await this.getJWTTokenPromise(
-        ...params
-      );
-    }
-    return this._tokenPromise;
   };
 }
 

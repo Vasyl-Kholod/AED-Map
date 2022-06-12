@@ -7,12 +7,10 @@ const socket = io('http://localhost:3000', {
   autoConnect: false
 });
 
-const socketAuthOpen = () => {
-  const authorization = JSON.parse(
-    localStorage.getItem('authorization')
-  );
-  const token = authorization && authorization.slice(7);
+const getToken = () =>
+  JSON.parse(localStorage.getItem('authorization') || null);
 
+const socketAuthOpen = (token = getToken()) => {
   socket.connect();
 
   socket.emit('authorization', token);

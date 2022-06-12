@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 
 import { cancelToken } from 'shared/utils';
-import { signInUser } from 'shared/api/auth';
-import { socketAuthOpen } from 'shared/websocket';
-import { clearData } from 'shared/store/defs/actions';
 import AuthSchema from 'features/sign-in/model/validator';
+import { useSignIn } from 'features/sign-in/model/use-sign-in';
 import { INITIAL_VALUES } from 'features/sign-in/lib/constants';
 import { useSignInModalStyles } from 'features/sign-in/model/use-styles';
-import {
-  failSignIn,
-  startSignIn,
-  successSignIn
-} from 'shared/store/user/actions';
 
 import Form from './Form';
 import Header from './Header';
@@ -24,34 +14,20 @@ import Footer from './Footer';
 
 const SignInCancelToken = cancelToken();
 
-const SignInModal = ({
-  fail,
-  start,
-  success,
-  clearDefItems
-}) => {
-  const history = useHistory();
+const SignInModal = () => {
+  const signInMutation = useSignIn();
   const classes = useSignInModalStyles();
+
   const [error, setError] = useState('');
 
   const handleSubmit = async (
     values,
     { setSubmitting }
   ) => {
-    start();
-
-    try {
-      const res = await signInUser(values);
-      const { authorization } = res;
-      success(res, authorization);
-      socketAuthOpen();
-      history.push('/');
-      clearDefItems();
-    } catch (e) {
-      const { message } = e.response.data;
-      fail();
-      setError(message);
-    }
+    signInMutation.mutate(values, {
+      onError: e =>
+        setError(e?.message || e?.response?.message)
+    });
 
     setSubmitting(false);
   };
@@ -83,17 +59,4 @@ const SignInModal = ({
   );
 };
 
-SignInModal.propTypes = {
-  start: PropTypes.func.isRequired,
-  success: PropTypes.func.isRequired,
-  fail: PropTypes.func.isRequired,
-  clearDefItems: PropTypes.func.isRequired
-};
-
-export default connect(null, dispatch => ({
-  start: () => dispatch(startSignIn()),
-  success: (user, authorization) =>
-    dispatch(successSignIn(user, authorization)),
-  fail: () => dispatch(failSignIn()),
-  clearDefItems: () => dispatch(clearData())
-}))(SignInModal);
+export default SignInModal;

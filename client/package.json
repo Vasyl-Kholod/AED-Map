@@ -39,8 +39,9 @@
     "yup": "^0.28.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env react-scripts start",
+    "start:prod": "env-cmd -f .env.production react-scripts start",
+    "build": "env-cmd -f .env.production react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom --coverage",
     "test-server": "cd ../ && yarn test-server",
     "eject": "react-scripts eject",
@@ -85,6 +86,7 @@
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",
