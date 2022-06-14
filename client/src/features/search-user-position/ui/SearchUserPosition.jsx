@@ -14,7 +14,8 @@ import {
 } from 'shared/api/gmap';
 import {
   setUserPosition,
-  inputUserPosition
+  inputUserPosition,
+  setGeolocationStatus
 } from 'shared/store/user-position/actions';
 
 import { SearchNearestDefButton } from 'features/search-nearest-def';
@@ -63,6 +64,7 @@ export default function SearchUserPosition({
 
       closeRouteDetails();
 
+      dispatch(setGeolocationStatus(true));
       dispatch(setUserPosition(coordinates));
       dispatch(setMapCenter(coordinates));
     }
