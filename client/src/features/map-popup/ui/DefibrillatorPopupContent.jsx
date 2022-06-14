@@ -18,6 +18,7 @@ import { titles } from '../lib/title-constants';
 import { hidePopup } from 'shared/store/popup/actions';
 
 import { useDefPopupContentStyles } from '../model/use-styles';
+import { BASE_URL } from 'shared/consts/url';
 
 const currDefCancelToken = cancelToken();
 
@@ -78,7 +79,7 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
         <img
           title={currDef.images[0].filename}
           className={classes.imagePreview}
-          src={`http://localhost:3000/api/images/${currDef.images[0].filename}`}
+          src={`${BASE_URL}/api/images/${currDef.images[0].filename}`}
           alt={currDef.images[0].filename}
         />
       )}

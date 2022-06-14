@@ -16,6 +16,7 @@ import UploadImage from 'shared/ui/UploadImage';
 import { hidePopup } from 'shared/store/popup/actions';
 
 import { useModalPhotoContentStyles } from '../model/use-styles';
+import { BASE_URL } from 'shared/consts/url';
 
 const ModalPhotoContent = ({
   images,
@@ -67,7 +68,7 @@ const ModalPhotoContent = ({
             {images.map(image => (
               <GridListTile key={image.id}>
                 <img
-                  src={`http://localhost:3000/api/images/${image.filename}`}
+                  src={`${BASE_URL}/api/images/${image.filename}`}
                   alt={image.filename}
                 />
               </GridListTile>

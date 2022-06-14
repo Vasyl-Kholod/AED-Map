@@ -2,14 +2,14 @@ import React from 'react';
 import { useEffect, createContext } from 'react';
 
 import { authProvider } from 'shared/auth';
+import { BASE_URL } from 'shared/consts/url';
 
 const AuthContext = createContext();
 
 const withConfiguredAuth = Cmp => props => {
   const oConfig = {
     baseUrl:
-      process.env.REACT_APP_BASE_URL ||
-      'http://localhost:3012'
+      BASE_URL
   };
 
   useEffect(() => {
