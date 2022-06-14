@@ -2,8 +2,9 @@ import io from 'socket.io-client';
 
 import { signOut } from 'shared/store/user/actions';
 import store from '../store';
+import { BASE_URL } from 'shared/consts/url';
 
-const socket = io('http://localhost:3000', {
+const socket = io(`${BASE_URL}`, {
   autoConnect: false
 });
 
