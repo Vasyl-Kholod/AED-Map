@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactMapboxGl from 'react-mapbox-gl';
@@ -292,12 +293,13 @@ const MapHolder = ({
         onDblClick={onDblClickMap}
       >
         {map && <DefibrillatorPinLayer />}
-        {userPosition.geolocationProvided && (
+        {userPosition.geolocationProvided ||
+        !isEmpty(inputUserPosition) ? (
           <UserPin
             classes={classes}
             coordinates={userPosition.coords}
           />
-        )}
+        ) : null}
 
         {Object.keys(newPoint).length !== 0 && (
           <AddedPin coordinates={newPoint} />
