@@ -34,7 +34,7 @@ import { SearchUserPosition } from 'features/search-user-position';
 import { SearchNextNearestDefButton } from 'features/search-nearest-def';
 
 import { useMapHolderStyles } from '../model/use-styles';
-import { useGetDirections } from '../model/use-get-directions';
+import { useDirections } from '../model/use-directions';
 
 const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN
@@ -59,7 +59,7 @@ const MapHolder = ({
 }) => {
   const classes = useMapHolderStyles({ visible });
 
-  const diractionsMotation = useGetDirections();
+  const diractionsMotation = useDirections();
   const [routeCoords, setRouteCords] = useState([]);
   const [routeDetails, setRouteDetails] = useState({
     distance: null,

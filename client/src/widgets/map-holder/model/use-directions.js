@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getDirections } from "shared/api/map";
 import { setMapCenter, setMapZoom } from "shared/store/map/actions";
 
-const useGetDirections = (oMutationsOpts = {}) => {
+const useDirections = (oMutationsOpts = {}) => {
     const dispatch = useDispatch();
     const { endCoordinates } = useSelector(state => state.mapState.routeDetails);
 
@@ -13,11 +13,6 @@ const useGetDirections = (oMutationsOpts = {}) => {
         ({ transportType, userCoords, endCoords }) => getDirections(transportType, userCoords, endCoords),
         {
             ...oMutationsOpts,
-            onMutate: () => {
-                if (isFunction(oMutationsOpts.onMutate)) {
-                    oMutationsOpts.onMutate();
-                }
-            },
             onSuccess: (oResponse) => {
                 dispatch(setMapCenter({
                     lng: endCoordinates.lng,
@@ -28,13 +23,8 @@ const useGetDirections = (oMutationsOpts = {}) => {
                     oMutationsOpts.onSuccess(oResponse)
                 }
             },
-            onError: () => {
-                if (isFunction(oMutationsOpts.onError)) {
-                    oMutationsOpts.onError();
-                }
-            },
         },
     )
 }
 
-export { useGetDirections }
+export { useDirections }

@@ -36,7 +36,7 @@ import { GeoLocationButton } from 'features/geo-location-btn';
 import { SearchNearestDefButton } from 'features/search-nearest-def';
 
 import { useMapHolderMobileStyles } from '../model/use-styles';
-import { useGetDirections } from '../model/use-get-directions';
+import { useDirections } from '../model/use-directions';
 
 const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN
@@ -59,7 +59,7 @@ const MapHolderMobile = ({
 }) => {
   const classes = useMapHolderMobileStyles({ visible });
 
-  const diractionsMotation = useGetDirections();
+  const diractionsMotation = useDirections();
   const [routeCoords, setRouteCords] = useState([]);
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
