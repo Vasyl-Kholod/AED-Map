@@ -1,33 +1,39 @@
-import { useQuery } from "react-query"
+import { isFunction } from 'lodash';
+import { useMutation } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 
 import { getDirections } from "shared/api/map";
 import { setMapCenter, setMapZoom } from "shared/store/map/actions";
 
-const useGetDirections = (oQueriesOpts = {}) => {
+const useGetDirections = (oMutationsOpts = {}) => {
     const dispatch = useDispatch();
-    const userPosition = useSelector(state => state.userPosition.coords);
-    const { endCoordinates, transportType } = useSelector(state => state.mapState.routeDetails);
+    const { endCoordinates } = useSelector(state => state.mapState.routeDetails);
 
-    return useQuery([transportType, userPosition, endCoordinates],
-        async ({ queryKey }) => {
-            if (!!endCoordinates.lng) {
+    return useMutation(
+        ({ transportType, userCoords, endCoords }) => getDirections(transportType, userCoords, endCoords),
+        {
+            ...oMutationsOpts,
+            onMutate: () => {
+                if (isFunction(oMutationsOpts.onMutate)) {
+                    oMutationsOpts.onMutate();
+                }
+            },
+            onSuccess: (oResponse) => {
                 dispatch(setMapCenter({
                     lng: endCoordinates.lng,
                     lat: endCoordinates.lat
-                }));
-                dispatch(setMapZoom(13.5));
-
-                const res = await getDirections(
-                    queryKey[0],
-                    queryKey[1],
-                    queryKey[2],
-                );
-
-                return res.routes[0]
-            }
+                }))
+                dispatch(setMapZoom(16))
+                if (isFunction(oMutationsOpts.onSuccess)) {
+                    oMutationsOpts.onSuccess(oResponse)
+                }
+            },
+            onError: () => {
+                if (isFunction(oMutationsOpts.onError)) {
+                    oMutationsOpts.onError();
+                }
+            },
         },
-        { ...oQueriesOpts },
     )
 }
 

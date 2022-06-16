@@ -43,6 +43,8 @@ const Map = ReactMapboxGl({
 const MapHolder = ({
   mapState,
   userPosition,
+  transportType,
+  endCoords,
   newPoint,
   setMapCenter,
   setGeolocation,
@@ -56,7 +58,16 @@ const MapHolder = ({
   visible
 }) => {
   const classes = useMapHolderStyles({ visible });
-  const { data } = useGetDirections();
+
+  const diractionsMotation = useGetDirections();
+  const [routeCoords, setRouteCords] = useState([]);
+  const [routeDetails, setRouteDetails] = useState({
+    distance: null,
+    duration: null
+  });
+  const [showRouteDetails, setShowRouteDetails] = useState(
+    false
+  );
 
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
@@ -173,27 +184,29 @@ const MapHolder = ({
     }
   };
 
-  const [routeCoords, setRouteCords] = useState([]);
-  const [routeDetails, setRouteDetails] = useState({
-    distance: null,
-    duration: null
-  });
-  const [showRouteDetails, setShowRouteDetails] = useState(
-    false
-  );
-
   // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
   useEffect(() => {
-    if (!data) return;
+    if (!!endCoords.lng) {
+      const params = {
+        transportType,
+        userCoords: userPosition.coords,
+        endCoords
+      };
 
-    setRouteCords(data.geometry.coordinates);
-    setShowRouteDetails(true);
-    setRouteDetails({
-      distance: data.distance,
-      duration: data.duration
-    });
-  }, [data]);
+      diractionsMotation.mutate(params, {
+        onSuccess: oResponse => {
+          const route = oResponse?.routes[0];
+          setRouteCords(route.geometry.coordinates);
+          setShowRouteDetails(true);
+          setRouteDetails({
+            distance: route.distance,
+            duration: route.duration
+          });
+        }
+      });
+    }
+  }, [endCoords, transportType]);
 
   const closeRoute = () => {
     setRouteCords([]);
@@ -318,8 +331,11 @@ export default connect(
   state => ({
     defsState: state.defs,
     mapState: state.mapState,
-    newPoint: state.newPoint,
+    transportType:
+      state.mapState.routeDetails.transportType,
     userPosition: state.userPosition,
+    endCoords: state.mapState.routeDetails.endCoordinates,
+    newPoint: state.newPoint,
     defActiveId: state.defs.active,
     defIndex: state.defs.defIndex,
     isSearchNextDefButton:
