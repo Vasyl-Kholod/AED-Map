@@ -56,7 +56,26 @@ const MapHolder = ({
   visible
 }) => {
   const classes = useMapHolderStyles({ visible });
-  const { data } = useGetDirections();
+
+  const [routeCoords, setRouteCords] = useState([]);
+  const [routeDetails, setRouteDetails] = useState({
+    distance: null,
+    duration: null
+  });
+  const [showRouteDetails, setShowRouteDetails] = useState(
+    false
+  );
+  const { data } = useGetDirections({
+    onSuccess: oResponse => {
+      const route = oResponse?.routes[0];
+      setRouteCords(route.geometry.coordinates);
+      setShowRouteDetails(true);
+      setRouteDetails({
+        distance: route.distance,
+        duration: route.duration
+      });
+    }
+  });
 
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
@@ -173,27 +192,18 @@ const MapHolder = ({
     }
   };
 
-  const [routeCoords, setRouteCords] = useState([]);
-  const [routeDetails, setRouteDetails] = useState({
-    distance: null,
-    duration: null
-  });
-  const [showRouteDetails, setShowRouteDetails] = useState(
-    false
-  );
-
   // To build the route, set ending point coordinates to the redux state
   // you can use setRoutePosition from mapState.js or custom
-  useEffect(() => {
-    if (!data) return;
+  // useEffect(() => {
+  //   if (!data) return;
 
-    setRouteCords(data.geometry.coordinates);
-    setShowRouteDetails(true);
-    setRouteDetails({
-      distance: data.distance,
-      duration: data.duration
-    });
-  }, [data]);
+  //   setRouteCords(data.geometry.coordinates);
+  //   setShowRouteDetails(true);
+  //   setRouteDetails({
+  //     distance: data.distance,
+  //     duration: data.duration
+  //   });
+  // }, [data]);
 
   const closeRoute = () => {
     setRouteCords([]);
