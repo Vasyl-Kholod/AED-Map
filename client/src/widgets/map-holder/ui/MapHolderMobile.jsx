@@ -36,6 +36,7 @@ import { GeoLocationButton } from 'features/geo-location-btn';
 import { SearchNearestDefButton } from 'features/search-nearest-def';
 
 import { useMapHolderMobileStyles } from '../model/use-styles';
+import { useGetDirections } from '../model/use-get-directions';
 
 const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN
@@ -45,8 +46,6 @@ const MapHolderMobile = ({
   fetchDefItems,
   mapState,
   userPosition,
-  endRouteCoords,
-  transportType,
   newPoint,
   setMapCenter,
   // startWatchingPosition,
@@ -57,6 +56,8 @@ const MapHolderMobile = ({
   visible
 }) => {
   const classes = useMapHolderMobileStyles({ visible });
+  const { data } = useGetDirections();
+
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
@@ -162,20 +163,16 @@ const MapHolderMobile = ({
     false
   );
 
-  const getRoute = async (start, endPosition, types) => {
-    const query = await getDirections(
-      types,
-      start,
-      endPosition
-    );
-    const data = query.routes[0];
+  useEffect(() => {
+    if (!data) return;
+
     setRouteCords(data.geometry.coordinates);
     setShowRouteDetails(true);
     setRouteDetails({
       distance: data.distance,
       duration: data.duration
     });
-  };
+  }, [data]);
 
   const closeRoute = () => {
     setRouteCords([]);
@@ -183,32 +180,6 @@ const MapHolderMobile = ({
     getCurrentLocation();
     setActiveId(null);
   };
-
-  // To build the route, set ending point coordinates to the redux state
-  // you can use setRoutePosition from mapState.js or custom
-  useEffect(() => {
-    const getRouteToPosition = async (
-      types = transportType
-    ) => {
-      if (!!endRouteCoords.lng) {
-        setMapCenter({
-          lng: endRouteCoords.lng,
-          lat: endRouteCoords.lat
-        });
-        setMapZoom(13.5);
-        await getRoute(
-          userPosition.coords,
-          {
-            lng: endRouteCoords.lng,
-            lat: endRouteCoords.lat
-          },
-          types
-        );
-      }
-    };
-    getRouteToPosition();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endRouteCoords, transportType]);
 
   return (
     <div className={classes.mapContainer}>
@@ -288,14 +259,7 @@ MapHolderMobile.propTypes = {
   mapState: PropTypes.shape({
     lng: PropTypes.number,
     lat: PropTypes.number,
-    zoom: PropTypes.number,
-    routeDetails: {
-      endCoordinates: {
-        lng: PropTypes.string,
-        lat: PropTypes.string
-      },
-      transportType: PropTypes.string
-    }
+    zoom: PropTypes.number
   }),
   newPoint: PropTypes.shape({
     lng: PropTypes.number,
@@ -316,11 +280,7 @@ export default connect(
     defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
-    userPosition: state.userPosition,
-    transportType:
-      state.mapState.routeDetails.transportType,
-    endRouteCoords:
-      state.mapState.routeDetails.endCoordinates
+    userPosition: state.userPosition
   }),
   dispatch => ({
     fetchDefItems: params => dispatch(fetchDefs(params)),
