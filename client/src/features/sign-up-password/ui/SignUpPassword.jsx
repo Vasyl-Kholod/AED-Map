@@ -5,6 +5,9 @@ import { Container } from '@material-ui/core';
 
 import { cancelToken } from 'shared/utils';
 import { signUpUser } from 'shared/api/auth';
+
+import { useSignUpPassword } from '../model/use-sign-up-password';
+
 import SignUpSchema from 'features/sign-up-password/model/validator';
 import { INITIAL_VALUES } from 'features/sign-up-password/lib/constants';
 import { useSignUpPasswordStyles } from 'features/sign-up-password/model/use-styles';
@@ -16,31 +19,30 @@ import Footer from './Footer';
 const SignUpCancelToken = cancelToken();
 
 const SignUpPassword = () => {
+  const signUpMutation = useSignUpPassword();
   const classes = useSignUpPasswordStyles();
+
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const { email, token } = useParams();
 
   const handleSubmit = async (
     values,
-    { resetForm, setErrors, setSubmitting }
+    { setSubmitting }
   ) => {
-    try {
-      const data = await signUpUser({
-        ...values,
-        token
-      });
-      const { message } = data;
-      resetForm();
-      setSuccess(message);
-    } catch (e) {
-      const { message, errors } = e.response.data;
-      setError(message);
-      setErrors(errors);
-    }
+    signUpMutation.mutate(
+      { values, token },
+      {
+        onSuccess: e =>
+          setSuccess(e?.message || e?.response?.message),
+        onError: e =>
+          setError(e?.message || e?.response?.message)
+      }
+    );
 
     setSubmitting(false);
   };
+
 
   useEffect(() => {
     return () => {
