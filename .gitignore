@@ -12,8 +12,7 @@
 /build
 client/build
 
-# misc
-.env
+# misc=
 .DS_Store
 .env.local
 .env.development.local

@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
 
+import { useRefetchDefsList } from 'features/defs-list/model/use-get-defs';
 import { socketAuthClose } from 'shared/websocket';
 import { signOut } from 'shared/store/user/actions';
 import { useButtonSignOutStyles } from 'features/sign-in/model/use-styles';
-import {
-  fetchDefs,
-  clearData
-} from 'shared/store/defs/actions';
 
 import ConfirmationModalWrapper from 'shared/ui/ConfirmationModalWrapper';
 
@@ -33,15 +30,14 @@ CustomButton.propTypes = {
 };
 
 const ButtonSignOut = ({
-  signOutSubmit,
-  fetchDefItems,
-  clearDefItems
+  signOutSubmit
 }) => {
+  const refetchDefsList = useRefetchDefsList();
+
   const handleSignOut = () => {
     signOutSubmit();
     socketAuthClose();
-    clearDefItems();
-    fetchDefItems();
+    refetchDefsList();
   };
 
   return (
@@ -56,12 +52,9 @@ const ButtonSignOut = ({
 
 ButtonSignOut.propTypes = {
   signOutSubmit: PropTypes.func.isRequired,
-  fetchDefItems: PropTypes.func.isRequired,
   clearDefItems: PropTypes.func.isRequired
 };
 
 export default connect(null, dispatch => ({
-  signOutSubmit: () => dispatch(signOut()),
-  fetchDefItems: () => dispatch(fetchDefs()),
-  clearDefItems: () => dispatch(clearData())
+  signOutSubmit: () => dispatch(signOut())
 }))(ButtonSignOut);

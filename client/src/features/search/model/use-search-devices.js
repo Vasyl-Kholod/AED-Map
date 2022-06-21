@@ -1,11 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setSearch } from 'shared/store/search/actions';
-import {
-  fetchDefs,
-  setPage,
-  setData
-} from 'shared/store/defs/actions';
 
 const useSearchDevices = () => {
   const dispatch = useDispatch();
@@ -15,20 +10,20 @@ const useSearchDevices = () => {
 
   const onSearch = ({ target: { value } }) => {
     const val = value.trim();
-    const resetPagination = (page, data) => {
-      dispatch(setPage(page));
-      dispatch(setData(data));
-    };
+    // const resetPagination = (page, data) => {
+    //   dispatch(setPage(page));
+    //   dispatch(setData(data));
+    // };
 
     dispatch(setSearch({ title: val, address: val }));
 
-    if (val) {
-      resetPagination(1, []);
-      dispatch(fetchDefs({ title: val, address: val }));
-    } else {
-      resetPagination(1, []);
-      dispatch(fetchDefs());
-    }
+    // if (val) {
+    //   // resetPagination(1, []);
+    //   dispatch(fetchDefs({ title: val, address: val }));
+    // } else {
+    //   // resetPagination(1, []);
+    //   dispatch(fetchDefs());
+    // }
   };
 
   return {

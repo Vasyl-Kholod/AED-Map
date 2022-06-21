@@ -1,115 +1,23 @@
-import { isObject, keys } from 'lodash';
-
-import { cancelToken } from 'shared/utils';
 import {
   editItem,
   blockItem,
   createItem,
-  deleteItem,
-  getDefItems
+  deleteItem
 } from 'shared/api/defs';
 
 import {
-  START_LOAD_DATA,
-  SET_DATA,
-  CLEAR_DATA,
-  SUCCESS_LOAD_DATA,
-  FAIL_LOAD_DATA,
   CREATE_DEF_POINT,
   DELETE_DEF_POINT,
   EDIT_DEF_POINT,
   BLOCK_DEF_POINT,
   SET_ACTIVE,
-  SET_PAGE,
   SET_PER_PAGE
 } from './constants';
-
-import { setGeolocation } from '../user-position/actions';
-
-const defsCancelToken = cancelToken();
-export const startLoadDef = () => {
-  return {
-    type: START_LOAD_DATA
-  };
-};
-
-export const successLoadDef = defs => {
-  return {
-    type: SUCCESS_LOAD_DATA,
-    payload: defs
-  };
-};
-
-export const setData = data => {
-  return {
-    type: SET_DATA,
-    payload: data
-  };
-};
-
-export const clearData = () => {
-  return {
-    type: CLEAR_DATA
-  };
-};
 
 export const setActive = id => {
   return {
     type: SET_ACTIVE,
     payload: id
-  };
-};
-
-export const setPage = page => {
-  return {
-    type: SET_PAGE,
-    payload: page
-  };
-};
-
-export const failLoadDef = error => {
-  return {
-    type: FAIL_LOAD_DATA,
-    payload: error
-  };
-};
-
-export const fetchDefs = params => {
-  return async (dispatch, getState) => {
-    const sendGetRequest = async (
-      userCoordinates = null
-    ) => {
-      try {
-        if (isObject(params)) {
-          keys(params).forEach(key => {
-            if (!params[key]) {
-              delete params[key];
-            }
-          });
-        }
-        const res = await getDefItems(
-          { ...params, ...userCoordinates },
-          defsCancelToken.instance
-        );
-        dispatch(successLoadDef(res));
-      } catch (e) {
-        dispatch(failLoadDef(e));
-      }
-    };
-
-    dispatch(startLoadDef());
-    dispatch(setPage());
-
-    const userPosition = getState().userPosition;
-    if (userPosition.geolocationProvided) {
-      const { lat, lng } = userPosition.coords;
-      await sendGetRequest({
-        latitude: lat,
-        longitude: lng
-      });
-    } else {
-      dispatch(setGeolocation(sendGetRequest));
-    }
   };
 };
 
@@ -153,7 +61,7 @@ export const createDefItem = newItem => {
       const { data } = await createItem(newItem);
       dispatch(createDefPoint(data.defibrillator));
     } catch (e) {
-      dispatch(failLoadDef(e));
+      console.log(e)
     }
   };
 };
@@ -163,10 +71,8 @@ export const deleteDefItem = id => {
     try {
       const { data } = await deleteItem(id);
       dispatch(deleteDefPoint(data.defibrillator._id));
-      dispatch(clearData());
-      dispatch(fetchDefs());
     } catch (e) {
-      dispatch(failLoadDef(e));
+      console.log(e)
     }
   };
 };
@@ -180,7 +86,7 @@ export const editDefItem = (id, newDefInfo) => {
         editDefPoint(defibrillator._id, defibrillator)
       );
     } catch (e) {
-      dispatch(failLoadDef(e));
+      console.log(e)
     }
   };
 };
@@ -197,7 +103,7 @@ export const blockDefItem = (id, blocked) => {
         )
       );
     } catch (e) {
-      dispatch(failLoadDef(e));
+      console.log(e)
     }
   };
 };

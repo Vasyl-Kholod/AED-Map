@@ -13,23 +13,14 @@ import { useFilterFormikStyles } from 'features/filter/model/use-styles';
 
 import { hidePopup } from 'shared/store/popup/actions';
 
-import {
-  setPage,
-  setData,
-  fetchDefs
-} from 'shared/store/defs/actions';
-
 import FormFormik from './FormFormik';
 import FilterHeader from './FilterFormHeader';
 
 const FilterFormik = ({
   filter,
   popupData,
-  resetData,
-  resetPage,
   setIsOpen,
   hidePopup,
-  fetchDefItems,
   setFilterValue,
   resetFilterValue
 }) => {
@@ -37,11 +28,6 @@ const FilterFormik = ({
   const initialValues = { ...INITIAL_VALUES, ...filter };
 
   const onSubmit = async (values, { setSubmitting }) => {
-    const resetPagination = (page, data) => {
-      resetPage(page);
-      resetData(data);
-    };
-
     if (popupData) {
       hidePopup();
     }
@@ -51,12 +37,8 @@ const FilterFormik = ({
       Object.values(values).every(value => !value)
     ) {
       resetFilterValue();
-      resetPagination(1, []);
-      await fetchDefItems();
     } else {
-      resetPagination(1, []);
       setFilterValue(values);
-      await fetchDefItems(values);
     }
 
     setSubmitting(false);
@@ -113,9 +95,6 @@ FilterFormik.propTypes = {
   popupData: PropTypes.oneOfType([PropTypes.object]),
   setFilterValue: PropTypes.func.isRequired,
   resetFilterValue: PropTypes.func.isRequired,
-  fetchDefItems: PropTypes.func.isRequired,
-  resetData: PropTypes.func.isRequired,
-  resetPage: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   hidePopup: PropTypes.func.isRequired
 };
@@ -128,9 +107,6 @@ export default connect(
   {
     setFilterValue: setFilter,
     resetFilterValue: resetFilter,
-    fetchDefItems: params => fetchDefs(params),
-    resetPage: page => setPage(page),
-    resetData: data => setData(data),
     hidePopup
   }
 )(FilterFormik);

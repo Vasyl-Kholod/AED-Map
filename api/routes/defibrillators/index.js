@@ -16,9 +16,14 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.get(
-  '/',
+  '/mapdefs',
   checkPermission,
-  controller.getDefibrillators
+  controller.getMapDefibrillators
+);
+router.get(
+  '/defslist',
+  checkPermission,
+  controller.getDefibrillatorsList
 );
 router.get('/nearestDevices', controller.getNearestDevices);
 router.post(

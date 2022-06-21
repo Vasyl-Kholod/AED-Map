@@ -8,46 +8,76 @@ const {
 const { resServerError } = require('../../../shared/utils');
 const { createFilter } = require('./filter');
 
-module.exports.getDefibrillators = async (req, res) => {
+module.exports.getDefibrillatorsList = async (req, res) => {
   try {
     const filter = createFilter(req);
     const perPage = Number(req.query.per_page) || 10;
     const page = Number(req.query.page) || 1;
     let listDefs;
+    let defsCount;
 
     if (req.query.longitude) {
-      listDefs =
-        (await Defibrillator.find(filter)
-          .select('address title location owner blocked')
-          .where('location')
-          .near({
-            center: {
-              type: 'Point',
-              coordinates: [
-                req.query.longitude,
-                req.query.latitude
-              ]
-            }
-          })
-          .skip(perPage * (page - 1))
-          .limit(perPage)) || [];
+      const allListDefs = await Defibrillator.find(filter)
+        .select('address title location owner blocked')
+        .where('location')
+        .near({
+          center: {
+            type: 'Point',
+            coordinates: [
+              req.query.longitude,
+              req.query.latitude
+            ]
+          }
+        })
+      defsCount = allListDefs.length
+        
+      listDefs = await Defibrillator.find(filter)
+        .select('address title location owner blocked')
+        .where('location')
+        .near({
+          center: {
+            type: 'Point',
+            coordinates: [
+              req.query.longitude,
+              req.query.latitude
+            ]
+          }
+        })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .exec() || [];
     } else {
-      listDefs =
-        (await Defibrillator.find(filter)
-          .select('address title location owner blocked')
-          .skip(perPage * (page - 1))
-          .limit(perPage)) || [];
+      const allListDefs = await Defibrillator.find(filter)
+        .select('address title location owner blocked')
+      defsCount = allListDefs.length
+
+      listDefs = await Defibrillator.find(filter)
+        .select('address title location owner blocked')
+        .skip(perPage * (page - 1))
+        .limit(perPage) || [];
     }
+
+    const totalCount = Math.ceil(defsCount / perPage);
+
+    return res
+      .status(200)
+      .send({ listDefs, totalCount });
+  } catch (e) {
+    resServerError(res, e);
+  }
+};
+
+module.exports.getMapDefibrillators = async (req, res) => {
+  try {
+    const filter = createFilter(req);
 
     const mapDefs = await Defibrillator.find(filter).select(
       'address title location owner'
     );
 
-    const totalCount = Math.ceil(mapDefs.length / perPage);
-
     return res
       .status(200)
-      .send({ listDefs, mapDefs, totalCount });
+      .send(mapDefs);
   } catch (e) {
     resServerError(res, e);
   }

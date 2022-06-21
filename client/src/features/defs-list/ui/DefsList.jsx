@@ -9,43 +9,42 @@ import {
   CellMeasurerCache
 } from 'react-virtualized';
 
-import { cancelToken } from 'shared/utils';
+import { useGetDefsList } from '../model/use-get-defs';
 import { fetchSingleDefById } from 'shared/api/defs';
-import { fetchDefs } from 'shared/store/defs/actions';
 import { BASE_ZOOM_VALUE } from 'shared/store/defs/constants';
 import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
+import { isEmpty } from 'lodash';
 
 import { DefItem } from 'features/def-item';
 import { InfoMessage } from 'features/map-info-message';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
-const defsCancelToken = cancelToken();
-
 const DefsList = ({
-  isLoading,
-  defibrillators,
   activeDef,
-  fetchDefItems,
-  filter,
-  totalCount,
-  page,
-  search,
   setMapCenterCoords,
   setMapZoomParam
 }) => {
   const classes = useItemsListStyles();
-  const noData = !isLoading && !defibrillators.length;
-  const showMessage =
-    (isLoading && !defibrillators.length) || noData;
-  const showHorizontalLoader =
-    isLoading && !!defibrillators.length;
-  let message;
 
+  const {
+    data: defibrillators,
+    isFetching,
+    hasNextPage,
+    fetchNextPage
+  } = useGetDefsList();
+
+  const noData = !isFetching && isEmpty(defibrillators);
+  const showMessage =
+    (isFetching && isEmpty(defibrillators)) || noData;
+  const showHorizontalLoader =
+    isFetching && !isEmpty(defibrillators);
+
+  let message;
   switch (true) {
-    case isLoading:
+    case isFetching:
       message = 'Завантаження...';
       break;
     case noData:
@@ -64,10 +63,10 @@ const DefsList = ({
     const { scrollHeight, scrollTop, clientHeight } = event;
 
     if (
-      totalCount >= page &&
+      hasNextPage &&
       scrollHeight - Math.ceil(scrollTop) <= clientHeight
     ) {
-      fetchDefItems({ page, ...filter, ...search });
+      fetchNextPage();
     }
   };
 
@@ -90,16 +89,6 @@ const DefsList = ({
       </CellMeasurer>
     );
   };
-
-  useEffect(() => {
-    if (!defibrillators.length) {
-      fetchDefItems();
-    }
-    return () => {
-      defsCancelToken.cancel();
-    };
-    // eslint-disable-next-line
-  }, []);
 
   // Update camera position when clicking on defibrilattor icon
   useEffect(() => {
@@ -142,7 +131,10 @@ const DefsList = ({
               width={width}
               height={height}
               deferredMeasurementCache={cache}
-              rowCount={defibrillators.length}
+              rowCount={
+                isEmpty(defibrillators) ? 0 :
+                defibrillators.length
+              }
               rowHeight={cache.rowHeight}
               rowRenderer={rowRenderer}
               overscanRowCount={10}
@@ -160,20 +152,15 @@ DefsList.defaultProps = {
   activeDef: null,
   setMapCenterCoords: () => null,
   setMapZoomParam: () => null,
-  fetchDefItems: () => null,
   filter: null,
   user: null
 };
 
 DefsList.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  defibrillators: PropTypes.arrayOf(PropTypes.object)
-    .isRequired,
-  activeDef: PropTypes.oneOfType([PropTypes.object]),
-  fetchDefItems: PropTypes.func,
+  activeDef: PropTypes.oneOfType([
+    PropTypes.oneOf([null, PropTypes.string])
+  ]),
   filter: PropTypes.oneOfType([PropTypes.object]),
-  totalCount: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired,
   search: PropTypes.shape({
     address: PropTypes.string.isRequired
   }).isRequired,
@@ -188,20 +175,15 @@ DefsList.propTypes = {
 
 export default connect(
   state => ({
-    isLoading: state.defs.loading,
-    defibrillators: state.defs.listData,
     filter: state.filter,
     activeDef:
       state.defs.listData.find(
         def => def._id === state.defs.active
       ) || state.defs.active,
-    totalCount: state.defs.totalCount,
-    page: state.defs.page,
     search: state.search,
     user: state.user.user
   }),
   dispatch => ({
-    fetchDefItems: params => dispatch(fetchDefs(params)),
     setMapCenterCoords: mapState =>
       dispatch(setMapCenter(mapState)),
     setMapZoomParam: mapState =>

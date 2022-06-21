@@ -19,11 +19,6 @@ import { MyTextField, MyImageField } from '../Fields';
 import FormValidation from './validator';
 import useAlert from '../Alert/use-alert';
 
-import {
-  setPage,
-  setData
-} from 'shared/store/defs/actions';
-
 const useStyles = makeStyles({
   input: {
     width: '100%',
@@ -55,8 +50,6 @@ const useStyles = makeStyles({
 const MyForm = ({
   INITIAL_VALUES,
   submitAction,
-  resetPage,
-  resetData,
   fullTimeStatus,
   timeFrom,
   timeUntil
@@ -64,11 +57,6 @@ const MyForm = ({
   const classes = useStyles();
   const [, ShowAlert] = useAlert();
   const history = useHistory();
-
-  const resetPagination = (page, data) => {
-    resetPage(page);
-    resetData(data);
-  };
 
   const handleSubmit = async (
     values,
@@ -94,7 +82,6 @@ const MyForm = ({
         message: 'Додавання пройшло успішно'
       });
       resetForm();
-      resetPagination(1, []);
       history.push('/');
     } catch (error) {
       const { errors } = error.response.data;
@@ -212,9 +199,7 @@ MyForm.propTypes = {
     coordinates: PropTypes.array.isRequired,
     images: PropTypes.array.isRequired
   }).isRequired,
-  submitAction: PropTypes.func.isRequired,
-  resetPage: PropTypes.func.isRequired,
-  resetData: PropTypes.func.isRequired
+  submitAction: PropTypes.func.isRequired
 };
 
 export default connect(
@@ -222,9 +207,5 @@ export default connect(
     fullTimeStatus: state.setFullTime.fullTime,
     timeFrom: state.setFullTime.timeFrom,
     timeUntil: state.setFullTime.timeUntil
-  }),
-  {
-    resetPage: page => setPage(page),
-    resetData: data => setData(data)
-  }
+  })
 )(MyForm);

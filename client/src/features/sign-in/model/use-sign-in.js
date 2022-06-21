@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 
 import { signInUser } from 'shared/api/auth';
 import { socketAuthOpen } from 'shared/websocket';
-import { clearData } from 'shared/store/defs/actions';
 import {
   failSignIn,
   startSignIn,
@@ -32,7 +31,6 @@ const useSignIn = (oMutationOpts = {}) => {
 
         dispatch(successSignIn(user, token));
         socketAuthOpen(token);
-        dispatch(clearData());
         history.push('/');
 
         if (isFunction(oMutationOpts.onSuccess)) {

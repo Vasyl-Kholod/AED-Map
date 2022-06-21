@@ -13,10 +13,7 @@ import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
-import {
-  fetchDefs,
-  setActive
-} from 'shared/store/defs/actions';
+import { setActive } from 'shared/store/defs/actions';
 import {
   setGeolocation,
   startWatchingPosition
@@ -42,7 +39,6 @@ const Map = ReactMapboxGl({
 });
 
 const MapHolderMobile = ({
-  fetchDefItems,
   mapState,
   userPosition,
   endRouteCoords,
@@ -66,17 +62,6 @@ const MapHolderMobile = ({
       hidePopup();
     }
   };
-  useEffect(() => {
-    fetchDefItems();
-    document.addEventListener('click', handlePopupClose);
-    return () => {
-      document.removeEventListener(
-        'click',
-        handlePopupClose
-      );
-    };
-    // eslint-disable-next-line
-  }, []);
 
   const loadMap = async mapRaw => {
     if (mapRaw) {
@@ -308,12 +293,10 @@ MapHolderMobile.propTypes = {
   hidePopup: PropTypes.func,
   setVisible: PropTypes.func,
   visible: PropTypes.bool,
-  fetchDefItems: PropTypes.func
 };
 
 export default connect(
   state => ({
-    defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
     userPosition: state.userPosition,
@@ -323,7 +306,6 @@ export default connect(
       state.mapState.routeDetails.endCoordinates
   }),
   dispatch => ({
-    fetchDefItems: params => dispatch(fetchDefs(params)),
     setGeolocation: f => dispatch(setGeolocation(f)),
     startWatchingPosition: () =>
       dispatch(startWatchingPosition()),

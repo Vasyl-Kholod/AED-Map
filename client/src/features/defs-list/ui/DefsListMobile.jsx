@@ -8,44 +8,43 @@ import {
   CellMeasurerCache
 } from 'react-virtualized';
 
-import { cancelToken } from 'shared/utils';
-import { fetchDefs } from 'shared/store/defs/actions';
+import { useGetDefsList } from '../model/use-get-defs';
 import { BASE_ZOOM_VALUE } from 'shared/store/defs/constants';
 import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
 
+import { isEmpty } from 'lodash';
 import { DefItem } from 'features/def-item';
 import { InfoMessage } from 'features/map-info-message';
 import HorizontalLoader from 'shared/ui/Loader/HorizontalLoader';
 
 import { useItemsListMobileStyles } from '../model/use-styles';
 
-const defsCancelToken = cancelToken();
-
 const DefsListMobile = ({
-  isLoading,
-  defibrillators,
   activeDef,
-  fetchDefItems,
-  filter,
-  totalCount,
-  page,
-  search,
   setMapCenterCoords,
   setMapZoomParam
 }) => {
   const classes = useItemsListMobileStyles();
-  const noData = !isLoading && !defibrillators.length;
-  const showMessage =
-    (isLoading && !defibrillators.length) || noData;
-  const showHorizontalLoader =
-    isLoading && !!defibrillators.length;
-  let message;
 
+  const {
+    data: defibrillators,
+    isFetching,
+    hasNextPage,
+    fetchNextPage
+  } = useGetDefsList();
+
+  const noData = !isFetching && isEmpty(defibrillators);
+  const showMessage =
+    (isFetching && isEmpty(defibrillators)) || noData;
+  const showHorizontalLoader =
+    isFetching && !isEmpty(defibrillators);
+
+  let message;
   switch (true) {
-    case isLoading:
+    case isFetching:
       message = 'Завантаження...';
       break;
     case noData:
@@ -64,10 +63,10 @@ const DefsListMobile = ({
     const { scrollHeight, scrollTop, clientHeight } = event;
 
     if (
-      totalCount >= page &&
+      hasNextPage &&
       scrollHeight - Math.ceil(scrollTop) <= clientHeight
     ) {
-      fetchDefItems({ page, ...filter, ...search });
+      fetchNextPage();
     }
   };
 
@@ -88,16 +87,6 @@ const DefsListMobile = ({
       </CellMeasurer>
     );
   };
-
-  useEffect(() => {
-    if (!defibrillators.length) {
-      fetchDefItems();
-    }
-    return () => {
-      defsCancelToken.cancel();
-    };
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     if (activeDef) {
@@ -147,14 +136,8 @@ DefsListMobile.defaultProps = {
 };
 
 DefsListMobile.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  defibrillators: PropTypes.arrayOf(PropTypes.object)
-    .isRequired,
   activeDef: PropTypes.oneOfType([PropTypes.object]),
-  fetchDefItems: PropTypes.func,
   filter: PropTypes.oneOfType([PropTypes.object]),
-  totalCount: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired,
   search: PropTypes.shape({
     address: PropTypes.string.isRequired
   }).isRequired,
@@ -169,19 +152,14 @@ DefsListMobile.propTypes = {
 
 export default connect(
   state => ({
-    isLoading: state.defs.loading,
-    defibrillators: state.defs.listData,
     filter: state.filter,
     activeDef: state.defs.listData.find(
       def => def._id === state.defs.active
     ),
-    totalCount: state.defs.totalCount,
-    page: state.defs.page,
     search: state.search,
     user: state.user.user
   }),
   dispatch => ({
-    fetchDefItems: params => dispatch(fetchDefs(params)),
     setMapCenterCoords: mapState =>
       dispatch(setMapCenter(mapState)),
     setMapZoomParam: mapState =>
