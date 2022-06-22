@@ -6,7 +6,6 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import { Button, Tooltip } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { getDirections } from 'shared/api/map';
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 import { setActive } from 'shared/store/defs/actions';
@@ -35,6 +34,7 @@ import { SearchUserPosition } from 'features/search-user-position';
 import { SearchNextNearestDefButton } from 'features/search-nearest-def';
 
 import { useMapHolderStyles } from '../model/use-styles';
+import { useDirections } from '../model/use-directions';
 
 const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN
@@ -43,11 +43,10 @@ const Map = ReactMapboxGl({
 const MapHolder = ({
   mapState,
   userPosition,
-  newPoint,
   transportType,
-  endRouteCoords,
+  endCoords,
+  newPoint,
   setMapCenter,
-  setMapZoom,
   setGeolocation,
   addNewPoint,
   hidePopup,
@@ -59,6 +58,17 @@ const MapHolder = ({
   visible
 }) => {
   const classes = useMapHolderStyles({ visible });
+
+  const diractionsMotation = useDirections();
+  const [routeCoords, setRouteCords] = useState([]);
+  const [routeDetails, setRouteDetails] = useState({
+    distance: null,
+    duration: null
+  });
+  const [showRouteDetails, setShowRouteDetails] = useState(
+    false
+  );
+
   const [, showAlert] = useAlert();
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
@@ -174,31 +184,29 @@ const MapHolder = ({
     }
   };
 
-  const [routeCoords, setRouteCords] = useState([]);
+  // To build the route, set ending point coordinates to the redux state
+  // you can use setRoutePosition from mapState.js or custom
+  useEffect(() => {
+    if (!!endCoords.lng) {
+      const params = {
+        transportType,
+        userCoords: userPosition.coords,
+        endCoords
+      };
 
-  const [routeDetails, setRouteDetails] = useState({
-    distance: null,
-    duration: null
-  });
-
-  const [showRouteDetails, setShowRouteDetails] = useState(
-    false
-  );
-
-  const getRoute = async (start, endPosition, type) => {
-    const query = await getDirections(
-      type,
-      start,
-      endPosition
-    );
-    const data = query.routes[0];
-    setRouteCords(data.geometry.coordinates);
-    setShowRouteDetails(true);
-    setRouteDetails({
-      distance: data.distance,
-      duration: data.duration
-    });
-  };
+      diractionsMotation.mutate(params, {
+        onSuccess: oResponse => {
+          const route = oResponse?.routes[0];
+          setRouteCords(route.geometry.coordinates);
+          setShowRouteDetails(true);
+          setRouteDetails({
+            distance: route.distance,
+            duration: route.duration
+          });
+        }
+      });
+    }
+  }, [endCoords, transportType]);
 
   const closeRoute = () => {
     setRouteCords([]);
@@ -212,32 +220,6 @@ const MapHolder = ({
     setRouteCords([]);
     setShowRouteDetails(false);
   };
-
-  // To build the route, set ending point coordinates to the redux state
-  // you can use setRoutePosition from mapState.js or custom
-  useEffect(() => {
-    const getRouteToPosition = async (
-      types = transportType
-    ) => {
-      if (!!endRouteCoords.lng) {
-        setMapCenter({
-          lng: endRouteCoords.lng,
-          lat: endRouteCoords.lat
-        });
-        setMapZoom(13.5);
-        await getRoute(
-          userPosition.coords,
-          {
-            lng: endRouteCoords.lng,
-            lat: endRouteCoords.lat
-          },
-          types
-        );
-      }
-    };
-    getRouteToPosition();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endRouteCoords, transportType]);
 
   return (
     <div className={classes.mapContainer}>
@@ -330,14 +312,7 @@ MapHolder.propTypes = {
   mapState: PropTypes.shape({
     lng: PropTypes.number,
     lat: PropTypes.number,
-    zoom: PropTypes.number,
-    routeDetails: PropTypes.shape({
-      endCoordinates: PropTypes.shape({
-        lng: PropTypes.number,
-        lat: PropTypes.number
-      }),
-      transportType: PropTypes.string
-    })
+    zoom: PropTypes.number
   }),
   newPoint: PropTypes.shape({
     lng: PropTypes.number,
@@ -359,8 +334,11 @@ export default connect(
     endRouteCoords:
       state.mapState.routeDetails.endCoordinates,
     mapState: state.mapState,
-    newPoint: state.newPoint,
+    transportType:
+      state.mapState.routeDetails.transportType,
     userPosition: state.userPosition,
+    endCoords: state.mapState.routeDetails.endCoordinates,
+    newPoint: state.newPoint,
     defActiveId: state.defs.active,
     defIndex: state.defs.defIndex,
     isSearchNextDefButton:

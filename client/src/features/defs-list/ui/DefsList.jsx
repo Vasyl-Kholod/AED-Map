@@ -59,6 +59,14 @@ const DefsList = ({
     defaultHeight: 100
   });
 
+  const rowCountSize = items => {
+    if (isEmpty(items)) {
+      return 0
+    } else {
+      return items.length
+    }
+  }
+
   const handleScroll = event => {
     const { scrollHeight, scrollTop, clientHeight } = event;
 
@@ -131,10 +139,7 @@ const DefsList = ({
               width={width}
               height={height}
               deferredMeasurementCache={cache}
-              rowCount={
-                isEmpty(defibrillators) ? 0 :
-                defibrillators.length
-              }
+              rowCount={rowCountSize(defibrillators)}
               rowHeight={cache.rowHeight}
               rowRenderer={rowRenderer}
               overscanRowCount={10}
