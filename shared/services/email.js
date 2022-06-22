@@ -1,6 +1,14 @@
 const nodemailer = require('nodemailer');
 
-const { BASE_URL, EMAIL_FROM, EMAIL_USER, EMAIL_PASSWORD } =
+const {
+  BASE_URL,
+  EMAIL_FROM,
+  EMAIL_USER,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REFRESH_TOKEN,
+  ACCESS_TOKEN
+} =
   process.env || {};
 
 class EmailService {
@@ -8,15 +16,20 @@ class EmailService {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
+        type: 'OAuth2',
         user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: ACCESS_TOKEN,
+
       }
     });
   }
 
   sendMail(oBody) {
     return this.transporter.sendMail({
-      from: EMAIL_FROM,
+      from: `AED-maps <${EMAIL_FROM}>`,
       ...oBody
     });
   }
