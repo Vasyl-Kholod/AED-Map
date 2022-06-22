@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const express = require('express');
 const passport = require('passport');
-const { isEqual } = require('lodash');
 
 const app = express();
 const server = http.Server(app);
@@ -14,10 +13,14 @@ const bootstrap = () => {
   // Websocket event for sign out
   require('./shared/websocket')(server);
 
-  if (isEqual(process.env.NODE_ENV, 'development')) {
-    app.use(cors());
-  }
-
+  app.use(
+    cors({
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      origin: process.env.BASE_URL,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+    })
+  );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static('client/build'));
