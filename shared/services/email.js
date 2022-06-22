@@ -1,22 +1,34 @@
 const nodemailer = require('nodemailer');
 
-const { BASE_URL, EMAIL_FROM, EMAIL_USER, EMAIL_PASSWORD } =
-  process.env || {};
+const {
+  BASE_URL,
+  EMAIL_FROM,
+  EMAIL_USER,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REFRESH_TOKEN,
+  ACCESS_TOKEN
+} = process.env || {};
 
 class EmailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
+        type: 'OAuth2',
         user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: ACCESS_TOKEN,
+
       }
     });
   }
 
   sendMail(oBody) {
     return this.transporter.sendMail({
-      from: EMAIL_FROM,
+      from: `AED-maps <${EMAIL_FROM}>`,
       ...oBody
     });
   }
@@ -52,10 +64,10 @@ class EmailService {
   userSignUp(email, token) {
     return this.sendMail({
       to: email,
-      subject: 'Регістрація нового користувача',
+      subject: 'Реєстрація нового користувача',
       html: `
               <h1>Вітаємо, вас!</h1>
-              <p>Для успішного завершення регістрації потрібно створити пароль.</p>
+              <p>Для успішного завершення реєстрації потрібно створити пароль.</p>
               <p>Посилання для створення пароля - <a href="${BASE_URL}/signup/${email}/${token}">Створити пароль</a>.</p>
               <p>Посилання дійсне протягом години.</p>
               <hr />
@@ -68,10 +80,10 @@ class EmailService {
     return this.sendMail({
       to: email,
       subject:
-        'Регістрація нового користувача пройшла успішно',
+        'Реєстрація нового користувача пройшла успішно',
       html: `
               <h1>Вітаємо, вас!</h1>
-              <p>Регістрація нового користувача пройшла успішно.</p>
+              <p>Реєстрація нового користувача пройшла успішно.</p>
               <p>Ваша електронна адреса для входу в особистий кабінет - ${email}.</p>
               <hr />
               <a href="${BASE_URL}">Головна сторінка</a>
