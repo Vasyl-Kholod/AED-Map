@@ -28,7 +28,7 @@ class EmailService {
 
   sendMail(oBody) {
     return this.transporter.sendMail({
-      from: EMAIL_FROM,
+      from: `AED-maps <${EMAIL_FROM}>`,
       ...oBody
     });
   }
