@@ -14,7 +14,7 @@ const useSignUpPassword = (oMutationOpts = {}) => {
   const dispatch = useDispatch();
 
   return useMutation(
-    async oCredentials => signUpUser(oCredentials),
+    oCredentials => signUpUser(oCredentials),
     {
       ...oMutationOpts,
       onMutate: () => {
@@ -36,12 +36,6 @@ const useSignUpPassword = (oMutationOpts = {}) => {
           oMutationOpts.onSuccess(oResponse, ...restParams);
         }
       },
-      onError: e => {
-
-        if (isFunction(oMutationOpts.onError)) {
-          oMutationOpts.onError(e);
-        }
-      }
     }
   );
 };

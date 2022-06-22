@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { isFunction } from 'lodash';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 
 import { cancelToken } from 'shared/utils';
 import { signUpUser } from 'shared/api/auth';
+import { socketAuthOpen } from 'shared/websocket';
 
 import { useSignUpPassword } from '../model/use-sign-up-password';
 
@@ -25,21 +28,33 @@ const SignUpPassword = () => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const { email, token } = useParams();
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (
-    values,
-    { setSubmitting }
+  const handleSubmit =  (oMutationOpts = {}) =>  async (
+    values, 
+    { resetForm, setSubmitting }
   ) => {
     signUpMutation.mutate(
       { values, token },
       {
-        onSuccess: e =>
-          setSuccess(e?.message || e?.response?.message),
+        onSuccess: (oResponse) => {
+          const { user, token } = oResponse;
+          
+          dispatch(signUpUser(user, token));
+          socketAuthOpen(token);
+          resetForm();
+
+          if (isFunction(oMutationOpts.onSuccess)) {
+            oMutationOpts.onSuccess(
+              oResponse
+            );
+          }
+        },
+
         onError: e =>
           setError(e?.message || e?.response?.message)
       }
     );
-
     setSubmitting(false);
   };
 
