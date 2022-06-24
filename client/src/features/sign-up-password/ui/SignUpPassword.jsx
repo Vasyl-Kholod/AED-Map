@@ -31,15 +31,14 @@ const SignUpPassword = () => {
   const dispatch = useDispatch();
 
   const handleSubmit =  (oMutationOpts = {}) =>  async (
-    values, 
+    {password, passwordConfirm}, 
     { resetForm, setSubmitting }
   ) => {
     signUpMutation.mutate(
-      { values, token },
+      { password, passwordConfirm, token },
       {
         onSuccess: (oResponse) => {
           const { user, token } = oResponse;
-          
           dispatch(signUpUser(user, token));
           socketAuthOpen(token);
           resetForm();
@@ -51,8 +50,10 @@ const SignUpPassword = () => {
           }
         },
 
-        onError: e =>
+        onError: e => {
           setError(e?.message || e?.response?.message)
+
+        }
       }
     );
     setSubmitting(false);
@@ -75,7 +76,7 @@ const SignUpPassword = () => {
             <Formik
               initialValues={INITIAL_VALUES}
               validationSchema={SignUpSchema}
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit()}
             >
               {({ isSubmitting }) => (
                 <Form
