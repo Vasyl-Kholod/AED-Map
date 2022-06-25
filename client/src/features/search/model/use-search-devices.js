@@ -10,20 +10,8 @@ const useSearchDevices = () => {
 
   const onSearch = ({ target: { value } }) => {
     const val = value.trim();
-    // const resetPagination = (page, data) => {
-    //   dispatch(setPage(page));
-    //   dispatch(setData(data));
-    // };
 
     dispatch(setSearch({ title: val, address: val }));
-
-    // if (val) {
-    //   // resetPagination(1, []);
-    //   dispatch(fetchDefs({ title: val, address: val }));
-    // } else {
-    //   // resetPagination(1, []);
-    //   dispatch(fetchDefs());
-    // }
   };
 
   return {

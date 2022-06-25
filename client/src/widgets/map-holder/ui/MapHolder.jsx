@@ -334,8 +334,6 @@ export default connect(
     endRouteCoords:
       state.mapState.routeDetails.endCoordinates,
     mapState: state.mapState,
-    transportType:
-      state.mapState.routeDetails.transportType,
     userPosition: state.userPosition,
     endCoords: state.mapState.routeDetails.endCoordinates,
     newPoint: state.newPoint,

@@ -21,6 +21,7 @@ const AddAdressText = ({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState(formik.values.address);
+
   useEffect(() => {
     setValue(formik.values.address);
   }, [formik.values.address]);
@@ -30,10 +31,10 @@ const AddAdressText = ({
     const {
       lng,
       lat
-    } = result.data.results[0].geometry.location;
+    } = result.results[0].geometry.location;
     formik.setFieldValue(
       'address',
-      result.data.results[0].formatted_address
+      result.results[0].formatted_address
     );
     formik.setFieldValue('coordinates', [lng, lat]);
   };
@@ -56,7 +57,7 @@ const AddAdressText = ({
     if (value && value.length > 2) {
       (async () => {
         const countries = await getGeocodingOptions(value);
-        setOptions(countries.data.predictions);
+        setOptions(countries.predictions);
       })();
     } else {
       setOpen(false);
@@ -80,7 +81,7 @@ const AddAdressText = ({
           selectedOption.place_id
         );
         const coordinates =
-          detailsAboutSelectedLocation.data.result.geometry
+          detailsAboutSelectedLocation.result.geometry
             .location;
         formik.setFieldValue('coordinates', [
           coordinates.lng,
@@ -111,6 +112,7 @@ const AddAdressText = ({
       inputValue={value}
       onBlur={() => setValue(formik.values.address)}
       onChange={SelectOption}
+      getOptionSelected={ data => data.description }
       getOptionLabel={option => option.description}
       options={options}
       renderInput={params => (

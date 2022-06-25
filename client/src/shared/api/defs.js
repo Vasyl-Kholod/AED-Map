@@ -25,6 +25,7 @@ export const editItem = params => {
   return http.put(`${URL}/${params._id}`, params);
 };
 export const blockItem = (id, params) => {
+  console.log(id, params)
   return http.put(`${URL}/block/${id}`, params);
 };
 export const deleteItem = id => {
