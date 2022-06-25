@@ -52,7 +52,8 @@ const MyForm = ({
   submitAction,
   fullTimeStatus,
   timeFrom,
-  timeUntil
+  timeUntil,
+  successAlertMessage
 }) => {
   const classes = useStyles();
   const [, ShowAlert] = useAlert();
@@ -79,7 +80,7 @@ const MyForm = ({
       ShowAlert({
         open: true,
         severity: 'success',
-        message: 'Додавання пройшло успішно'
+        message: successAlertMessage
       });
       resetForm();
       history.push('/');
@@ -189,7 +190,6 @@ const MyForm = ({
 MyForm.propTypes = {
   INITIAL_VALUES: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
     floor: PropTypes.string.isRequired,
     informational_plates: PropTypes.string.isRequired,
     phone: PropTypes.array.isRequired,

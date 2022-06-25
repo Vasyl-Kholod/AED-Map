@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty, isEqual } from 'lodash';
 import { Cancel } from '@material-ui/icons';
 
-import { cancelToken } from 'shared/utils';
-import { fetchSingleDefById } from 'shared/api/defs';
+import { useGetSingleDef } from 'shared/hooks/use-get-single-user';
 import {
   setDefIndex,
   setRoutePosition
@@ -20,11 +19,18 @@ import { hidePopup } from 'shared/store/popup/actions';
 import { useDefPopupContentStyles } from '../model/use-styles';
 import { BASE_URL } from 'shared/consts/url';
 
-const currDefCancelToken = cancelToken();
-
 const DefibrillatorPopupContent = ({ id, hidePopup }) => {
   const classes = useDefPopupContentStyles();
   const [currDef, setCurrDef] = useState(null);
+
+  const {
+    data: defItem
+  } = useGetSingleDef(id, {
+    onSuccess: ({defibrillator}) => {
+      setCurrDef(null);
+      setCurrDef(defibrillator);
+    }
+  });
 
   const formatData = (key, def) => {
     if (key === 'actual_date') {
@@ -58,20 +64,20 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     return def[key];
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setCurrDef(null);
-      const res = await fetchSingleDefById(id);
-      const { defibrillator } = res;
-      setCurrDef(defibrillator);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setCurrDef(null);
+  //     const res = await fetchSingleDefById(id);
+  //     const { defibrillator } = res;
+  //     setCurrDef(defibrillator);
+  //   };
 
-    fetchData();
+  //   fetchData();
 
-    return () => {
-      currDefCancelToken.cancel();
-    };
-  }, [id]);
+  //   return () => {
+  //     currDefCancelToken.cancel();
+  //   };
+  // }, [id]);
 
   return currDef ? (
     <div className={classes.popupContainer}>

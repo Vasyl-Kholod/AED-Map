@@ -30,7 +30,6 @@ BlockingBtn.defaultProps = {
 };
 BlockingBtn.propTypes = {
   handleOpen: PropTypes.func,
-  blocked: PropTypes.bool.isRequired
 };
 
 export default BlockingBtn;

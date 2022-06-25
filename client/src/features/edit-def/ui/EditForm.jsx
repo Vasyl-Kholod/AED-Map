@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { cancelToken } from 'shared/utils';
+import { useHistory } from 'react-router-dom';
+import { useGetSingleDef } from 'shared/hooks/use-get-single-user';
+import { useEditDef } from 'features/edit-def/model/use-edit-def';
 import { getReverseGeocoding } from 'shared/api/gmap';
 import { setMapCenter } from 'shared/store/map/actions';
-import {
-  editItem,
-  createImage,
-  fetchSingleDefById
-} from 'shared/api/defs';
 
 import MyForm from 'shared/ui/Form';
 import Loader from 'shared/ui/Loader';
 
 import { useLoaderStyles } from '../model/use-styles';
 
-const defCancelToken = cancelToken();
-
 const EditForm = ({ setMapCenter }) => {
   const classes = useLoaderStyles();
   const [def, setDef] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const history = useHistory();
+  
   const { href } = window.location;
   const id = href.slice(href.lastIndexOf('/') + 1);
 
-  const prepareData = async ({ defibrillator }) => {
+  const {
+    mutate
+  } = useEditDef();
+
+  const prepareData = async (defibrillator) => {
     const [lng, lat] = defibrillator.location.coordinates;
     const correctAddress = await getReverseGeocoding({
       lng,
@@ -54,23 +56,20 @@ const EditForm = ({ setMapCenter }) => {
     setMapCenter({ lng, lat, zoom: 17 });
   };
 
-  useEffect(() => {
-    (async () => {
-      setDef(null);
-
-      const res = await fetchSingleDefById(id);
-
-      prepareData(res);
-    })();
-
-    return () => {
-      defCancelToken.cancel();
-    };
-    // eslint-disable-next-line
-  }, []);
+  const {
+    isError
+  } = useGetSingleDef( id, {
+    onSuccess: async (defData) => {
+      await prepareData(defData.defibrillator)
+      setIsLoading(false)
+    },
+    onError: () => {
+      history.push('/')
+    }
+  });
 
   const hadleSubmit = async ({ images, ...data }) => {
-    const body = {
+    const editedDef = {
       ...data,
       _id: id,
       actual_date: data.actualDate,
@@ -81,23 +80,19 @@ const EditForm = ({ setMapCenter }) => {
       storage_place: `Поверх ${data.floor}, ${data.storage_place}`
     };
 
-    const respond = await editItem(body);
-
-    const bodyFormData = new FormData();
+    const ImageFormData = new FormData();
     Object.values(images).forEach(image =>
-      bodyFormData.append('images', image)
+      ImageFormData.append('images', image)
     );
 
-    await createImage(
-      bodyFormData,
-      respond.defibrillator._id
-    );
+    mutate({ editedDef, ImageFormData })
   };
 
-  return def ? (
+  return !isLoading && !isError ? (
     <MyForm
       INITIAL_VALUES={def}
       submitAction={hadleSubmit}
+      successAlertMessage='Успішно відредаговано!'
     />
   ) : (
     <div className={classes.loader}>
