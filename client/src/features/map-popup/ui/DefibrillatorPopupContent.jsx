@@ -64,21 +64,6 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     return def[key];
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setCurrDef(null);
-  //     const res = await fetchSingleDefById(id);
-  //     const { defibrillator } = res;
-  //     setCurrDef(defibrillator);
-  //   };
-
-  //   fetchData();
-
-  //   return () => {
-  //     currDefCancelToken.cancel();
-  //   };
-  // }, [id]);
-
   return currDef ? (
     <div className={classes.popupContainer}>
       {currDef.images[0] && (
