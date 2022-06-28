@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import ReactMapboxGl from 'react-mapbox-gl';
 import React, { useState, useEffect } from 'react';
 
-import { getDirections } from 'shared/api/map';
-
 import useAlert from 'shared/ui/Alert/use-alert';
 import { MAPBOX_TOKEN } from 'shared/consts/keys';
 import { hidePopup } from 'shared/store/popup/actions';
@@ -55,7 +53,7 @@ const MapHolderMobile = ({
 }) => {
   const classes = useMapHolderMobileStyles({ visible });
 
-  const diractionsMotation = useDirections();
+  const directionsMutation = useDirections();
   const [routeCoords, setRouteCords] = useState([]);
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
@@ -154,12 +152,12 @@ const MapHolderMobile = ({
   useEffect(() => {
     if (!!endCoords.lng) {
       const params = {
+        endCoords,
         transportType,
-        userCoords: userPosition.coords,
-        endCoords
+        userCoords: userPosition.coords
       };
 
-      diractionsMotation.mutate(params, {
+      directionsMutation.mutate(params, {
         onSuccess: oResponse => {
           const route = oResponse?.routes[0];
           setRouteCords(route.geometry.coordinates);
@@ -171,7 +169,12 @@ const MapHolderMobile = ({
         }
       });
     }
-  }, [endCoords, transportType]);
+  }, [
+    endCoords,
+    transportType,
+    userPosition.coords,
+    directionsMutation
+  ]);
 
   const closeRoute = () => {
     setRouteCords([]);
