@@ -59,7 +59,7 @@ const MapHolder = ({
 }) => {
   const classes = useMapHolderStyles({ visible });
 
-  const diractionsMotation = useDirections();
+  const directionsMutation = useDirections();
   const [routeCoords, setRouteCords] = useState([]);
   const [routeDetails, setRouteDetails] = useState({
     distance: null,
@@ -189,12 +189,12 @@ const MapHolder = ({
   useEffect(() => {
     if (!!endCoords.lng) {
       const params = {
+        endCoords,
         transportType,
-        userCoords: userPosition.coords,
-        endCoords
+        userCoords: userPosition.coords
       };
 
-      diractionsMotation.mutate(params, {
+      directionsMutation.mutate(params, {
         onSuccess: oResponse => {
           const route = oResponse?.routes[0];
           setRouteCords(route.geometry.coordinates);
@@ -206,7 +206,12 @@ const MapHolder = ({
         }
       });
     }
-  }, [endCoords, transportType]);
+  }, [
+    endCoords,
+    transportType,
+    userPosition.coords,
+    directionsMutation
+  ]);
 
   const closeRoute = () => {
     setRouteCords([]);
@@ -329,10 +334,7 @@ MapHolder.propTypes = {
 
 export default connect(
   state => ({
-    transportType:
-      state.mapState.routeDetails.transportType,
-    endRouteCoords:
-      state.mapState.routeDetails.endCoordinates,
+    defsState: state.defs,
     mapState: state.mapState,
     transportType:
       state.mapState.routeDetails.transportType,
