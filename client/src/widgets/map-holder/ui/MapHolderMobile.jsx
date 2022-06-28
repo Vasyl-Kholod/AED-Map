@@ -67,11 +67,12 @@ const MapHolderMobile = ({
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
 
-  const handlePopupClose = event => {
-    if (event.target.tagName === 'CANVAS') {
-      hidePopup();
-    }
-  };
+  // ToVerify if needed
+  // const handlePopupClose = event => {
+  //   if (event.target.tagName === 'CANVAS') {
+  //     hidePopup();
+  //   }
+  // };
 
   const loadMap = async mapRaw => {
     if (mapRaw) {
