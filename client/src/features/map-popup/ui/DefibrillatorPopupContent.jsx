@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, first, isNull } from 'lodash';
 import { Cancel } from '@material-ui/icons';
 
 import { useGetSingleDef } from 'shared/hooks/use-get-single-user';
@@ -25,12 +25,16 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
 
   const {
     isLoading,
-    isError
+    isError,
+    remove
   } = useGetSingleDef(id, {
     onSuccess: ({defibrillator}) => {
       setCurrDef(defibrillator);
     }
   });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect( () => () => remove, [])
 
   const formatData = (key, def) => {
     if (key === 'actual_date') {
@@ -64,18 +68,18 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     return def[key];
   };
 
-  return isLoading ? (
+  return isLoading && isNull(currDef) ? (
     <Loader />
   ) : isError ? (
     <div>Failed to download data.</div>
   ) : (
     <div className={classes.popupContainer}>
-      {currDef.images[0] && (
+      {first(currDef?.images) && (
         <img
-          title={currDef.images[0].filename}
+          title={first(currDef?.images)?.filename}
           className={classes.imagePreview}
-          src={`${BASE_URL}/api/images/${currDef.images[0].filename}`}
-          alt={currDef.images[0].filename}
+          src={`${BASE_URL}/api/images/${first(currDef?.images)?.filename}`}
+          alt={first(currDef?.images)?.filename}
         />
       )}
 

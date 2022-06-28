@@ -17,6 +17,7 @@ import {
   setMapCenter
 } from 'shared/store/map/actions';
 import { isEmpty } from 'lodash';
+import { rowCountSize } from '../model/services';
 
 import { DefItem } from 'features/def-item';
 import { InfoMessage } from 'features/map-info-message';
@@ -58,14 +59,6 @@ const DefsList = ({
     fixedWidth: true,
     defaultHeight: 100
   });
-
-  const rowCountSize = items => {
-    if (isEmpty(items)) {
-      return 0
-    } else {
-      return items.length
-    }
-  }
 
   const handleScroll = event => {
     const { scrollHeight, scrollTop, clientHeight } = event;

@@ -4,10 +4,10 @@ const URL = '/api/defibrillators';
 const URLimage = '/api/images';
 
 export const getDefItemsList = (params) => {
-  return http.get(`${URL}/defslist`, params);
+  return http.get(`${URL}/`, params);
 };
 export const getDefMapItems = (params) => {
-  return http.get(`${URL}/mapdefs`, params)
+  return http.get(`${URL}/all`, params)
 };
 export const fetchSingleDefById = id => {
   return http.get(`${URL}/${id}`);

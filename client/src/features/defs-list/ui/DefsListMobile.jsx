@@ -15,6 +15,7 @@ import {
   setMapCenter
 } from 'shared/store/map/actions';
 
+import { rowCountSize } from '../model/services';
 import { isEmpty } from 'lodash';
 import { DefItem } from 'features/def-item';
 import { InfoMessage } from 'features/map-info-message';
@@ -112,7 +113,7 @@ const DefsListMobile = ({
               width={width}
               height={height}
               deferredMeasurementCache={cache}
-              rowCount={defibrillators.length}
+              rowCount={rowCountSize(defibrillators)}
               rowHeight={cache.rowHeight}
               rowRenderer={rowRenderer}
               overscanRowCount={10}

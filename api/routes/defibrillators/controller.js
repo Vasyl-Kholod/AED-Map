@@ -86,7 +86,7 @@ module.exports.getMapDefibrillators = async (req, res) => {
 module.exports.getNearestDevices = async (req, res) => {
   try {
     const requestHour = new Date().getHours();
-    const listDefs = await invoke(Defibrillator, req.query?.single ? 'findOne' : 'find', {
+    const listDefs = await invoke(Defibrillator, req.query.single ? 'findOne' : 'find', {
       location: {
         $near: {
           $geometry: {
