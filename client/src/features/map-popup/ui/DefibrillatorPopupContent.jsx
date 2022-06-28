@@ -24,7 +24,8 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
   const [currDef, setCurrDef] = useState(null);
 
   const {
-    data: defItem
+    isLoading,
+    isError
   } = useGetSingleDef(id, {
     onSuccess: ({defibrillator}) => {
       setCurrDef(defibrillator);
@@ -63,7 +64,11 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     return def[key];
   };
 
-  return currDef ? (
+  return isLoading ? (
+    <Loader />
+  ) : isError ? (
+    <div>Failed to download data.</div>
+  ) : (
     <div className={classes.popupContainer}>
       {currDef.images[0] && (
         <img
@@ -92,9 +97,7 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
       />
       <ModalPhoto images={currDef.images} />
     </div>
-  ) : (
-    <Loader />
-  );
+  )
 };
 
 DefibrillatorPopupContent.propTypes = {
