@@ -1,7 +1,32 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.1.1
+steps:
+  - &install_all_dependencies
+    run:
+      name: Go to client folder and install all dependencies
+      command: |
+        pwd
+        cd client/
+        pwd
+        yarn install
+  - &build_client
+    run:
+      name: Build UI
+      command: |
+        pwd
+        cd client/
+        yarn build
 jobs:
+  pre_build_ui:
+    working_directory: ~/app
+    docker:
+      - image: cimg/node:14.17.4
+    steps:
+      - checkout
+      - run: node --version
+      - *install_all_dependencies
+      - *build_client
   build_ui:
     working_directory: ~/app
     docker:
@@ -9,19 +34,8 @@ jobs:
     steps:
       - checkout
       - run: node --version
-      - run:
-          name: Go to client folder and install all dependencies
-          command: |
-            pwd
-            cd client/
-            pwd
-            yarn install
-      - run:
-          name: Build UI
-          command: |
-            pwd
-            cd client/
-            yarn build
+      - *install_all_dependencies
+      - *build_client
       - aws-cli/setup:
           aws-access-key-id: AWS_3040_ACCESS_KEY
           aws-secret-access-key: AWS_3040_SECRET_KEY
@@ -49,6 +63,7 @@ jobs:
     docker:
       - image: cimg/base:2022.06
     steps:
+      - checkout
       - aws-cli/setup:
           aws-access-key-id: AWS_3040_ACCESS_KEY
           aws-secret-access-key: AWS_3040_SECRET_KEY
@@ -66,7 +81,10 @@ workflows:
   version: 2
   build_aed_map:
     jobs:
+      - pre_build_ui
       - build_ui:
+          requires:
+            - pre_build_ui
           filters:
             branches:
               only:
