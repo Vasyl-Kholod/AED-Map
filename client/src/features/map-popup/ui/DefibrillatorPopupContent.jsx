@@ -27,7 +27,6 @@ const DefibrillatorPopupContent = ({ id, hidePopup }) => {
     data: defItem
   } = useGetSingleDef(id, {
     onSuccess: ({defibrillator}) => {
-      setCurrDef(null);
       setCurrDef(defibrillator);
     }
   });
