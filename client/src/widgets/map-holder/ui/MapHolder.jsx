@@ -206,12 +206,8 @@ const MapHolder = ({
         }
       });
     }
-  }, [
-    endCoords,
-    transportType,
-    userPosition.coords,
-    directionsMutation
-  ]);
+    // eslint-disable-next-line
+  }, [endCoords, transportType]);
 
   const closeRoute = () => {
     setRouteCords([]);
