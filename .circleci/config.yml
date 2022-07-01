@@ -50,7 +50,7 @@ jobs:
           aws-secret-access-key: AWS_3040_SECRET_KEY
           aws-region: AWS_3040_DEFAULT_REGION
       - run:
-          name: Copy ui build from S3 bucket
+          name: Copy the UI build from S3 bucket
           command: |
             cd client/
             mkdir build
@@ -62,18 +62,14 @@ jobs:
             aws s3 cp s3://aed-map-config/$AWS_3040_EC2_KEY_NAME ~/app/
             chmod 400 $AWS_3040_EC2_KEY_NAME
       - run:
-          name: Connect to EC2 instance and stop server
+          name: Connect to EC2 instance and clear the UI build
           command: |
-            ssh -o StrictHostKeyChecking=no -i ~/app/$AWS_3040_EC2_KEY_NAME $AWS_3040_EC2_UI_INSTANCE "cd ~/deploy_scripts/; sh stop_server.sh"
+            ssh -o StrictHostKeyChecking=no -i ~/app/$AWS_3040_EC2_KEY_NAME $AWS_3040_EC2_INSTANCE "cd ~/circleci_scripts/;. clear_ui.sh"
       - run:
-          name: Copy build to EC2 instance
+          name: Copy the UI build to EC2 instance
           command: |
             cd client
-            scp -r -i ~/app/$AWS_3040_EC2_KEY_NAME build/* $AWS_3040_EC2_UI_INSTANCE:ui/
-      - run:
-          name: Connect to EC2 instance and start server
-          command: |
-            ssh -o StrictHostKeyChecking=no -i ~/app/$AWS_3040_EC2_KEY_NAME $AWS_3040_EC2_UI_INSTANCE "cd ~/deploy_scripts/; sh start_server.sh"
+            scp -r -i ~/app/$AWS_3040_EC2_KEY_NAME build/* $AWS_3040_EC2_INSTANCE:apps/AED-Map/client/build/
   build_node_server:
     working_directory: ~/build
     docker:
@@ -92,15 +88,19 @@ jobs:
       - run:
           name: Connect to EC2 instance and run all needed commands
           command: |
-            ssh -o StrictHostKeyChecking=no -i ~/build/$AWS_3040_EC2_KEY_NAME $AWS_3040_EC2_NODE_INSTANCE "source ~/.nvm/nvm.sh; cd ~/scripts/; sh rebuild_server.sh"
+            ssh -o StrictHostKeyChecking=no -i ~/build/$AWS_3040_EC2_KEY_NAME $AWS_3040_EC2_INSTANCE "source ~/.nvm/nvm.sh; cd ~/circleci_scripts/;. restart_server.sh"
 workflows:
   version: 2
   build_aed_map:
     jobs:
       - pre_build_ui
-      - build_ui:
+      - approve_rebuild_server:
+          type: approval
           requires:
             - pre_build_ui
+      - build_ui:
+          requires:
+            - approve_rebuild_server
           filters:
             branches:
               only:
