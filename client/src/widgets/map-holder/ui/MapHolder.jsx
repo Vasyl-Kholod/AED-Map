@@ -118,7 +118,7 @@ const MapHolder = ({
     hidePopup();
   };
 
-  const hideSidebar = () => {
+  const hideSidebar = async () => {
     if (map) {
       setVisible(prev => !prev);
       setTimeout(() => {
@@ -332,8 +332,6 @@ export default connect(
   state => ({
     defsState: state.defs,
     mapState: state.mapState,
-    transportType:
-      state.mapState.routeDetails.transportType,
     userPosition: state.userPosition,
     endCoords: state.mapState.routeDetails.endCoordinates,
     newPoint: state.newPoint,

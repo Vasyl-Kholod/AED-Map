@@ -3,8 +3,11 @@ import http from 'shared/http';
 const URL = '/api/defibrillators';
 const URLimage = '/api/images';
 
-export const getDefItems = (params, cancelToken) => {
-  return http.get(URL, params, cancelToken);
+export const getDefItemsList = (params) => {
+  return http.get(`${URL}/`, params);
+};
+export const getDefMapItems = (params) => {
+  return http.get(`${URL}/all`, params)
 };
 export const fetchSingleDefById = id => {
   return http.get(`${URL}/${id}`);

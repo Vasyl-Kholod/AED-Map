@@ -1,11 +1,13 @@
 import axios from 'axios';
+import { paramsInterceptor } from './params-interceptor';
 
 const http = {
   get(url, params, cancel) {
+    const cleanParams = paramsInterceptor(params);
     return axios({
       method: 'get',
       url,
-      params,
+      params: cleanParams,
       cancelToken: cancel ? cancel.token : null
     });
   },

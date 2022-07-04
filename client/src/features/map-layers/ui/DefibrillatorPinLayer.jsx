@@ -5,22 +5,29 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Cluster, Marker } from 'react-mapbox-gl';
 import { useDefirilatorPinLayerStyles } from '../model/use-styles';
+import { useGetDefsMap } from '../model/use-get-map-defs';
 
 import mapPin from 'shared/icons/map-pin-icon.jpg';
 import activeMapPin from 'shared/icons/active-map-pin-icon.jpg';
 
+import { isEmpty } from 'lodash';
 import { setActive } from 'shared/store/defs/actions';
 import { showPopup } from 'shared/store/popup/actions';
 import geoJsonData from 'widgets/map-holder/lib/geoJsonData';
 
 const DefibrillatorPinLayer = ({
-  defibrillators,
   showPopup,
   makeItemActive,
   defibrillatorsActiveId,
   history
 }) => {
-  const GEO_JSON_DATA = geoJsonData(defibrillators);
+  const {
+    data: defibrillators,
+  } = useGetDefsMap();
+
+  const GEO_JSON_DATA = geoJsonData(
+    !isEmpty(defibrillators) ? defibrillators : []
+  );
   const classes = useDefirilatorPinLayerStyles();
 
   const defibrillatorPinClick = feature => {
@@ -102,25 +109,6 @@ DefibrillatorPinLayer.defaultProps = {
 };
 
 DefibrillatorPinLayer.propTypes = {
-  defibrillators: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      title: PropTypes.string,
-      address: PropTypes.string,
-      location: PropTypes.shape({
-        type: PropTypes.string,
-        coordinates: PropTypes.arrayOf(PropTypes.number)
-      }),
-      actual_date: PropTypes.string,
-      floor: PropTypes.number,
-      storage_place: PropTypes.string,
-      availableFrom: PropTypes.string,
-      language: PropTypes.string,
-      informational_plates: PropTypes.string,
-      phone: PropTypes.arrayOf(PropTypes.string),
-      additional_information: PropTypes.string
-    })
-  ),
   showPopup: PropTypes.func,
   makeItemActive: PropTypes.func.isRequired,
 
@@ -134,7 +122,6 @@ DefibrillatorPinLayer.propTypes = {
 
 export default connect(
   state => ({
-    defibrillators: state.defs.mapData,
     defibrillatorsActiveId: state.defs.active,
     mapState: state.mapState
   }),

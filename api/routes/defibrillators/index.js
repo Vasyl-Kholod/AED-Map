@@ -18,7 +18,12 @@ const router = express.Router();
 router.get(
   '/',
   checkPermission,
-  controller.getDefibrillators
+  controller.getDefibrillatorsList
+);
+router.get(
+  '/all',
+  checkPermission,
+  controller.getMapDefibrillators
 );
 router.get('/nearestDevices', controller.getNearestDevices);
 router.post(

@@ -11,10 +11,7 @@ import {
   setMapZoom,
   setMapCenter
 } from 'shared/store/map/actions';
-import {
-  fetchDefs,
-  setActive
-} from 'shared/store/defs/actions';
+import { setActive } from 'shared/store/defs/actions';
 import {
   setGeolocation,
   startWatchingPosition
@@ -41,7 +38,6 @@ const Map = ReactMapboxGl({
 });
 
 const MapHolderMobile = ({
-  fetchDefItems,
   mapState,
   transportType,
   userPosition,
@@ -71,22 +67,12 @@ const MapHolderMobile = ({
   const [map, setLocalMap] = useState(null);
   const { lng, lat, zoom } = mapState;
 
-  const handlePopupClose = event => {
-    if (event.target.tagName === 'CANVAS') {
-      hidePopup();
-    }
-  };
-  useEffect(() => {
-    fetchDefItems();
-    document.addEventListener('click', handlePopupClose);
-    return () => {
-      document.removeEventListener(
-        'click',
-        handlePopupClose
-      );
-    };
-    // eslint-disable-next-line
-  }, []);
+  // ToVerify if needed
+  // const handlePopupClose = event => {
+  //   if (event.target.tagName === 'CANVAS') {
+  //     hidePopup();
+  //   }
+  // };
 
   const loadMap = async mapRaw => {
     if (mapRaw) {
@@ -285,12 +271,10 @@ MapHolderMobile.propTypes = {
   hidePopup: PropTypes.func,
   setVisible: PropTypes.func,
   visible: PropTypes.bool,
-  fetchDefItems: PropTypes.func
 };
 
 export default connect(
   state => ({
-    defsState: state.defs,
     mapState: state.mapState,
     newPoint: state.newPoint,
     transportType:
@@ -299,7 +283,6 @@ export default connect(
     endCoords: state.mapState.routeDetails.endCoordinates
   }),
   dispatch => ({
-    fetchDefItems: params => dispatch(fetchDefs(params)),
     setGeolocation: f => dispatch(setGeolocation(f)),
     startWatchingPosition: () =>
       dispatch(startWatchingPosition()),

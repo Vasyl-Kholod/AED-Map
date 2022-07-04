@@ -6,6 +6,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { NavLink, useHistory } from 'react-router-dom';
 import DirectionsIcon from '@material-ui/icons/Directions';
 
+import { useDeleteDef } from 'features/def-item/model/use-delete-def';
+import { useBlockDef } from '../model/use-block-def';
 import { fetchSingleDefById } from 'shared/api/defs';
 import checkPermissions from 'shared/utils/permission';
 import {
@@ -20,11 +22,7 @@ import {
   setRoutePosition,
   setNextNearestDefButtonStatus
 } from 'shared/store/map/actions';
-import {
-  setActive,
-  blockDefItem,
-  deleteDefItem
-} from 'shared/store/defs/actions';
+import { setActive } from 'shared/store/defs/actions';
 import {
   EDIT_DEF_POINT,
   BASE_ZOOM_VALUE,
@@ -50,8 +48,6 @@ const DefItem = ({
   setRoutePosition,
   // eslint-disable-next-line react/prop-types
   style,
-  deleteDefibrPoint,
-  blockDefibrPoint,
   user,
   setTime,
   setFromTime,
@@ -83,6 +79,9 @@ const DefItem = ({
   ] = useState(false);
   const history = useHistory();
 
+  const { mutate: deleteDef } = useDeleteDef();
+  const { mutate: blockDef } = useBlockDef();
+
   const handleClick = () => {
     makeItemActive(defItemInfo._id);
     setMapCenterCoords({
@@ -91,6 +90,18 @@ const DefItem = ({
     });
     setMapZoomParam(BASE_ZOOM_VALUE);
   };
+
+  const confirmHandleBlock = async () => {
+    const defItem = await fetchSingleDefById(defItemInfo._id);
+    defItemInfo = defItem.defibrillator;
+    blockDef({
+      id: defItemInfo._id,
+      params: {
+        blocked: !defItemInfo.blocked
+      }
+    })
+            
+  }
 
   const handleEditClick = event => {
     event.preventDefault();
@@ -190,7 +201,7 @@ const DefItem = ({
           <ConfirmationModalWrapper
             ButtonOpen={DeletingBtn}
             confirmHandle={() =>
-              deleteDefibrPoint(defItemInfo._id)
+              deleteDef(defItemInfo._id)
             }
             message="Видалити дефібрилятор?"
             messageAlert="Дефібрилятор успішно видалено"
@@ -204,12 +215,7 @@ const DefItem = ({
                 blocked={defItemInfo.blocked}
               />
             )}
-            confirmHandle={() =>
-              blockDefibrPoint(
-                defItemInfo._id,
-                !defItemInfo.blocked
-              )
-            }
+            confirmHandle={confirmHandleBlock}
             message={
               defItemInfo.blocked
                 ? 'Розблокувати дефібрилятор?'
@@ -240,8 +246,6 @@ DefItem.defaultProps = {
   activeItemId: () => null,
   setMapCenterCoords: () => null,
   setMapZoomParam: () => null,
-  deleteDefibrPoint: () => null,
-  blockDefibrPoint: () => null,
   user: null
 };
 
@@ -272,8 +276,6 @@ DefItem.propTypes = {
   }),
   setMapCenterCoords: PropTypes.func,
   setMapZoomParam: PropTypes.func,
-  deleteDefibrPoint: PropTypes.func,
-  blockDefibrPoint: PropTypes.func,
   activeItemId: PropTypes.string,
   makeItemActive: PropTypes.func.isRequired,
   setRoutePosition: PropTypes.func
@@ -291,9 +293,6 @@ export default connect(
       dispatch(setMapCenter(mapState)),
     setMapZoomParam: mapState =>
       dispatch(setMapZoom(mapState)),
-    deleteDefibrPoint: id => dispatch(deleteDefItem(id)),
-    blockDefibrPoint: (id, blocked) =>
-      dispatch(blockDefItem(id, blocked)),
     setTime: value => dispatch(setFullTime(value)),
     setFromTime: time => dispatch(setFromTime(time)),
     setUntilTime: time => dispatch(setUntilTime(time)),
