@@ -1,6 +1,7 @@
 import {
   SET_USER_POSITION,
   INPUT_USER_POSITION,
+  INPUT_USER_POSITION_PLACEHOLDER,
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION,
   SET_GEOLOCATION_STATUS
@@ -12,6 +13,7 @@ const initialState = {
     lat: null
   },
   userLocation: '',
+  userLocationPlaceHolder: '',
   watchId: null,
   geolocationProvided: false
 };
@@ -43,6 +45,9 @@ export default (
 
     case INPUT_USER_POSITION:
       return { ...state, userLocation: payload };
+
+    case INPUT_USER_POSITION_PLACEHOLDER:
+      return { ...state, userLocationPlaceHolder: payload };
 
     default:
       return state;

@@ -1,6 +1,9 @@
+import { get, first } from 'lodash'
+import { getReverseGeocoding } from 'shared/api/gmap';
 import {
   SET_USER_POSITION,
   INPUT_USER_POSITION,
+  INPUT_USER_POSITION_PLACEHOLDER,
   SET_GEOLOCATION_STATUS,
   START_WATCHING_POSITION,
   STOP_WATCHING_POSITION
@@ -28,7 +31,7 @@ export const setGeolocation = f => {
       });
       f(null);
     };
-    const success = ({ coords }) => {
+    const success = async ({ coords }) => {
       const { latitude, longitude } = coords;
       dispatch({
         type: SET_USER_POSITION,
@@ -39,6 +42,14 @@ export const setGeolocation = f => {
         payload: true
       });
       f({ latitude, longitude });
+
+      // Input to serarch user location placeholder address 
+      const data = await getReverseGeocoding({ lng: longitude, lat: latitude })
+      const results = get(data, 'results')
+      if (results) {
+        const first_result = first(results)
+        dispatch(inputPlaceholderUserPosition(first_result?.formatted_address))
+      }
     };
     navigator.geolocation.getCurrentPosition(
       success,
@@ -114,3 +125,14 @@ export const inputUserPosition = payload => {
     payload: payload
   };
 };
+
+/*
+ * User input placeholder his positon
+ */
+export const inputPlaceholderUserPosition = payload => {
+  return {
+    type: INPUT_USER_POSITION_PLACEHOLDER,
+    payload: payload
+  };
+};
+
