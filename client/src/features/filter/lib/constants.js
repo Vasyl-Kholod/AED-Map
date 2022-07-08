@@ -22,4 +22,4 @@ export const informationalPlates = [
 
 export const filterWidth = '320px';
 export const sidebarWidth = '360px';
-export const availableFrom = ['', 'цілодобово'];
+export const availableFrom = ['', 'цілодобово', 'доступний зараз'];
