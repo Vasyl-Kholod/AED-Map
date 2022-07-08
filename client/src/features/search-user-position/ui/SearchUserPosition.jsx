@@ -34,14 +34,17 @@ export default function SearchUserPosition({
   const userLocationValue = useSelector(
     state => state.userPosition.userLocation
   );
+  const userLocationPlaceHolderValue = useSelector(
+    state => state.userPosition.userLocationPlaceHolder
+  );
 
   const {
     showChangePositionAlert
   } = useDefibrillatorAlert();
 
   const onChange = async ({ target: { value } }) => {
-    dispatch(inputUserPosition(value));
     if (value.trim()) {
+      dispatch(inputUserPosition(value));
       const countries = await getGeocodingOptions(value);
       setOptions(countries.predictions);
     }
@@ -74,26 +77,33 @@ export default function SearchUserPosition({
     <div className={classes.contentSearchBox}>
       <Autocomplete
         id="search_positon"
+        filterOptions={x => x}
         className={classes.Autocomplete}
         classes={{
           root: classes.root,
           inputRoot: classes.root,
+          clearIndicator: classes.clearIndicator,
           clearIndicatorDirty: classes.clearIndicator
         }}
-        inputValue={userLocationValue}
         options={options}
         getOptionLabel={option => option.description}
         getOptionSelected={(option, value) =>
-          option === value
+          option?.id === value?.id
         }
         onChange={onSelectOption}
+        inputValue={userLocationValue}
         renderInput={params => (
           <div className={classes.content}>
             <TextField
               {...params}
-              className={classes.inputStyle}
               onChange={onChange}
-              placeholder="Введіть ваше місцезнаходження"
+              value={userLocationValue}
+              className={classes.inputStyle}
+              placeholder={
+                userLocationPlaceHolderValue
+                  ? userLocationPlaceHolderValue
+                  : 'Введіть ваше місцезнаходження'
+              }
             />
 
             {userLocationValue.trim() && (
