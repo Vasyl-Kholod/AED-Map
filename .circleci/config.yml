@@ -25,8 +25,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [master, << pipeline.git.branch >>]
-              - equal: [develop, << pipeline.git.branch >>]
+              - equal: [master, $CIRCLE_BRANCH]
+              - equal: [develop, $CIRCLE_BRANCH]
           steps:
             - aws-cli/setup:
                 aws-access-key-id: AWS_3040_ACCESS_KEY
@@ -98,6 +98,11 @@ workflows:
           type: approval
           requires:
             - pre_build_ui
+          filters:
+            branches:
+              only:
+                - master
+                - develop
       - build_ui:
           requires:
             - approve_rebuild_server
