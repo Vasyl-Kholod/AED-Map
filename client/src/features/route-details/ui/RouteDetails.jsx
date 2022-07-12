@@ -1,16 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton } from '@material-ui/core';
-import { DirectionsBike } from '@material-ui/icons';
+import {
+  DirectionsCarSharp,
+  DirectionsBike,
+  DirectionsWalk
+} from '@material-ui/icons';
 import {
   useRouteDetailsStyles,
   createRouteDetailsStyles
 } from '../model/use-styles';
 import { useDistanceAndDuration } from '../model/use-distance-and-duration';
 import { useDispatch, useSelector } from 'react-redux';
-import { DirectionsCarSharp } from '@material-ui/icons';
 
 import { changeTransportType } from 'shared/store/map/actions';
+
+const typesRoutes = [
+  {
+    id: '1',
+    typeRoute: 'driving',
+    icon: <DirectionsCarSharp />
+  },
+  {
+    id: '2',
+    typeRoute: 'cycling',
+    icon: <DirectionsBike />
+  },
+  {
+    id: '3',
+    typeRoute: 'walking',
+    icon: <DirectionsWalk />
+  }
+];
 
 const detailsStyle = createRouteDetailsStyles();
 
@@ -20,10 +41,13 @@ function RouteDetails({
   getRouteToPosition
 }) {
   const dispatch = useDispatch();
-  const { finalDistance, approximateTime } = useDistanceAndDuration(details);
+  const {
+    finalDistance,
+    approximateTime
+  } = useDistanceAndDuration(details);
   const classes = useRouteDetailsStyles();
 
-  const type = useSelector(
+  const currentTypeRoute = useSelector(
     reducer => reducer.mapState.routeDetails.transportType
   );
 
@@ -37,27 +61,20 @@ function RouteDetails({
         <form id="params">
           <h6>Оберіть вид пересування:</h6>
           <div style={detailsStyle.containerIcon}>
-            <IconButton
-              onClick={() => handleClick('driving')}
-              color="inherit"
-              className={`${classes.type_icon} ${type === 'driving'
-                  ? classes.type_icon_selected
-                  : ''
+            {typesRoutes.map(({ id, typeRoute, icon }) => (
+              <IconButton
+                key={id}
+                onClick={() => handleClick(typeRoute)}
+                color="inherit"
+                className={`${classes.type_icon} ${
+                  typeRoute === currentTypeRoute
+                    ? classes.type_icon_selected
+                    : ''
                 }`}
-            >
-              <DirectionsCarSharp />
-            </IconButton>
-
-            <IconButton
-              onClick={() => handleClick('cycling')}
-              color="inherit"
-              className={`${classes.type_icon} ${type === 'cycling'
-                  ? classes.type_icon_selected
-                  : ''
-                }`}
-            >
-              <DirectionsBike />
-            </IconButton>
+              >
+                {icon}
+              </IconButton>
+            ))}
           </div>
         </form>
       </div>
