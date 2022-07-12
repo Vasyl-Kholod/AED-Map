@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Tooltip, Button } from '@material-ui/core';
 import { Form as FormFormik } from 'formik';
 
 import { MyTextField } from 'shared/ui/Fields';
@@ -21,16 +21,18 @@ const Form = ({ isSubmitting }) => {
         name="email"
         autoComplete="email"
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-        disabled={isSubmitting}
-      >
-        Відновити пароль
-      </Button>
+      <Tooltip title={'ВІДНОВИТИ ПАРОЛЬ'}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          disabled={isSubmitting}
+        >
+          Відновити пароль
+        </Button>
+      </Tooltip>
     </FormFormik>
   );
 };

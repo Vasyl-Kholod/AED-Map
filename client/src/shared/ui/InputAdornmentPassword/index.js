@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  InputAdornment,
-  IconButton
+  Tooltip,
+  IconButton,
+  InputAdornment
 } from '@material-ui/core';
 import {
   Visibility,
@@ -15,12 +16,16 @@ const InputAdornmentPassword = ({
   handleMouseDownPassword
 }) => (
   <InputAdornment position="end">
-    <IconButton
-      onClick={handleClickShowPassword}
-      onMouseDown={handleMouseDownPassword}
-    >
-      {showPassword ? <Visibility /> : <VisibilityOff />}
-    </IconButton>
+    <Tooltip title={!showPassword
+      ? 'Показати пароль'
+      : 'Сховати пароль'}>
+      <IconButton
+        onClick={handleClickShowPassword}
+        onMouseDown={handleMouseDownPassword}
+      >
+        {showPassword ? <Visibility /> : <VisibilityOff />}
+      </IconButton>
+    </Tooltip>
   </InputAdornment>
 );
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Tooltip, Button } from '@material-ui/core';
 
 const ButtonResetSendMail = ({ handleOpen }) => (
-  <Button color="primary" onClick={handleOpen}>
-    Відновити пароль
-  </Button>
+  <Tooltip title={'ВІДНОВИТИ ПАРОЛЬ'}>
+    <Button color="primary" onClick={handleOpen}>
+      Відновити пароль
+    </Button>
+  </Tooltip>
 );
 
 ButtonResetSendMail.propTypes = {

@@ -43,8 +43,8 @@ export default function SearchUserPosition({
   } = useDefibrillatorAlert();
 
   const onChange = async ({ target: { value } }) => {
+    dispatch(inputUserPosition(value));
     if (value.trim()) {
-      dispatch(inputUserPosition(value));
       const countries = await getGeocodingOptions(value);
       setOptions(countries.predictions);
     }
