@@ -7,7 +7,7 @@ jobs:
     docker:
       - image: cimg/node:14.17.4
     steps:
-      - run: # print the name of the branch we're on
+      - run: # print the name of the branch we're on on
           name: 'What branch am I on?'
           command: echo ${CIRCLE_BRANCH}
       - run: # print the name of the branch we're on
