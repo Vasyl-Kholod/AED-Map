@@ -7,6 +7,12 @@ jobs:
     docker:
       - image: cimg/node:14.17.4
     steps:
+      - run: # print the name of the branch we're on
+          name: 'What branch am I on?'
+          command: echo ${CIRCLE_BRANCH}
+      - run: # print the name of the branch we're on
+          name: 'What PR am I on?'
+          command: echo ${CIRCLE_PULL_REQUEST}
       - checkout
       - run: node --version
       - run:
