@@ -12,6 +12,7 @@ const {
   SECRET_JWT_KEY_RESET,
   EXPIRE_TIME_JWT_RESET
 } = process.env || {};
+
 // Model of the collection 'users'
 const { User } = require('../../../db/models');
 // User role
@@ -24,7 +25,6 @@ const {
 module.exports.userSignUp = async (req, res) => {
   // Get email and password from request
   const { token, password } = req.body;
-
   // Verify token by secret key and expiration time
   jwt.verify(
     token,
